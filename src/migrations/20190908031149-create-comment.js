@@ -1,5 +1,5 @@
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('patterns', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('comments', {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -7,25 +7,17 @@ module.exports = {
       type: Sequelize.INTEGER,
     },
 
-    name: {
-      allowNull: false,
-      type: Sequelize.STRING,
-    },
-    score: {
-      allowNull: false,
-      defaultValue: 0,
-      type: Sequelize.INTEGER,
-    },
-    instructions: {
+    content: {
       allowNull: false,
       type: Sequelize.TEXT,
     },
-    video: {
-      type: Sequelize.STRING,
-    },
-    image: {
+    commentable: {
       allowNull: false,
       type: Sequelize.STRING,
+    },
+    commentable_id: {
+      allowNull: false,
+      type: Sequelize.INTEGER,
     },
 
     // Timestamps
@@ -39,5 +31,5 @@ module.exports = {
     },
   }),
 
-  down: (queryInterface) => queryInterface.dropTable('patterns'),
+  down: (queryInterface) => queryInterface.dropTable('comments'),
 };

@@ -1,24 +1,19 @@
 module.exports = {
   up: (queryInterface) => {
-    /*
-      Add users here.
-      Return a promise to correctly handle asynchronicity.
-
-      Example:
-      return queryInterface.bulkInsert('People', [{
-        name: 'John Doe',
-        isBetaMember: false
-      }], {});
-    */
+    const usersData = [
+      {
+        username: 'BFFV',
+        password: '123456',
+        email: 'bffarias@uc.cl',
+        age: 20,
+        photo: 'Foto',
+        role: 'admin',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ];
+    return queryInterface.bulkInsert('users', usersData);
   },
 
-  down: (queryInterface) => {
-    /*
-      Delete users here (undo).
-      Return a promise to correctly handle asynchronicity.
-
-      Example:
-      return queryInterface.bulkDelete('People', null, {});
-    */
-  },
+  down: (queryInterface) => queryInterface.bulkDelete('users', null, {}),
 };

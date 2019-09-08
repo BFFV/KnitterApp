@@ -1,24 +1,15 @@
 module.exports = {
   up: (queryInterface) => {
-    /*
-      Add materials here.
-      Return a promise to correctly handle asynchronicity.
-
-      Example:
-      return queryInterface.bulkInsert('People', [{
-        name: 'John Doe',
-        isBetaMember: false
-      }], {});
-    */
+    const materialsData = [
+      {
+        name: 'Lana de Oveja',
+        description: 'Lana obtenida del Sur.',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ];
+    return queryInterface.bulkInsert('materials', materialsData);
   },
 
-  down: (queryInterface) => {
-    /*
-      Delete materials here (undo).
-      Return a promise to correctly handle asynchronicity.
-
-      Example:
-      return queryInterface.bulkDelete('People', null, {});
-    */
-  },
+  down: (queryInterface) => queryInterface.bulkDelete('materials', null, {}),
 };

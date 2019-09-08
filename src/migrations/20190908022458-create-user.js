@@ -1,5 +1,5 @@
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('patterns', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('users', {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -7,24 +7,27 @@ module.exports = {
       type: Sequelize.INTEGER,
     },
 
-    name: {
+    username: {
       allowNull: false,
       type: Sequelize.STRING,
     },
-    score: {
+    password: {
       allowNull: false,
-      defaultValue: 0,
+      type: Sequelize.STRING,
+    },
+    email: {
+      allowNull: false,
+      type: Sequelize.STRING,
+    },
+    age: {
+      allowNull: false,
       type: Sequelize.INTEGER,
     },
-    instructions: {
+    role: {
       allowNull: false,
-      type: Sequelize.TEXT,
-    },
-    video: {
       type: Sequelize.STRING,
     },
-    image: {
-      allowNull: false,
+    photo: {
       type: Sequelize.STRING,
     },
 
@@ -39,5 +42,5 @@ module.exports = {
     },
   }),
 
-  down: (queryInterface) => queryInterface.dropTable('patterns'),
+  down: (queryInterface) => queryInterface.dropTable('users'),
 };

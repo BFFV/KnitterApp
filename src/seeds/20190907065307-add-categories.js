@@ -1,24 +1,18 @@
 module.exports = {
   up: (queryInterface) => {
-    /*
-      Add categories here.
-      Return a promise to correctly handle asynchronicity.
-
-      Example:
-      return queryInterface.bulkInsert('People', [{
-        name: 'John Doe',
-        isBetaMember: false
-      }], {});
-    */
+    const categoriesData = [
+      {
+        name: 'Telares',
+        description: 'El telar es una máquina para tejer, construida con madera o metal,'
+        + ' en la que se colocan unos hilos paralelos, denominados urdimbres, que deben'
+        + ' sujetarse a ambos lados para tensarlos',
+        accepted: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ];
+    return queryInterface.bulkInsert('categories', categoriesData);
   },
 
-  down: (queryInterface) => {
-    /*
-      Delete categories here (undo).
-      Return a promise to correctly handle asynchronicity.
-
-      Example:
-      return queryInterface.bulkDelete('People', null, {});
-    */
-  },
+  down: (queryInterface) => queryInterface.bulkDelete('categories', null, {}),
 };

@@ -1,5 +1,5 @@
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('patterns', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('materials', {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -11,21 +11,9 @@ module.exports = {
       allowNull: false,
       type: Sequelize.STRING,
     },
-    score: {
-      allowNull: false,
-      defaultValue: 0,
-      type: Sequelize.INTEGER,
-    },
-    instructions: {
+    description: {
       allowNull: false,
       type: Sequelize.TEXT,
-    },
-    video: {
-      type: Sequelize.STRING,
-    },
-    image: {
-      allowNull: false,
-      type: Sequelize.STRING,
     },
 
     // Timestamps
@@ -39,5 +27,5 @@ module.exports = {
     },
   }),
 
-  down: (queryInterface) => queryInterface.dropTable('patterns'),
+  down: (queryInterface) => queryInterface.dropTable('materials'),
 };

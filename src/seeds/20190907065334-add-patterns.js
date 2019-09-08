@@ -1,14 +1,19 @@
 module.exports = {
-  up: async (queryInterface) => queryInterface.bulkInsert('patterns', [{
-    name: 'Mandalas',
-    instructions: '{"1": "Dibujar círculos", "2": "Dibujar cuadrados", "3": "Repetir patrón cíclicamente"}',
-    video: 'https://www.youtube.com/watch?v=1sg3Rt4KZpQ',
-    image: 'imágen',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  }], {}),
-
-  down: async (queryInterface) => {
-    await queryInterface.bulkDelete('patterns', null, {});
+  up: (queryInterface) => {
+    const patternsData = [
+      {
+        name: 'Mandalas',
+        instructions: '1) Dibujar círculos\n2) Dibujar cuadrados\n3) Repetir patrón cíclicamente',
+        video: 'https://www.youtube.com/watch?v=1sg3Rt4KZpQ',
+        image: 'imagen1',
+        authorId: 1,
+        categoryId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ];
+    return queryInterface.bulkInsert('patterns', patternsData);
   },
+
+  down: (queryInterface) => queryInterface.bulkDelete('patterns', null, {}),
 };
