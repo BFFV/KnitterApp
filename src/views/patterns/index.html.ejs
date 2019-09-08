@@ -1,0 +1,33 @@
+<h1>Patrones</h1>
+<% if (!patternsList.length) { %>
+  <p>No hay patrones!</p>
+<% } else { %>
+  <table>
+    <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Imagen</th>
+          <th>Puntaje</th>
+          <th colspan="2">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+      <% patternsList.forEach((pattern) => { %>
+        <tr>
+          <td><%- pattern.name %></td>
+          <td><%- pattern.image %></td>
+          <td><%- pattern.score %></td>
+          <td><a href="<%- editPatternPath(pattern) %>">Editar</a></td>
+          <td>
+            <form action="<%- deletePatternPath(pattern) %>" method="POST">
+              <input type="hidden" name="_method" value="delete" />
+              <input type="submit" value="Eliminar" />
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% } %>
+
+<a href="<%- newPatternPath %>">Crear Patrón de Dibujo</a>

@@ -1,0 +1,36 @@
+<div>
+    <% if (locals.errors) { %>
+      <div class="errors">
+        Ocurrieron los siguientes errores:
+        <ul>
+          <% errors.forEach(error => { %>
+            <li><%= error.message %></li>
+          <% }); %>
+        </ul>
+      </div>
+    <% } %>
+    <form action="<%= submitPatternPath %>" method="post">
+      <% if (!pattern.isNewRecord) { %>
+        <input type="hidden" name="_method" value="patch" />
+      <% } %>
+      <div>
+        <label for="name">Nombre</label>
+        <input type="text" name="name" value="<%= pattern.name %>" />
+      </div>
+      <div>
+        <label for="image">Imagen</label>
+        <input type="text" name="image" value="<%= pattern.image %>" />
+      </div>
+      <div>
+        <label for="instructions">Instrucciones</label>
+        <textarea type="text" name="instructions"><%= pattern.instructions %></textarea>
+      </div>
+      <div>
+        <% if (pattern.isNewRecord) { %>
+          <input type="submit" name="create" value="Crear" />
+        <% } else { %>
+          <input type="submit" name="update" value="Actualizar" />
+        <% } %>
+      </div>
+    </form>
+  </div>
