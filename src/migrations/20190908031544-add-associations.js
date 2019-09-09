@@ -8,6 +8,7 @@ module.exports = {
         model: 'users',
         key: 'id',
       },
+      allowNull: false,
       onUpdate: 'cascade',
       onDelete: 'cascade',
     },
@@ -21,6 +22,21 @@ module.exports = {
           model: 'categories',
           key: 'id',
         },
+        allowNull: false,
+        onUpdate: 'cascade',
+        onDelete: 'cascade',
+      },
+    ))
+    .then(() => queryInterface.addColumn(
+      'votes',
+      'patternId',
+      {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'patterns',
+          key: 'id',
+        },
+        allowNull: false,
         onUpdate: 'cascade',
         onDelete: 'cascade',
       },
@@ -33,5 +49,9 @@ module.exports = {
     .then(() => queryInterface.removeColumn(
       'patterns',
       'categoryId',
+    ))
+    .then(() => queryInterface.removeColumn(
+      'votes',
+      'patternId',
     )),
 };

@@ -3,8 +3,8 @@ module.exports = (sequelize, DataTypes) => {
     rating: DataTypes.INTEGER,
   }, {});
 
-  vote.associate = function associate() {
-    // associations can be defined here. This method receives a models parameter.
+  vote.associate = function associate(models) {
+    vote.belongsTo(models.pattern);
   };
 
   return vote;

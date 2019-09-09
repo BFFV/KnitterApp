@@ -9,9 +9,9 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
 
   user.associate = function associate(models) {
-    user.hasMany(models.pattern);
-    user.belongsToMany(models.pattern, { through: 'user_patterns' });
-    user.belongsToMany(models.user, { through: 'followers' });
+    user.hasMany(models.pattern, { foreignKey: 'authorId' });
+    user.belongsToMany(models.pattern, { through: 'user_patterns', as: 'used_patterns' });
+    user.belongsToMany(models.user, { through: 'followers', as: 'followed_by' });
   };
 
   return user;

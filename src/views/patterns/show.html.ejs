@@ -1,0 +1,29 @@
+<br>
+<h1><%- pattern.name %></h1>
+<br>
+<div id="hcontainer">
+    <div id="left">
+        <h4><%- pattern.image %></h4>
+    </div>
+    <div id="middle">
+        <p>Diseñado por: <%- author.username %></p>
+        <p>Categoría: <%- category.name %></p>
+        <p>Puntaje: <%- pattern.score %>/5</p>
+    </div>
+    <div id="right">
+        <iframe allowFullScreen="allowFullScreen" src="https://www.youtube.com/embed/<%= pattern.video.slice(32) %>?ecver=1&amp;iv_load_policy=1
+            &amp;rel=0&amp;yt:stretch=16:9&amp;autohide=1&amp;color=red" 
+        width="80%" height="160%" allowtransparency="true" frameborder="0">
+        </iframe>
+    </div>
+</div>
+<br><br>
+<div id="long">
+    <%- pattern.instructions %>
+</div>
+<br><br>
+<div id="button">
+    <form action="<%- patternsPath %>">
+        <input type="submit" value="Volver" />
+    </form>
+</div>
