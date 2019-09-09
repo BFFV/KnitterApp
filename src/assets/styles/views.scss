@@ -1,0 +1,18 @@
+* {margin: 1%; padding: 0%;}
+
+// Horizontal Container
+
+#hcontainer {height: 100%; width:100%; display: flex; margin: 1%;}
+#left {width: 30%;}
+#middle {width: 20%;}
+#right {width: 50%;}
+
+// Panel Display
+
+#panel {height: 100%; width:100%; margin: 1%;}
+
+// Long Text Display
+#long {white-space: pre-line; margin: 1%; width: 50%;}
+
+// Buttons
+#button {margin: 0%;}
