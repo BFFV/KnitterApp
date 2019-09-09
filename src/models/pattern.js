@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     pattern.belongsToMany(models.user, { through: 'user_patterns' });
     pattern.belongsTo(models.category);
     pattern.belongsToMany(models.material, { through: 'pattern_materials', as: 'materials' });
+    pattern.hasMany(models.vote);
   };
 
   return pattern;
