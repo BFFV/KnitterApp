@@ -28,7 +28,7 @@
             </form>
           </td>
           <td>
-            <form action="<%- deletePatternPath(pattern) %>" method="POST">
+            <form action="<%- deletePatternPath(pattern) %>" onclick="return confirm('Estás seguro?');" method="POST">
               <input type="hidden" name="_method" value="delete" />
               <input type="submit" value="Eliminar" />
             </form>
