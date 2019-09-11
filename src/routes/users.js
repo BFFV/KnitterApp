@@ -58,7 +58,7 @@ router.patch('users.update', '/:id', loadUser, async (ctx) => {
       username, password, email, age, photo, role
     } = ctx.request.body;
     await user.update({
-      name, password, email, age, photo, role
+      username, password, email, age, photo, role
     });
     ctx.redirect(ctx.router.url('users.list'));
   } catch (validationError) {
