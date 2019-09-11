@@ -1,0 +1,48 @@
+<div>
+    <% if (locals.errors) { %>
+      <div class="errors">
+        Ocurrieron los siguientes errores:
+        <ul>
+          <% errors.forEach(error => { %>
+            <li><%= error.message %></li>
+          <% }); %>
+        </ul>
+      </div>
+    <% } %>
+    <form action="<%= submitUserPath %>" method="post">
+      <% if (!user.isNewRecord) { %>
+        <input type="hidden" name="_method" value="patch" />
+      <% } %>
+      <div id="panel">
+      <div>
+        <label for="username">Username:</label>
+        <input type="text" name="username" size="40" value="<%= user.username %>" required/>
+      </div>
+      <div>
+        <label for="email">Correo:</label>
+        <input type="text" name="email" size="40" value="<%= user.email %>" required/>
+      </div>
+      <div>
+        <label for="password">Contrasena:</label>
+        <input type="password" name="password" size="40" value="<%= user.password %>" required/>
+      </div>
+      <div>
+        <label for="age">Edad:</label>
+        <input type="text" name="age" size="40" value="<%= user.age %>" required/>
+      </div>
+      <div>
+        <label for="age">Foto:</label>
+        <input type="text" name="photo" size="40" value="<%= user.photo %>" required/>
+      </div>
+      <div>
+        <label for="role">Rol:</label>
+        <input type="text" name="role" size="40" value="<%= user.role %>" required/>
+      </div>
+      <% if (user.isNewRecord) { %>
+        <input type="submit" name="create" value="Crear" />
+      <% } else { %>
+        <input type="submit" name="update" value="Actualizar" />
+      <% } %>
+      </div>
+    </form>
+  </div>
