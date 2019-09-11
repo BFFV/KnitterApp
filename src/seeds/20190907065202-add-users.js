@@ -11,6 +11,16 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        username: 'Nicolás Riera',
+        password: '123456',
+        email: 'nariera@uc.cl',
+        age: 22,
+        photo: 'Foto2',
+        role: 'top',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ];
     return queryInterface.bulkInsert('users', usersData);
   },

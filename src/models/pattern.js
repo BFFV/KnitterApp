@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     instructions: DataTypes.TEXT,
     video: DataTypes.STRING,
     image: DataTypes.STRING,
+    tension: DataTypes.STRING,
   }, {});
 
   pattern.associate = function associate(models) {

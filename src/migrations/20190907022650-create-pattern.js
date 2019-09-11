@@ -27,6 +27,10 @@ module.exports = {
       allowNull: false,
       type: Sequelize.STRING,
     },
+    tension: {
+      allowNull: false,
+      type: Sequelize.STRING,
+    },
 
     // Timestamps
     createdAt: {
