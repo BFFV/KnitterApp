@@ -1,0 +1,82 @@
+<div>
+    <% if (locals.errors) { %>
+      <div class="errors">
+        Ocurrieron los siguientes errores:
+        <ul>
+          <% errors.forEach(error => { %>
+            <li><%= error.message %></li>
+          <% }); %>
+        </ul>
+      </div>
+    <% } %>
+    <form action="<%= submitPatternPath %>" method="post">
+      <% if (!pattern.isNewRecord) { %>
+        <input type="hidden" name="_method" value="patch" />
+      <% } %>
+      <div id="hcontainer">
+      <div id="left">
+      <div>
+        <label for="name">Nombre:</label>
+        <input type="text" name="name" size="40" value="<%= pattern.name %>" required/>
+      </div>
+      <div>
+        <label for="image">Imagen:</label><br>
+        <input type="text" name="image" size="40" value="<%= pattern.image %>" required/>
+      </div>
+      <div>
+        <label for="tension">Tensión:</label>
+        <input type="text" name="tension" size="40" value="<%= pattern.tension %>" required/>
+      </div>
+      <div>
+        <label for="video">Link a Video (opcional):</label>
+        <input type="text" name="video" size="40" value="<%= pattern.video %>" />
+      </div>
+      <div>
+        <label for="instructions">Instrucciones:</label><br><br>
+        <textarea rows="8" cols="80" type="text" required name="instructions"><%= pattern.instructions %></textarea>
+      </div>
+      <div>
+        <% if (pattern.isNewRecord) { %>
+          <div>
+            <label for="authorId">Autor:</label>
+            <select name="authorId" required>
+              <% usersList.forEach(user => { %>
+                <option value="<%- user.id %>"><%- user.username %></option>
+              <% }); %>
+            </select>
+          </div>
+          <div>
+            <label for="categoryId">Categoría:</label>
+            <select name="categoryId" required>
+              <% categoriesList.forEach(category => { %>
+                <option value="<%- category.id %>"><%- category.name %></option>
+              <% }); %>
+            </select>
+          </div>
+          <input type="submit" name="create" value="Crear" />
+        <% } else { %>
+          <input type="submit" name="update" value="Actualizar" />
+        <% } %>
+      </div>
+      </div>
+      <div id="middle">
+      </div>
+      <div id="right">
+        <% if (!pattern.isNewRecord) { %>
+          <p>Materiales Actuales:</p>
+          <% materials.forEach(material => { %>
+              <p>- <%- material.name %><br>
+          <% }); %>
+          <br>
+          <label for="materials">Nuevos Materiales:</label><br>
+        <% } else { %>
+          <label for="materials">Materiales:</label><br>
+        <% } %>
+        <% materialsList.forEach(material => { %>
+          <input type="checkbox" name="materials" value="<%- material.id %>"><%- material.name %><br>
+        <% }); %>
+      </div>
+      </div>
+      </div>
+    </form>
+  </div>

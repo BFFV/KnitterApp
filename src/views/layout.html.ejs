@@ -3,7 +3,7 @@
 
   <head>
     <meta charset="utf-8">
-    <title>IIC2513 - CHANGE-ME</title>
+    <title>Knitter</title>
     <% if (env !== 'development') { %>
       <link rel="stylesheet" href="<%= assetPath('app.css') %>">
     <% } %>
@@ -11,8 +11,12 @@
 
   <body>
     <header>
-      <div id="logo">
-        <img src="<%= assetPath('logo.png') %>" alt="Logo" />
+      <div class="topnav" id="navbar">
+        <a class="active" href="/">Home</a>
+        <a href="/patterns">Patrones</a>
+        <a href="/categories">Categorías</a>
+        <a href="/materials">Materiales</a>
+        <a href="/users">Usuarios</a>
       </div>
     </header>
     <%- body %>

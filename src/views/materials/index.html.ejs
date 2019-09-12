@@ -1,0 +1,39 @@
+<h1>Materiales</h1>
+<div id="button">
+    <form action="<%- newMaterialPath %>">
+        <input type="submit" value="Crear Material" />
+    </form>
+</div>
+<div id="panel">
+<h2>Lista de Materiales</h2>
+<% if (!materialsList.length) { %>
+  <p>No hay Materiales!</p>
+<% } else { %>
+  <table>
+    <thead>
+        <tr>
+          <th>Nombre</th>
+          <th colspan="1">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+      <% materialsList.forEach((material) => { %>
+        <tr>
+          <td><%- material.name %></td>
+          <td>
+            <form action="<%- editMaterialPath(material) %>">
+              <input type="submit" value="Editar" />
+            </form>
+          </td>
+          <td>
+            <form action="<%- deleteMaterialPath(material) %>" method="POST">
+              <input type="hidden" name="_method" value="delete" />
+              <input type="submit" value="Eliminar" />
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% } %>
+</div>

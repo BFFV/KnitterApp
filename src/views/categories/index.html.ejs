@@ -1,0 +1,40 @@
+<h1>Category</h1>
+<div id="button">
+    <form action="<%- newCategoryPath %>">
+        <input type="submit" value="Crear Categoría" />
+    </form>
+</div>
+<div id="panel">
+<h2>Lista de Categorias</h2>
+<% if (!categoriesList.length) { %>
+  <p>No hay categorías!</p>
+<% } else { %>
+  <table>
+    <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Puntaje</th>
+          <th colspan="2">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+      <% categoriesList.forEach((category) => { %>
+        <tr>
+          <td><%- category.name %></td>
+          <td>
+            <form action="<%- editCategoryPath(category) %>">
+              <input type="submit" value="Editar" />
+            </form>
+          </td>
+          <td>
+            <form action="<%- deleteCategoryPath(category) %>" method="POST">
+              <input type="hidden" name="_method" value="delete" />
+              <input type="submit" value="Eliminar" />
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% } %>
+</div>

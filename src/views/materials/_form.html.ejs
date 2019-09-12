@@ -1,0 +1,32 @@
+<div>
+    <% if (locals.errors) { %>
+      <div class="errors">
+        Ocurrieron los siguientes errores:
+        <ul>
+          <% errors.forEach(error => { %>
+            <li><%= error.message %></li>
+          <% }); %>
+        </ul>
+      </div>
+    <% } %>
+    <form action="<%= submitMaterialPath %>" method="post">
+      <% if (!material.isNewRecord) { %>
+        <input type="hidden" name="_method" value="patch" />
+      <% } %>
+      <div id="panel">
+      <div>
+        <label for="name">Nombre:</label>
+        <input type="text" name="name" size="40" value="<%= material.name %>" required/>
+      </div>
+      <div>
+        <label for="description">Descripción:</label><br><br>
+        <textarea rows="8" cols="100" type="text" required name="description"><%= material.description %></textarea>
+      </div>
+      <% if (material.isNewRecord) { %>
+        <input type="submit" name="create" value="Crear" />
+      <% } else { %>
+        <input type="submit" name="update" value="Actualizar" />
+      <% } %>
+      </div>
+    </form>
+  </div>
