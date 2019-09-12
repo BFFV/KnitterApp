@@ -81,4 +81,13 @@ router.del('users.delete', '/:id', loadUser, async (ctx) => {
   ctx.redirect(ctx.router.url('users.list'));
 });
 
+router.get('users.show', '/:id', loadUser, async (ctx) => {
+  const { user } = ctx.state;
+
+  await ctx.render('users/show', {
+    user,
+    usersPath: ctx.router.url('users.list'),
+  });
+});
+
 module.exports = router;
