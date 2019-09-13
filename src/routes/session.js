@@ -13,7 +13,7 @@ router.put('session.create', '/', async (ctx) => {
   const isPasswordCorrect = user && await user.checkPassword(password);
   if (isPasswordCorrect) {
     ctx.session.userId = user.id;
-    return ctx.redirect(ctx.router.url('patterns.list'));
+    return ctx.redirect('/');
   }
   return ctx.render('session/new', {
     email,
