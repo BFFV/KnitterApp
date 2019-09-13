@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+
 const PASSWORD_SALT = 10;
 
 async function buildPasswordHash(instance) {
@@ -20,10 +21,12 @@ module.exports = (sequelize, DataTypes) => {
 
   user.associate = function associate(models) {
     user.hasMany(models.pattern, { foreignKey: 'authorId' });
+    user.hasMany(models.vote_pattern, { foreignKey: 'userId' });
+    user.hasMany(models.comment, { foreignKey: 'userId' });
     user.belongsToMany(models.pattern, { through: 'user_patterns', as: 'used_patterns' });
     user.belongsToMany(models.user, { through: 'followers', as: 'followed_by' });
   };
-  
+
   user.beforeUpdate(buildPasswordHash);
   user.beforeCreate(buildPasswordHash);
 

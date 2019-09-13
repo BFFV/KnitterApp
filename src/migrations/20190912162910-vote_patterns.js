@@ -1,26 +1,10 @@
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('comments', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('vote_patterns', {
     id: {
       allowNull: false,
       autoIncrement: true,
+      type: Sequelize.INTEGER,
       primaryKey: true,
-      type: Sequelize.INTEGER,
-    },
-
-    content: {
-      allowNull: false,
-      type: Sequelize.TEXT,
-    },
-
-    userId: {
-      allowNull: false,
-      type: Sequelize.INTEGER,
-      references: {
-        model: 'users',
-        key: 'id',
-      },
-      onUpdate: 'cascade',
-      onDelete: 'cascade',
     },
 
     patternId: {
@@ -34,6 +18,22 @@ module.exports = {
       onDelete: 'cascade',
     },
 
+    userId: {
+      allowNull: false,
+      type: Sequelize.INTEGER,
+      references: {
+        model: 'users',
+        key: 'id',
+      },
+      onUpdate: 'cascade',
+      onDelete: 'cascade',
+    },
+
+    rating: {
+      allowNull: false,
+      type: Sequelize.INTEGER,
+    },
+
     // Timestamps
     createdAt: {
       allowNull: false,
@@ -44,7 +44,8 @@ module.exports = {
       allowNull: false,
       type: Sequelize.DATE,
     },
+
   }),
 
-  down: (queryInterface) => queryInterface.dropTable('comments'),
+  down: (queryInterface) => queryInterface.dropTable('vote_patterns'),
 };

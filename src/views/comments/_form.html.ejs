@@ -1,0 +1,66 @@
+<div>
+    <% if (locals.errors) { %>
+      <div class="errors">
+        Ocurrieron los siguientes errores:
+        <ul>
+          <% errors.forEach(error => { %>
+            <li><%= error.message %></li>
+          <% }); %>
+        </ul>
+      </div>
+    <% } %>
+    <form action="<%= submitCommentPath %>" method="post">
+      <% if (!comment.isNewRecord) { %>
+        <input type="hidden" name="_method" value="patch" />
+        <div id="panel">
+          <div>
+            <label for="userId">Usuario:</label>
+            <select name="userId" required>
+              <% usersList.forEach(user => { %>
+                <option value="<%- user.id %>"><%- user.username %></option>
+              <% }); %>
+            </select>
+          </div>
+          <div>
+            <label for="patternId">Patrón:</label>
+            <select name="patternId" required>
+              <% patternsList.forEach(pattern => { %>
+                <option value="<%- pattern.id %>"><%- pattern.name %></option>
+              <% }); %>
+            </select>
+          </div>
+          <div>
+            <div>
+              <textarea rows="8" cols="80" type="text" required name="content"><%= comment.content %></textarea>
+            </div>
+          </div>
+        </div>
+      <% } %>
+      <div id="hcontainer">
+      <% if (comment.isNewRecord) { %>
+        <div>
+          <label for="userId">Usuario:</label>
+          <select name="userId" required>
+            <% usersList.forEach(user => { %>
+              <option value="<%- user.id %>"><%- user.username %></option>
+            <% }); %>
+          </select>
+        </div>
+        <div>
+          <label for="patternId">Patrón:</label>
+          <select name="patternId" required>
+            <% patternsList.forEach(pattern => { %>
+              <option value="<%- pattern.id %>"><%- pattern.name %></option>
+            <% }); %>
+          </select>
+        </div>
+        <div>
+          <textarea rows="8" cols="80" type="text" required name="content"><%= comment.content %></textarea>
+        </div>
+        <input type="submit" name="create" value="Crear" />
+      <% } else { %>
+        <input type="submit" name="update" value="Actualizar" />
+      <% } %>
+        </div>
+    </form>
+  </div>
