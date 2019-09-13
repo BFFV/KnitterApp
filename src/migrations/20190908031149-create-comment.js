@@ -11,20 +11,22 @@ module.exports = {
       allowNull: false,
       type: Sequelize.TEXT,
     },
-    commentable: {
-      allowNull: false,
-      type: Sequelize.STRING,
-    },
-    commentable_id: {
+
+    userId: {
       allowNull: false,
       type: Sequelize.INTEGER,
     },
 
-    // Timestamps
+    patternId: {
+      allowNull: false,
+      type: Sequelize.INTEGER,
+    },
+
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,
     },
+    
     updatedAt: {
       allowNull: false,
       type: Sequelize.DATE,

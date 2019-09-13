@@ -125,9 +125,14 @@ router.patch('patterns.update', '/:id', loadPattern, async (ctx) => {
 router.del('patterns.delete', '/:id', loadPattern, async (ctx) => {
   const { pattern } = ctx.state;
   const votes = await pattern.getVote_patterns();
+  const comments = await pattern.getComments();
   for (var i in votes){
     votes[i].destroy()
   };
+  for (var i in comments){
+    comments[i].destroy()
+  };
+
   await pattern.destroy();
   ctx.redirect(ctx.router.url('patterns.list'));
 });
@@ -138,12 +143,13 @@ router.get('patterns.show', '/:id', loadPattern, async (ctx) => {
   const author = await ctx.orm.user.findByPk(pattern.authorId );
   const category = await ctx.orm.category.findByPk(pattern.categoryId );
   const materials = await pattern.getMaterials();
+  const commentsList = await pattern.getComments();
   await ctx.render('patterns/show', {
     pattern,
     author,
     category,
     materials,
-
+    commentsList,
     patternsPath: ctx.router.url('patterns.list'),
   });
 });
