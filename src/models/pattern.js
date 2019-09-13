@@ -1,7 +1,3 @@
-
-
-
-
 module.exports = (sequelize, DataTypes) => {
   const pattern = sequelize.define('pattern', {
     name: DataTypes.STRING,

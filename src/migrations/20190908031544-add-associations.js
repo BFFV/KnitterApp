@@ -35,9 +35,5 @@ module.exports = {
     .then(() => queryInterface.removeColumn(
       'patterns',
       'categoryId',
-    ))
-    .then(() => queryInterface.removeColumn(
-      'votes',
-      'patternId',
     )),
 };

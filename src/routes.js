@@ -32,6 +32,4 @@ router.use('/session', session.routes());
 router.use('/vote_patterns', vote_patterns.routes());
 router.use('/comments', comments.routes());
 
-
-
 module.exports = router;

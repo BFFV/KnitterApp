@@ -10,11 +10,23 @@ module.exports = {
     patternId: {
       allowNull: false,
       type: Sequelize.INTEGER,
+      references: {
+        model: 'patterns',
+        key: 'id',
+      },
+      onUpdate: 'cascade',
+      onDelete: 'cascade',
     },
 
     userId: {
       allowNull: false,
       type: Sequelize.INTEGER,
+      references: {
+        model: 'users',
+        key: 'id',
+      },
+      onUpdate: 'cascade',
+      onDelete: 'cascade',
     },
 
     rating: {
@@ -22,6 +34,7 @@ module.exports = {
       type: Sequelize.INTEGER,
     },
 
+    // Timestamps
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,
@@ -34,14 +47,5 @@ module.exports = {
 
   }),
 
-  down: (queryInterface, Sequelize) => {
-    queryInterface.dropTable('vote_patterns')
-    /*
-      Add reverting commands here.
-      Return a promise to correctly handle asynchronicity.
-
-      Example:
-      return queryInterface.dropTable('users');
-    */
-  },
+  down: (queryInterface) => queryInterface.dropTable('vote_patterns'),
 };

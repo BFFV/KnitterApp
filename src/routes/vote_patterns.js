@@ -27,7 +27,7 @@ router.get('vote_patterns.new', '/new', async (ctx) => {
   const vote_pattern = ctx.orm.vote_pattern.build();
   const usersList = await ctx.orm.user.findAll();
   const patternsList = await ctx.orm.pattern.findAll();
-  const options = [1,2,3,4,5];
+  const options = [1, 2, 3, 4, 5];
   await ctx.render('vote_patterns/new', {
     vote_pattern,
     usersList,
@@ -43,7 +43,7 @@ router.get('vote_patterns.edit', '/:id/edit', loadVote_pattern, async (ctx) => {
   const { vote_pattern } = ctx.state;
   const usersList = await ctx.orm.user.findAll();
   const patternsList = await ctx.orm.pattern.findAll();
-  const options = [1,2,3,4,5];
+  const options = [1, 2, 3, 4, 5];
   await ctx.render('vote_patterns/edit', {
     vote_pattern,
     usersList,
@@ -58,7 +58,7 @@ router.get('vote_patterns.edit', '/:id/edit', loadVote_pattern, async (ctx) => {
 router.post('vote_patterns.create', '/', async (ctx) => {
   const vote_pattern = ctx.orm.vote_pattern.build(ctx.request.body);
   try {
-    await vote_pattern.save({ fields: ['patternId', 'userId', 'rating' ] });
+    await vote_pattern.save({ fields: ['patternId', 'userId', 'rating'] });
     ctx.redirect(ctx.router.url('vote_patterns.list'));
   } catch (validationError) {
     await ctx.render('vote_patterns/new', {
@@ -94,6 +94,5 @@ router.del('vote_patterns.delete', '/:id', loadVote_pattern, async (ctx) => {
   await vote_pattern.destroy();
   ctx.redirect(ctx.router.url('vote_patterns.list'));
 });
-
 
 module.exports = router;
