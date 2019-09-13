@@ -124,6 +124,10 @@ router.patch('patterns.update', '/:id', loadPattern, async (ctx) => {
 
 router.del('patterns.delete', '/:id', loadPattern, async (ctx) => {
   const { pattern } = ctx.state;
+  const votes = await pattern.getVote_patterns();
+  for (var i in votes){
+    votes[i].destroy()
+  };
   await pattern.destroy();
   ctx.redirect(ctx.router.url('patterns.list'));
 });
