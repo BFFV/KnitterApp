@@ -9,7 +9,7 @@
         <p>Diseñado por: <%- author.username %></p>
         <p>Categoría: <%- category.name %></p>
         <p>Tensión: <%- pattern.tension %></p>
-        <p>Puntaje: <%- pattern.score %>/5</p>
+        <p>Puntaje: <%- average %>/5</p>
         <p>Materiales:</p>
         <% materials.forEach(material => { %>
             <p>- <%- material.name %><br>
@@ -17,7 +17,7 @@
     </div>
     <div id="right">
         <iframe allowFullScreen="allowFullScreen" src="https://www.youtube.com/embed/<%= pattern.video.slice(32) %>?ecver=1&amp;iv_load_policy=1
-            &amp;rel=0&amp;yt:stretch=16:9&amp;autohide=1&amp;color=red" 
+            &amp;rel=0&amp;yt:stretch=16:9&amp;autohide=1&amp;color=red"
         width="80%" height="160%" allowtransparency="true" frameborder="0">
         </iframe>
     </div>
