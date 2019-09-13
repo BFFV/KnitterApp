@@ -26,6 +26,12 @@
 <div id="long">
     <%- pattern.instructions %>
 </div>
+<h6>Comentarios</h6>
+<div id="long">
+  <% commentsList.forEach(comment => { %>
+      <p>- <%- comment.content %><br>
+  <% }); %>
+</div>
 <br><br>
 <div id="button">
     <form action="<%- patternsPath %>">
