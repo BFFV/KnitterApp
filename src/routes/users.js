@@ -27,7 +27,6 @@ router.get('users.new', '/new', async (ctx) => {
   });
 });
 
-
 router.get('users.edit', '/:id/edit', loadUser, async (ctx) => {
   const { user } = ctx.state;
   await ctx.render('users/edit', {
