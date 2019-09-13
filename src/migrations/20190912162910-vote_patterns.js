@@ -35,6 +35,7 @@ module.exports = {
   }),
 
   down: (queryInterface, Sequelize) => {
+    queryInterface.dropTable('vote_patterns')
     /*
       Add reverting commands here.
       Return a promise to correctly handle asynchronicity.

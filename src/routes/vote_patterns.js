@@ -95,16 +95,5 @@ router.del('vote_patterns.delete', '/:id', loadVote_pattern, async (ctx) => {
   ctx.redirect(ctx.router.url('vote_patterns.list'));
 });
 
-// router.get('vote_patterns.show', '/:id', loadVote_pattern, async (ctx) => {
-//   const { pattern } = ctx.state;
-//   await ctx.render('patterns/show', {
-//     pattern,
-//     author,
-//     category,
-//     materials,
-//     average,
-//     patternsPath: ctx.router.url('patterns.list'),
-//   });
-// });
 
 module.exports = router;
