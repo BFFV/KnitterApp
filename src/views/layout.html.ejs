@@ -18,6 +18,18 @@
         <a href="/materials">Materiales</a>
         <a href="/users">Usuarios</a>
         <a href="/vote_patterns">Votos</a>
+        <div id="user-bar">
+          <% if (currentUser) { %>
+            <span class="name">Hola <%= currentUser.username %></span>
+            <form action="<%= destroySessionPath %>" method="post">
+              <input type="hidden" name="_method" value="delete" />
+              <input type="submit" value="Logout" />
+            </form>
+          <% } else { %>
+            <span class="name"></span>
+            <a href="<%= newSessionPath %>">Login</a>
+          <% } %>
+        </div>
       </div>
     </header>
     <%- body %>

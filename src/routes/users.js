@@ -1,9 +1,13 @@
 const KoaRouter = require('koa-router');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 const router = new KoaRouter();
 
+
 async function loadUser(ctx, next) {
   ctx.state.user = await ctx.orm.user.findByPk(ctx.params.id);
+  ctx.state.user.password = '';
   return next();
 }
 
@@ -38,6 +42,7 @@ router.get('users.edit', '/:id/edit', loadUser, async (ctx) => {
 
 router.post('users.create', '/', async (ctx) => {
   const user = ctx.orm.user.build(ctx.request.body);
+  
   try {
     await user.save({ fields: ['username', 'password','email', 'age', 'photo', 'role'] });
     ctx.redirect(ctx.router.url('users.list'));
@@ -73,6 +78,15 @@ router.del('users.delete', '/:id', loadUser, async (ctx) => {
   const { user } = ctx.state;
   await user.destroy();
   ctx.redirect(ctx.router.url('users.list'));
+});
+
+router.get('users.show', '/:id', loadUser, async (ctx) => {
+  const { user } = ctx.state;
+
+  await ctx.render('users/show', {
+    user,
+    usersPath: ctx.router.url('users.list'),
+  });
 });
 
 module.exports = router;
