@@ -3,7 +3,6 @@ module.exports = (sequelize, DataTypes) => {
     content: DataTypes.TEXT,
     userId: DataTypes.INTEGER,
     patternId: DataTypes.INTEGER,
-
   }, {});
 
   comment.associate = function associate(models) {

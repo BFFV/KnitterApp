@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+
 const PASSWORD_SALT = 10;
 
 async function buildPasswordHash(instance) {

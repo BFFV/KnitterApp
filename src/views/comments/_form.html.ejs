@@ -14,7 +14,7 @@
         <input type="hidden" name="_method" value="patch" />
         <div id="panel">
           <div>
-            <label for="userId">UserId:</label>
+            <label for="userId">Usuario:</label>
             <select name="userId" required>
               <% usersList.forEach(user => { %>
                 <option value="<%- user.id %>"><%- user.username %></option>
@@ -39,7 +39,7 @@
       <div id="hcontainer">
       <% if (comment.isNewRecord) { %>
         <div>
-          <label for="userId">Votante:</label>
+          <label for="userId">Usuario:</label>
           <select name="userId" required>
             <% usersList.forEach(user => { %>
               <option value="<%- user.id %>"><%- user.username %></option>
@@ -47,7 +47,7 @@
           </select>
         </div>
         <div>
-          <label for="patternId">Patron a votar:</label>
+          <label for="patternId">Patrón:</label>
           <select name="patternId" required>
             <% patternsList.forEach(pattern => { %>
               <option value="<%- pattern.id %>"><%- pattern.name %></option>
