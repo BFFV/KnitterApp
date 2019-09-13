@@ -7,6 +7,7 @@ const categories = require('./routes/categories');
 const materials = require('./routes/materials');
 const users = require('./routes/users');
 const session = require('./routes/session');
+const vote_patterns = require('./routes/vote_patterns');
 
 const router = new KoaRouter();
 
@@ -27,6 +28,8 @@ router.use('/categories', categories.routes());
 router.use('/materials', materials.routes());
 router.use('/users', users.routes());
 router.use('/session', session.routes());
+router.use('/vote_patterns', vote_patterns.routes());
+
 
 
 module.exports = router;

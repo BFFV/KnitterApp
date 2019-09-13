@@ -12,19 +12,42 @@ async function setMaterials(materials, pattern) {
     if (typeof (materials) === 'string') {
       const keys = [parseInt(materials, 10)];
       pattern.setMaterials(keys);
-    } else {
+    }
+    else {
       const keys = materials.map(Number);
       pattern.setMaterials(keys);
-    }
-  } else {
-    pattern.setMaterials([]);
+    };
   }
-}
+  else {
+    pattern.setMaterials([]);
+  };
+};
+
+ async function getScore(pattern) {
+  const score_list = await pattern.getVote_patterns();
+  const average = score_list.reduce((total, next) => total + next.rating, 0) /
+  score_list.length;
+  if (average) {
+      pattern.score = average;
+  }
+  else {
+      pattern.score = 0;
+  }
+};
+
+async function setScoreArray(array) {
+  for (var i in array) {
+    await getScore(array[i]);
+  };
+};
 
 router.get('patterns.list', '/', async (ctx) => {
   const patternsList = await ctx.orm.pattern.findAll();
+  const vote_patternsList = await ctx.orm.vote_pattern.findAll();
+  await setScoreArray(patternsList);
   await ctx.render('patterns/index', {
     patternsList,
+    vote_patternsList,
     newPatternPath: ctx.router.url('patterns.new'),
     patternPath: (pattern) => ctx.router.url('patterns.show', { id: pattern.id }),
     editPatternPath: (pattern) => ctx.router.url('patterns.edit', { id: pattern.id }),
@@ -66,7 +89,8 @@ router.post('patterns.create', '/', async (ctx) => {
   const pattern = ctx.orm.pattern.build(ctx.request.body);
   const { materials } = ctx.request.body;
   try {
-    await pattern.save({ fields: ['name', 'instructions', 'image', 'video', 'tension', 'authorId', 'categoryId'] });
+    await pattern.save({ fields: ['name', 'instructions', 'image', 'video',
+    'tension', 'authorId', 'categoryId'] });
     await setMaterials(materials, pattern);
     ctx.redirect(ctx.router.url('patterns.list'));
   } catch (validationError) {
@@ -100,20 +124,26 @@ router.patch('patterns.update', '/:id', loadPattern, async (ctx) => {
 
 router.del('patterns.delete', '/:id', loadPattern, async (ctx) => {
   const { pattern } = ctx.state;
+  const votes = await pattern.getVote_patterns();
+  for (var i in votes){
+    votes[i].destroy()
+  };
   await pattern.destroy();
   ctx.redirect(ctx.router.url('patterns.list'));
 });
 
 router.get('patterns.show', '/:id', loadPattern, async (ctx) => {
   const { pattern } = ctx.state;
-  const author = await ctx.orm.user.findByPk(pattern.authorId);
-  const category = await ctx.orm.category.findByPk(pattern.categoryId);
+  getScore(pattern);
+  const author = await ctx.orm.user.findByPk(pattern.authorId );
+  const category = await ctx.orm.category.findByPk(pattern.categoryId );
   const materials = await pattern.getMaterials();
   await ctx.render('patterns/show', {
     pattern,
     author,
     category,
     materials,
+
     patternsPath: ctx.router.url('patterns.list'),
   });
 });
