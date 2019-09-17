@@ -151,6 +151,9 @@ router.get('patterns.show', '/:id', loadPattern, async (ctx) => {
     materials,
     commentsList,
     patternsPath: ctx.router.url('patterns.list'),
+    newCommentPath: ctx.router.url('comments.new', {id: pattern.id}),
+    editCommentPath: (comment) => ctx.router.url('comments.edit', { id: comment.id }),
+    deleteCommentPath: (comment) => ctx.router.url('comments.delete', { id: comment.id }),
   });
 });
 
