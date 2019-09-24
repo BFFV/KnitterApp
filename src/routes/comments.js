@@ -14,7 +14,6 @@ async function loadPattern(ctx, next) {
 
 router.get('comments.list', '/', async (ctx) => {
   const commentsList = await ctx.orm.comment.findAll();
-  console.log(commentsList);
   await ctx.render('comments/index', {
     commentsList,
   });
