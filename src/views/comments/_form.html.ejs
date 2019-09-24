@@ -11,7 +11,6 @@
     <% } %>
     <form action="<%= submitCommentPath %>" method="post">
       <% if (!comment.isNewRecord) { %>
-        <input type="hidden" name="_method" value="patch" />
         <div id="panel">
           <div>
             <label for="userId">Usuario:</label>
@@ -22,12 +21,7 @@
             </select>
           </div>
           <div>
-            <label for="patternId">Patrón:</label>
-            <select name="patternId" required>
-              <% patternsList.forEach(pattern => { %>
-                <option value="<%- pattern.id %>"><%- pattern.name %></option>
-              <% }); %>
-            </select>
+          <input type="hidden" id="patternId" name="patternId" value=<%- patternId %>>
           </div>
           <div>
             <div>
@@ -47,12 +41,7 @@
           </select>
         </div>
         <div>
-          <label for="patternId">Patrón:</label>
-          <select name="patternId" required>
-            <% patternsList.forEach(pattern => { %>
-              <option value="<%- pattern.id %>"><%- pattern.name %></option>
-            <% }); %>
-          </select>
+          <input type="hidden" id="patternId" name="patternId" value=<%- patternId %>>
         </div>
         <div>
           <textarea rows="8" cols="80" type="text" required name="content"><%= comment.content %></textarea>

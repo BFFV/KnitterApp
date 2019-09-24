@@ -144,13 +144,25 @@ router.get('patterns.show', '/:id', loadPattern, async (ctx) => {
   const category = await ctx.orm.category.findByPk(pattern.categoryId );
   const materials = await pattern.getMaterials();
   const commentsList = await pattern.getComments();
+  const vote_pattern = ctx.orm.vote_pattern.build();
+  const usersList = await ctx.orm.user.findAll();
+  const options = [1, 2, 3, 4, 5];
+  const patternId = pattern.id;
   await ctx.render('patterns/show', {
     pattern,
     author,
+    vote_pattern,
+    usersList,
+    options,
     category,
+    patternId,
     materials,
     commentsList,
+    submitVote_patternPath: ctx.router.url('vote_patterns.create'),
     patternsPath: ctx.router.url('patterns.list'),
+    newCommentPath: ctx.router.url('comments.new', {id: pattern.id}),
+    editCommentPath: (comment) => ctx.router.url('comments.edit', { id: comment.id }),
+    deleteCommentPath: (comment) => ctx.router.url('comments.delete', { id: comment.id }),
   });
 });
 
