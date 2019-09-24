@@ -22,7 +22,6 @@ router.get('comments.list', '/', async (ctx) => {
 
 router.get('comments.new', '/:id/new', loadPattern, async (ctx) => {
   const { pattern } = ctx.state;
-  console.log(pattern)
   const comment = ctx.orm.comment.build();
   const usersList = await ctx.orm.user.findAll();
   const patternsList = await ctx.orm.pattern.findAll();
@@ -66,7 +65,6 @@ router.post('comments.create', '/', async (ctx) => {
 
 router.patch('comments.update', '/', loadComment, async (ctx) => {
   const { comment } = ctx.state;
-  console.log(comment)
   try {
     const {
       patternId, userId, content,
