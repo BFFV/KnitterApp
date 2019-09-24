@@ -10,36 +10,6 @@
       </div>
     <% } %>
     <form action="<%= submitVote_patternPath %>" method="post">
-      <% if (!vote_pattern.isNewRecord) { %>
-        <input type="hidden" name="_method" value="patch" />
-        <div id="panel">
-          <div>
-            <label for="userId">UserId:</label>
-            <select name="userId" required>
-              <% usersList.forEach(user => { %>
-                <option value="<%- user.id %>"><%- user.username %></option>
-              <% }); %>
-            </select>
-          </div>
-          <div>
-            <label for="patternId">Patrón:</label>
-            <select name="patternId" required>
-              <% patternsList.forEach(pattern => { %>
-                <option value="<%- pattern.id %>"><%- pattern.name %></option>
-              <% }); %>
-            </select>
-          </div>
-          <div>
-            <label for="rating">Calidad:</label>
-            <select name="rating" required>
-              <% options.forEach(option => { %>
-                <option value="<%- option %>"><%- option %></option>
-              <% }); %>
-            </select>
-          </div>
-        </div>
-      <% } %>
-      <div id="hcontainer">
       <% if (vote_pattern.isNewRecord) { %>
         <div>
           <label for="userId">Votante:</label>
@@ -50,12 +20,7 @@
           </select>
         </div>
         <div>
-          <label for="patternId">Patron a votar:</label>
-          <select name="patternId" required>
-            <% patternsList.forEach(pattern => { %>
-              <option value="<%- pattern.id %>"><%- pattern.name %></option>
-            <% }); %>
-          </select>
+        <input type="hidden" id="patternId" name="patternId" value=<%- patternId %>>
         </div>
         <div>
           <label for="rating">Calidad:</label>
@@ -66,9 +31,6 @@
           </select>
         </div>
         <input type="submit" name="create" value="Crear" />
-      <% } else { %>
-        <input type="submit" name="update" value="Actualizar" />
-      <% } %>
-        </div>
+      <% }%>
     </form>
   </div>
