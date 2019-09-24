@@ -148,7 +148,6 @@ router.get('patterns.show', '/:id', loadPattern, async (ctx) => {
   const usersList = await ctx.orm.user.findAll();
   const options = [1, 2, 3, 4, 5];
   const patternId = pattern.id;
-  console.log(patternId);
   await ctx.render('patterns/show', {
     pattern,
     author,
