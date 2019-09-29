@@ -12,18 +12,16 @@ async function setMaterials(materials, pattern) {
     if (typeof (materials) === 'string') {
       const keys = [parseInt(materials, 10)];
       pattern.setMaterials(keys);
-    }
-    else {
+    } else {
       const keys = materials.map(Number);
       pattern.setMaterials(keys);
-    };
-  }
-  else {
+    }
+  } else {
     pattern.setMaterials([]);
-  };
-};
+  }
+}
 
- async function getScore(pattern) {
+async function getScore(pattern) {
   const score_list = await pattern.getVote_patterns();
   const average = score_list.reduce((total, next) => total + next.rating, 0) /
   score_list.length;
