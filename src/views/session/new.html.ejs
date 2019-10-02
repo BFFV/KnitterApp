@@ -8,8 +8,8 @@
       <%= error %>
     </div>
   <% } %>
-  <form action="<%= createSessionPath %>" method="post">
-    <input type="hidden" name="_method" value="put" />
+  <form action="<%= createSessionPath %>" method="POST">
+    <input type="hidden" name="_method" value="PUT" />
     <div class="field">
       <label for="email">Correo:</label>
       <input type="email" name="email" value="<%= locals.email %>" />

@@ -9,9 +9,9 @@
         </ul>
       </div>
     <% } %>
-    <form action="<%= submitCategoryPath %>" method="post">
+    <form action="<%= submitCategoryPath %>" method="POST">
       <% if (!category.isNewRecord) { %>
-        <input type="hidden" name="_method" value="patch" />
+        <input type="hidden" name="_method" value="PATCH" />
       <% } %>
       <div id="panel">
       <div>

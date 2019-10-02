@@ -49,8 +49,23 @@ async function newPatternInfo(ctx) {
   return info;
 }
 
+// Checks if the user has already voted a pattern
+async function checkVote(ctx) {
+  let vote = await ctx.orm.vote_pattern.findOne({
+    where: {
+      userId: ctx.state.currentUser.id,
+      patternId: ctx.state.pattern.id,
+    },
+  });
+  if (!vote) {
+    vote = ctx.orm.vote_pattern.build();
+  }
+  return vote;
+}
+
 router.get('patterns.list', '/', async (ctx) => {
   const patternsList = await ctx.orm.pattern.findAll();
+  patternsList.sort((a, b) => a.updatedAt - b.updatedAt).reverse();
   const votePatternsList = await ctx.orm.vote_pattern.findAll();
   const patternScores = await getScoreArray(patternsList);
   for (let i = 0; i < patternsList.length; i += 1) {
@@ -82,7 +97,6 @@ router.get('patterns.new', '/new', async (ctx) => {
 
 router.get('patterns.edit', '/:id/edit', loadPattern, async (ctx) => {
   if (!ctx.state.currentUser) {
-    ctx.state.flashMessage.warning = 'Acción NO permitida!';
     ctx.redirect(ctx.router.url('patterns.list'));
   }
   const { pattern } = ctx.state;
@@ -151,8 +165,6 @@ router.del('patterns.delete', '/:id', loadPattern, async (ctx) => {
   if (ctx.state.currentUser) {
     const { pattern } = ctx.state;
     await pattern.destroy();
-  } else {
-    ctx.state.flashMessage.warning = 'Acción NO permitida!';
   }
   ctx.redirect(ctx.router.url('patterns.list'));
 });
@@ -164,7 +176,18 @@ router.get('patterns.show', '/:id', loadPattern, async (ctx) => {
   const category = await pattern.getCategory();
   const materials = await pattern.getMaterials();
   const commentsList = await pattern.getComments();
-  const votePattern = ctx.orm.vote_pattern.build();
+  commentsList.sort((a, b) => a.updatedAt - b.updatedAt).reverse();
+  const commentUsers = commentsList.map((c) => c.getUser());
+  const usersList = await Promise.all(commentUsers);
+  const patternComments = commentsList.map((e, i) => [e, usersList[i]]);
+  let path = ctx.router.url('vote_patterns.create');
+  let votePattern = null;
+  if (ctx.state.currentUser) {
+    votePattern = await checkVote(ctx);
+    if (!votePattern.isNewRecord) {
+      path = ctx.router.url('vote_patterns.update', { id: votePattern.id });
+    }
+  }
   const comment = ctx.orm.comment.build();
   const options = [1, 2, 3, 4, 5];
   await ctx.render('patterns/show', {
@@ -175,9 +198,9 @@ router.get('patterns.show', '/:id', loadPattern, async (ctx) => {
     options,
     category,
     materials,
-    commentsList,
-    submitVotePatternPath: ctx.router.url('vote_patterns.create'),
+    patternComments,
     patternsPath: ctx.router.url('patterns.list'),
+    votePatternPath: path,
     submitCommentPath: ctx.router.url('comments.create'),
     editCommentPath: (c) => ctx.router.url('comments.edit', { id: c.id }),
     deleteCommentPath: (c) => ctx.router.url('comments.delete', { id: c.id }),

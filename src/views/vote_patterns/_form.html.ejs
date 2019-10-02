@@ -1,29 +1,31 @@
 <div>
-    <% if (locals.errors) { %>
-      <div class="errors">
-        Ocurrieron los siguientes errores:
-        <ul>
-          <% errors.forEach(error => { %>
-            <li><%= error.message %></li>
-          <% }); %>
-        </ul>
+  <% if (locals.errors) { %>
+    <div class="errors">
+      Ocurrieron los siguientes errores:
+      <ul>
+        <% errors.forEach(error => { %>
+          <li><%= error.message %></li>
+        <% }); %>
+      </ul>
+    </div>
+  <% } %>
+  <form action="<%= votePatternPath %>" method="POST">
+    <% if (!votePattern.isNewRecord) { %>
+      <input type="hidden" name="_method" value="PATCH">
+    <% } else { %>
+      <div>
+        <input type="hidden" name="userId" value="<%= currentUser.id %>">
+        <input type="hidden" name="patternId" value="<%= pattern.id %>">
       </div>
     <% } %>
-    <form action="<%= submitVotePatternPath %>" method="POST">
-      <% if (votePattern.isNewRecord) { %>
-        <div>
-          <input type="hidden" name="userId" value="<%= author.id %>">
-          <input type="hidden" name="patternId" value="<%= pattern.id %>">
-        </div>
-      <% } %>
-      <div>
-        <label for="rating">Calidad:</label>
-        <select name="rating" required>
-          <% options.forEach(option => { %>
-            <option value="<%- option %>"><%- option %></option>
-          <% }); %>
-        </select>
-      </div>
-      <input type="submit" name="create" value="Puntuar" />
-    </form>
-  </div>
+    <div>
+      <label for="rating">Calidad:</label>
+      <select name="rating" required>
+        <% options.forEach(option => { %>
+          <option value="<%- option %>"><%- option %></option>
+        <% }); %>
+      </select>
+    </div>
+    <input type="submit" name="create" value="Puntuar" />
+  </form>
+</div>

@@ -2,6 +2,7 @@ const KoaRouter = require('koa-router');
 
 const router = new KoaRouter();
 
+// Loads a particular comment
 async function loadComment(ctx, next) {
   ctx.state.comment = await ctx.orm.comment.findByPk(ctx.params.id);
   return next();
@@ -9,40 +10,34 @@ async function loadComment(ctx, next) {
 
 router.get('comments.edit', '/:id/edit', loadComment, async (ctx) => {
   const { comment } = ctx.state;
-  const { patternId } = comment;
-  const usersList = await ctx.orm.user.findAll();
   await ctx.render('comments/edit', {
     comment,
-    usersList,
-    patternId,
-    commentsPath: ctx.router.url('comments.list'),
+    patternPath: ctx.router.url('patterns.show', { id: comment.patternId }),
     submitCommentPath: ctx.router.url('comments.update', { id: comment.id }),
   });
 });
 
 router.post('comments.create', '/', async (ctx) => {
   const comment = ctx.orm.comment.build(ctx.request.body);
+  const { patternId } = ctx.request.body;
   try {
     await comment.save({ fields: ['patternId', 'userId', 'content'] });
     ctx.redirect(ctx.router.url('patterns.show', { id: comment.patternId }));
   } catch (validationError) {
-    ctx.redirect(ctx.router.url('patterns.show', { id: ctx.request.body.patternId, errors: validationError.errors }));
+    ctx.redirect(ctx.router.url('patterns.show', { id: patternId, errors: validationError.errors }));
   }
 });
 
-router.patch('comments.update', '/', loadComment, async (ctx) => {
+router.patch('comments.update', '/:id', loadComment, async (ctx) => {
   const { comment } = ctx.state;
   try {
-    const {
-      patternId, userId, content,
-    } = ctx.request.body;
-    await comment.update({
-      patternId, userId, content,
-    });
+    const { content } = ctx.request.body;
+    await comment.update({ content });
     ctx.redirect(ctx.router.url('patterns.show', { id: comment.patternId }));
   } catch (validationError) {
     await ctx.render('comments/edit', {
       comment,
+      patternPath: ctx.router.url('patterns.show', { id: comment.patternId }),
       errors: validationError.errors,
       submitCommentPath: ctx.router.url('/'),
     });
@@ -55,6 +50,5 @@ router.del('comments.delete', '/:id', loadComment, async (ctx) => {
   await comment.destroy();
   ctx.redirect(ctx.router.url('patterns.show', { id: patternId }));
 });
-
 
 module.exports = router;

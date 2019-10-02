@@ -30,19 +30,20 @@
   <%- include('../vote_patterns/_form') %>
 <% } %>
 <br><br>
-<h2><%= commentsList.length %> Comentarios</h2>
+<h2><%= patternComments.length %> Comentarios</h2>
 <div id="long">
   <% if (currentUser) { %>
     <%- include('../comments/_form') %>
   <% } %>
-  <% commentsList.forEach(comment => { %>
+  <% patternComments.forEach(comment => { %>
     <div id="hcontainer">
-      <%- comment.content %>
-      <% if ((currentUser) && ((currentUser.id === comment.userId) || (currentUser.role === 'admin'))) { %>
-        <form action="<%- editCommentPath(comment) %>">
+      <p><%- comment[0].content %></p>
+      posteado por <%- comment[1].username %>
+      <% if ((currentUser) && ((currentUser.id === comment[1].id) || (currentUser.role === 'admin'))) { %>
+        <form action="<%- editCommentPath(comment[0]) %>">
           <input type="submit" value="Editar" />
         </form>
-        <form action="<%- deleteCommentPath(comment) %>" onclick="return confirm('Estás seguro?');" method="POST">
+        <form action="<%- deleteCommentPath(comment[0]) %>" onclick="return confirm('Estás seguro?');" method="POST">
           <input type="hidden" name="_method" value="delete" />
           <input type="submit" value="Eliminar" />
         </form>

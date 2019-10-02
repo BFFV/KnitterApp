@@ -9,9 +9,9 @@
         </ul>
       </div>
     <% } %>
-    <form action="<%= submitMaterialPath %>" method="post">
+    <form action="<%= submitMaterialPath %>" method="POST">
       <% if (!material.isNewRecord) { %>
-        <input type="hidden" name="_method" value="patch" />
+        <input type="hidden" name="_method" value="PATCH" />
       <% } %>
       <div id="panel">
       <div>
