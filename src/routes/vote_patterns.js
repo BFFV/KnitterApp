@@ -23,22 +23,6 @@ router.get('vote_patterns.list', '/', async (ctx) => {
   });
 });
 
-router.get('vote_patterns.new', '/new', async (ctx) => {
-  const vote_pattern = ctx.orm.vote_pattern.build();
-  const usersList = await ctx.orm.user.findAll();
-  const patternsList = await ctx.orm.pattern.findAll();
-  const options = [1, 2, 3, 4, 5];
-  await ctx.render('vote_patterns/new', {
-    vote_pattern,
-    usersList,
-    options,
-    patternsList,
-    vote_patternsPath: ctx.router.url('vote_patterns.list'),
-    submitVote_patternPath: ctx.router.url('vote_patterns.create'),
-  });
-});
-
-
 router.get('vote_patterns.edit', '/:id/edit', loadVote_pattern, async (ctx) => {
   const { vote_pattern } = ctx.state;
   const usersList = await ctx.orm.user.findAll();
@@ -54,37 +38,33 @@ router.get('vote_patterns.edit', '/:id/edit', loadVote_pattern, async (ctx) => {
   });
 });
 
-
+// Mejorar usando parámetro que indica si cambió o no
 router.post('vote_patterns.create', '/', async (ctx) => {
-  const votesList = await ctx.orm.vote_pattern.findAll();
   const values = ctx.request.body;
-  const pattern = await ctx.orm.pattern.findByPk(values['patternId']);
-  const votes_pattern = await pattern.getVote_patterns();
+  const pattern = await ctx.orm.pattern.findByPk(values.patternId);
+  const votesPattern = await pattern.getVote_patterns();
   const array = [0];
-  const vote_change = {};
-  votes_pattern.forEach( vote => {
-    if (vote['userId'] == values['userId']){
+  const voteChange = {};
+  votesPattern.forEach((vote) => {
+    if (vote.userId === values.userId) {
       array[0] = 1;
-      vote_change['vote'] = vote;
+      voteChange.vote = vote;
     }
   });
-
   if (!array[0]) {
-  const vote_pattern = ctx.orm.vote_pattern.build(ctx.request.body);
-  try {
-      await vote_pattern.save({ fields: ['patternId', 'userId', 'rating'] });
-      ctx.redirect(ctx.router.url('patterns.show', { id: vote_pattern.patternId }));
-    }
-    catch (validationError) {
+    const votePattern = ctx.orm.vote_pattern.build(ctx.request.body);
+    try {
+      await votePattern.save({ fields: ['patternId', 'userId', 'rating'] });
+      ctx.redirect(ctx.router.url('patterns.show', { id: votePattern.patternId }));
+    } catch (validationError) {
       await ctx.render('vote_patterns/new', {
-        vote_pattern,
+        votePattern,
         errors: validationError.errors,
-        submitVote_patternPath: ctx.router.url('vote_patterns.create'),
+        patternPath: ctx.router.url('patterns.show', { id: pattern.id }),
       });
     }
-  }
-  else {
-    const vote = vote_change['vote'];
+  } else {
+    const { vote } = voteChange;
     const {
       patternId, userId, rating,
     } = ctx.request.body;
@@ -93,7 +73,7 @@ router.post('vote_patterns.create', '/', async (ctx) => {
     });
     ctx.redirect(ctx.router.url('patterns.show', { id: vote.patternId }));
   }
-  });
+});
 
 router.patch('vote_patterns.update', '/:id', loadVote_pattern, async (ctx) => {
   const { vote_pattern } = ctx.state;

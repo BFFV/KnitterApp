@@ -9,28 +9,21 @@
         </ul>
       </div>
     <% } %>
-    <form action="<%= submitVote_patternPath %>" method="post">
-      <% if (vote_pattern.isNewRecord) { %>
+    <form action="<%= submitVotePatternPath %>" method="POST">
+      <% if (votePattern.isNewRecord) { %>
         <div>
-          <label for="userId">Votante:</label>
-          <select name="userId" required>
-            <% usersList.forEach(user => { %>
-              <option value="<%- user.id %>"><%- user.username %></option>
-            <% }); %>
-          </select>
+          <input type="hidden" name="userId" value="<%= author.id %>">
+          <input type="hidden" name="patternId" value="<%= pattern.id %>">
         </div>
-        <div>
-        <input type="hidden" id="patternId" name="patternId" value=<%- patternId %>>
-        </div>
-        <div>
-          <label for="rating">Calidad:</label>
-          <select name="rating" required>
-            <% options.forEach(option => { %>
-              <option value="<%- option %>"><%- option %></option>
-            <% }); %>
-          </select>
-        </div>
-        <input type="submit" name="create" value="Crear" />
-      <% }%>
+      <% } %>
+      <div>
+        <label for="rating">Calidad:</label>
+        <select name="rating" required>
+          <% options.forEach(option => { %>
+            <option value="<%- option %>"><%- option %></option>
+          <% }); %>
+        </select>
+      </div>
+      <input type="submit" name="create" value="Puntuar" />
     </form>
   </div>

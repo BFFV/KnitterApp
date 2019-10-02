@@ -26,38 +26,29 @@
 <div id="long">
     <%- pattern.instructions %>
 </div>
-<!--Aquí vamos a votar -->
-<%- include('../vote_patterns/_form') %>
-<!-- Término del voto -->
-<h4>Comentarios</h4>
+<% if (currentUser) { %>
+  <%- include('../vote_patterns/_form') %>
+<% } %>
+<br><br>
+<h2><%= commentsList.length %> Comentarios</h2>
 <div id="long">
-  <div id="button">
-      <form action="<%- newCommentPath %>">
-          <input type="submit" value="Crear Comentario" />
-      </form>
-  </div>
-
-  <table>
-    <tbody>
-        <% commentsList.forEach(comment => { %>
-        <tr>
-          <td><%- comment.content %>
-          </td>
-          <td>
-            <form action="<%- editCommentPath(comment) %>">
-              <input type="submit" value="Editar" />
-            </form>
-          </td>
-          <td>
-            <form action="<%- deleteCommentPath(comment) %>" onclick="return confirm('Estás seguro?');" method="POST">
-              <input type="hidden" name="_method" value="delete" />
-              <input type="submit" value="Eliminar" />
-            </form>
-          </td>
-        </tr>
-      <% }) %>
-    </tbody>
-  </table>
+  <% if (currentUser) { %>
+    <%- include('../comments/_form') %>
+  <% } %>
+  <% commentsList.forEach(comment => { %>
+    <div id="hcontainer">
+      <%- comment.content %>
+      <% if ((currentUser) && ((currentUser.id === comment.userId) || (currentUser.role === 'admin'))) { %>
+        <form action="<%- editCommentPath(comment) %>">
+          <input type="submit" value="Editar" />
+        </form>
+        <form action="<%- deleteCommentPath(comment) %>" onclick="return confirm('Estás seguro?');" method="POST">
+          <input type="hidden" name="_method" value="delete" />
+          <input type="submit" value="Eliminar" />
+        </form>
+      <% } %>
+    </div>
+  <% }) %>
 </div>
 <br><br>
 <div id="button">

@@ -2,50 +2,63 @@ const KoaRouter = require('koa-router');
 
 const router = new KoaRouter();
 
+// Loads a particular pattern
 async function loadPattern(ctx, next) {
   ctx.state.pattern = await ctx.orm.pattern.findByPk(ctx.params.id);
   return next();
 }
 
+// Sets the materials used for a pattern
 async function setMaterials(materials, pattern) {
   if (materials) {
     if (typeof (materials) === 'string') {
       const keys = [parseInt(materials, 10)];
-      pattern.setMaterials(keys);
+      await pattern.setMaterials(keys);
     } else {
       const keys = materials.map(Number);
-      pattern.setMaterials(keys);
+      await pattern.setMaterials(keys);
     }
   } else {
-    pattern.setMaterials([]);
+    await pattern.setMaterials([]);
   }
 }
 
+// Calculates the score of a particular pattern
 async function getScore(pattern) {
-  const score_list = await pattern.getVote_patterns();
-  const average = score_list.reduce((total, next) => total + next.rating, 0) /
-  score_list.length;
-  if (average) {
-      pattern.score = average;
+  const scoreList = await pattern.getVote_patterns();
+  const average = scoreList.reduce((total, next) => total + next.rating, 0)
+  / scoreList.length;
+  if (!average) {
+    return 0;
   }
-  else {
-      pattern.score = 0;
-  }
-};
+  return average;
+}
 
-async function setScoreArray(array) {
-  for (var i in array) {
-    await getScore(array[i]);
-  };
-};
+// Calculates the score of multiple patterns
+async function getScoreArray(array) {
+  const asyncScores = [];
+  array.forEach((pattern) => asyncScores.push(getScore(pattern)));
+  return Promise.all(asyncScores);
+}
+
+// Obtains the possible categories & materials for a new pattern
+async function newPatternInfo(ctx) {
+  const info = {};
+  info.categoriesList = await ctx.orm.category.findAll();
+  info.materialsList = await ctx.orm.material.findAll();
+  return info;
+}
 
 router.get('patterns.list', '/', async (ctx) => {
   const patternsList = await ctx.orm.pattern.findAll();
-  const vote_patternsList = await ctx.orm.vote_pattern.findAll();
-  await setScoreArray(patternsList);
+  const votePatternsList = await ctx.orm.vote_pattern.findAll();
+  const patternScores = await getScoreArray(patternsList);
+  for (let i = 0; i < patternsList.length; i += 1) {
+    patternsList[i].score = patternScores[i];
+  }
   await ctx.render('patterns/index', {
     patternsList,
-    vote_patternsList,
+    votePatternsList,
     newPatternPath: ctx.router.url('patterns.new'),
     patternPath: (pattern) => ctx.router.url('patterns.show', { id: pattern.id }),
     editPatternPath: (pattern) => ctx.router.url('patterns.edit', { id: pattern.id }),
@@ -55,13 +68,10 @@ router.get('patterns.list', '/', async (ctx) => {
 
 router.get('patterns.new', '/new', async (ctx) => {
   const pattern = ctx.orm.pattern.build();
-  const usersList = await ctx.orm.user.findAll();
-  const categoriesList = await ctx.orm.category.findAll();
-  const materialsList = await ctx.orm.material.findAll();
+  const { categoriesList, materialsList } = await newPatternInfo(ctx);
   const materials = [];
   await ctx.render('patterns/new', {
     pattern,
-    usersList,
     categoriesList,
     materials,
     materialsList,
@@ -71,6 +81,10 @@ router.get('patterns.new', '/new', async (ctx) => {
 });
 
 router.get('patterns.edit', '/:id/edit', loadPattern, async (ctx) => {
+  if (!ctx.state.currentUser) {
+    ctx.state.flashMessage.warning = 'Acción NO permitida!';
+    ctx.redirect(ctx.router.url('patterns.list'));
+  }
   const { pattern } = ctx.state;
   const materialsList = await ctx.orm.material.findAll();
   const materials = await pattern.getMaterials();
@@ -84,17 +98,30 @@ router.get('patterns.edit', '/:id/edit', loadPattern, async (ctx) => {
 });
 
 router.post('patterns.create', '/', async (ctx) => {
-  const pattern = ctx.orm.pattern.build(ctx.request.body);
-  const { materials } = ctx.request.body;
+  ctx.params = ctx.request.body;
+  if (ctx.state.currentUser) {
+    ctx.params.authorId = ctx.state.currentUser.id;
+  }
+  const pattern = ctx.orm.pattern.build(ctx.params);
+  let { materials } = ctx.params;
   try {
-    await pattern.save({ fields: ['name', 'instructions', 'image', 'video',
-    'tension', 'authorId', 'categoryId'] });
+    await pattern.save(
+      {
+        fields: ['name', 'instructions', 'image', 'video', 'tension', 'authorId', 'categoryId'],
+      },
+    );
     await setMaterials(materials, pattern);
     ctx.redirect(ctx.router.url('patterns.list'));
   } catch (validationError) {
+    const { categoriesList, materialsList } = await newPatternInfo(ctx);
+    materials = [];
     await ctx.render('patterns/new', {
       pattern,
+      categoriesList,
+      materials,
+      materialsList,
       errors: validationError.errors,
+      patternsPath: ctx.router.url('patterns.list'),
       submitPatternPath: ctx.router.url('patterns.create'),
     });
   }
@@ -121,46 +148,39 @@ router.patch('patterns.update', '/:id', loadPattern, async (ctx) => {
 });
 
 router.del('patterns.delete', '/:id', loadPattern, async (ctx) => {
-  const { pattern } = ctx.state;
-  const votes = await pattern.getVote_patterns();
-  const comments = await pattern.getComments();
-  for (var i in votes){
-    votes[i].destroy()
-  };
-  for (var i in comments){
-    comments[i].destroy()
-  };
-
-  await pattern.destroy();
+  if (ctx.state.currentUser) {
+    const { pattern } = ctx.state;
+    await pattern.destroy();
+  } else {
+    ctx.state.flashMessage.warning = 'Acción NO permitida!';
+  }
   ctx.redirect(ctx.router.url('patterns.list'));
 });
 
 router.get('patterns.show', '/:id', loadPattern, async (ctx) => {
   const { pattern } = ctx.state;
-  getScore(pattern);
-  const author = await ctx.orm.user.findByPk(pattern.authorId );
-  const category = await ctx.orm.category.findByPk(pattern.categoryId );
+  pattern.score = await getScore(pattern);
+  const author = await pattern.getUser();
+  const category = await pattern.getCategory();
   const materials = await pattern.getMaterials();
   const commentsList = await pattern.getComments();
-  const vote_pattern = ctx.orm.vote_pattern.build();
-  const usersList = await ctx.orm.user.findAll();
+  const votePattern = ctx.orm.vote_pattern.build();
+  const comment = ctx.orm.comment.build();
   const options = [1, 2, 3, 4, 5];
-  const patternId = pattern.id;
   await ctx.render('patterns/show', {
     pattern,
     author,
-    vote_pattern,
-    usersList,
+    votePattern,
+    comment,
     options,
     category,
-    patternId,
     materials,
     commentsList,
-    submitVote_patternPath: ctx.router.url('vote_patterns.create'),
+    submitVotePatternPath: ctx.router.url('vote_patterns.create'),
     patternsPath: ctx.router.url('patterns.list'),
-    newCommentPath: ctx.router.url('comments.new', {id: pattern.id}),
-    editCommentPath: (comment) => ctx.router.url('comments.edit', { id: comment.id }),
-    deleteCommentPath: (comment) => ctx.router.url('comments.delete', { id: comment.id }),
+    submitCommentPath: ctx.router.url('comments.create'),
+    editCommentPath: (c) => ctx.router.url('comments.edit', { id: c.id }),
+    deleteCommentPath: (c) => ctx.router.url('comments.delete', { id: c.id }),
   });
 });
 

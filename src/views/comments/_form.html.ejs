@@ -1,55 +1,36 @@
 <div>
-    <% if (locals.errors) { %>
-      <div class="errors">
-        Ocurrieron los siguientes errores:
-        <ul>
-          <% errors.forEach(error => { %>
-            <li><%= error.message %></li>
-          <% }); %>
-        </ul>
+  <% if (locals.errors) { %>
+    <div class="errors">
+      Ocurrieron los siguientes errores:
+      <ul>
+        <% errors.forEach(error => { %>
+          <li><%= error.message %></li>
+        <% }); %>
+      </ul>
+    </div>
+  <% } %>
+  <form action="<%= submitCommentPath %>" method="POST">
+    <div id="panel">
+      <div>
+        <% if (comment.isNewRecord) { %>
+          <div>
+            <textarea rows="8" cols="80" type="text" required name="content"></textarea>
+            <input type="hidden" name="userId" value="<%= author.id %>">
+            <input type="hidden" id="patternId" name="patternId" value="<%= pattern.id %>">
+          </div>
+        <% } else { %>
+          <div>
+            <textarea rows="8" cols="80" type="text" required name="content"><%= comment.content %></textarea>
+          </div>
+        <% } %>
       </div>
+    </div>
+    <div id="hcontainer">
+    <% if (comment.isNewRecord) { %>
+      <input type="submit" name="create" value="Comentar" />
+    <% } else { %>
+      <input type="submit" name="update" value="Actualizar" />
     <% } %>
-    <form action="<%= submitCommentPath %>" method="post">
-      <% if (!comment.isNewRecord) { %>
-        <div id="panel">
-          <div>
-            <label for="userId">Usuario:</label>
-            <select name="userId" required>
-              <% usersList.forEach(user => { %>
-                <option value="<%- user.id %>"><%- user.username %></option>
-              <% }); %>
-            </select>
-          </div>
-          <div>
-          <input type="hidden" id="patternId" name="patternId" value=<%- patternId %>>
-          </div>
-          <div>
-            <div>
-              <textarea rows="8" cols="80" type="text" required name="content"><%= comment.content %></textarea>
-            </div>
-          </div>
-        </div>
-      <% } %>
-      <div id="hcontainer">
-      <% if (comment.isNewRecord) { %>
-        <div>
-          <label for="userId">Usuario:</label>
-          <select name="userId" required>
-            <% usersList.forEach(user => { %>
-              <option value="<%- user.id %>"><%- user.username %></option>
-            <% }); %>
-          </select>
-        </div>
-        <div>
-          <input type="hidden" id="patternId" name="patternId" value=<%- patternId %>>
-        </div>
-        <div>
-          <textarea rows="8" cols="80" type="text" required name="content"><%= comment.content %></textarea>
-        </div>
-        <input type="submit" name="create" value="Crear" />
-      <% } else { %>
-        <input type="submit" name="update" value="Actualizar" />
-      <% } %>
-        </div>
-    </form>
-  </div>
+    </div>
+  </form>
+</div>

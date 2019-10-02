@@ -25,6 +25,16 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        username: 'Juan Aguillón',
+        password: bcrypt.hashSync('123456', PASSWORD_SALT),
+        email: 'jjaguillon@uc.cl',
+        age: 22,
+        photo: 'Foto3',
+        role: 'common',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ];
     return queryInterface.bulkInsert('users', usersData);
   },
