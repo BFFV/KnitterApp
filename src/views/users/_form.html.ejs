@@ -9,13 +9,13 @@
         </ul>
       </div>
     <% } %>
-    <form action="<%= submitUserPath %>" method="post">
+    <form action="<%= submitUserPath %>" method="POST">
       <% if (!user.isNewRecord) { %>
-        <input type="hidden" name="_method" value="patch" />
+        <input type="hidden" name="_method" value="PATCH" />
       <% } %>
       <div id="panel">
       <div>
-        <label for="username">Username:</label>
+        <label for="username">Nombre de Usuario:</label>
         <input type="text" name="username" size="40" value="<%= user.username %>" required/>
       </div>
       <div>
@@ -28,15 +28,14 @@
       </div>
       <div>
         <label for="age">Edad:</label>
-        <input type="text" name="age" size="40" value="<%= user.age %>" required/>
+        <input type="number" name="age" min="0" max="150" step="1" value="<%= user.age %>" required/>
       </div>
       <div>
         <label for="age">Foto:</label>
         <input type="text" name="photo" size="40" value="<%= user.photo %>" required/>
       </div>
       <div>
-        <label for="role">Rol:</label>
-        <input type="text" name="role" size="40" value="<%= user.role %>" required/>
+        <input type="hidden" name="role" value="common" />
       </div>
       <% if (user.isNewRecord) { %>
         <input type="submit" name="create" value="Crear" />
