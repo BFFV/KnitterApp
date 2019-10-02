@@ -51,6 +51,7 @@ async function newPatternInfo(ctx) {
 
 router.get('patterns.list', '/', async (ctx) => {
   const patternsList = await ctx.orm.pattern.findAll();
+  patternsList.sort((a, b) => a.updatedAt - b.updatedAt).reverse();
   const votePatternsList = await ctx.orm.vote_pattern.findAll();
   const patternScores = await getScoreArray(patternsList);
   for (let i = 0; i < patternsList.length; i += 1) {
@@ -164,6 +165,10 @@ router.get('patterns.show', '/:id', loadPattern, async (ctx) => {
   const category = await pattern.getCategory();
   const materials = await pattern.getMaterials();
   const commentsList = await pattern.getComments();
+  commentsList.sort((a, b) => a.updatedAt - b.updatedAt).reverse();
+  const commentUsers = commentsList.map((c) => c.getUser());
+  const usersList = await Promise.all(commentUsers);
+  const patternComments = commentsList.map((e, i) => [e, usersList[i]]);
   const votePattern = ctx.orm.vote_pattern.build();
   const comment = ctx.orm.comment.build();
   const options = [1, 2, 3, 4, 5];
@@ -175,7 +180,7 @@ router.get('patterns.show', '/:id', loadPattern, async (ctx) => {
     options,
     category,
     materials,
-    commentsList,
+    patternComments,
     submitVotePatternPath: ctx.router.url('vote_patterns.create'),
     patternsPath: ctx.router.url('patterns.list'),
     submitCommentPath: ctx.router.url('comments.create'),
