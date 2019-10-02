@@ -1,6 +1,4 @@
 const KoaRouter = require('koa-router');
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
 
 const router = new KoaRouter();
 
@@ -42,9 +40,8 @@ router.get('users.edit', '/:id/edit', loadUser, async (ctx) => {
 
 router.post('users.create', '/', async (ctx) => {
   const user = ctx.orm.user.build(ctx.request.body);
-  
   try {
-    await user.save({ fields: ['username', 'password','email', 'age', 'photo', 'role'] });
+    await user.save({ fields: ['username', 'password', 'email', 'age', 'photo', 'role'] });
     ctx.redirect(ctx.router.url('users.list'));
   } catch (validationError) {
     await ctx.render('users/new', {
@@ -59,10 +56,10 @@ router.patch('users.update', '/:id', loadUser, async (ctx) => {
   const { user } = ctx.state;
   try {
     const {
-      username, password, email, age, photo, role
+      username, password, email, age, photo, role,
     } = ctx.request.body;
     await user.update({
-      username, password, email, age, photo, role
+      username, password, email, age, photo, role,
     });
     ctx.redirect(ctx.router.url('users.list'));
   } catch (validationError) {

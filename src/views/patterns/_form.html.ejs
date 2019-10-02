@@ -38,14 +38,6 @@
         <div>
           <% if (pattern.isNewRecord) { %>
             <div>
-              <label for="authorId">Autor:</label>
-              <select name="authorId" required>
-                <% usersList.forEach(user => { %>
-                  <option value="<%- user.id %>"><%- user.username %></option>
-                <% }); %>
-              </select>
-            </div>
-            <div>
               <label for="categoryId">Categoría:</label>
               <select name="categoryId" required>
                 <% categoriesList.forEach(category => { %>

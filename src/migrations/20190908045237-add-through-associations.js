@@ -6,15 +6,18 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
+
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
       },
+
       userId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         primaryKey: true,
       },
+
       patternId: {
         allowNull: false,
         type: Sequelize.INTEGER,
@@ -29,15 +32,18 @@ module.exports = {
           allowNull: false,
           type: Sequelize.DATE,
         },
+
         updatedAt: {
           allowNull: false,
           type: Sequelize.DATE,
         },
+
         patternId: {
           allowNull: false,
           type: Sequelize.INTEGER,
           primaryKey: true,
         },
+
         materialId: {
           allowNull: false,
           type: Sequelize.INTEGER,
@@ -52,15 +58,18 @@ module.exports = {
           allowNull: false,
           type: Sequelize.DATE,
         },
+
         updatedAt: {
           allowNull: false,
           type: Sequelize.DATE,
         },
+
         followerId: {
           allowNull: false,
           type: Sequelize.INTEGER,
           primaryKey: true,
         },
+
         followedId: {
           allowNull: false,
           type: Sequelize.INTEGER,

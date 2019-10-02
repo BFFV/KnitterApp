@@ -17,20 +17,20 @@
         <a href="/categories">Categorías</a>
         <a href="/materials">Materiales</a>
         <a href="/users">Usuarios</a>
-        <a href="/vote_patterns">Votos</a>
-        <a href="/comments">Comentarios</a>
-        <div id="user-bar">
-          <% if (currentUser) { %>
-            <span class="name">Hola <%= currentUser.username %></span>
-            <form action="<%= destroySessionPath %>" method="post">
-              <input type="hidden" name="_method" value="delete" />
-              <input type="submit" value="Logout" />
-            </form>
-          <% } else { %>
-            <span class="name"></span>
-            <a href="<%= newSessionPath %>">Login</a>
-          <% } %>
-        </div>
+        <% if (currentUser) { %>
+          <span class="name">Hola <%= currentUser.username %>!</span>
+          <form action="<%= destroySessionPath %>" method="post">
+            <input type="hidden" name="_method" value="delete" />
+            <input type="submit" value="Cerrar Sesión" />
+          </form>
+        <% } else { %>
+          <a href="<%= newSessionPath %>">Iniciar Sesión</a>
+        <% } %>
+        <% if (flashMessage) { %>
+          <div class="alert-container"><br>
+            <center><%= flashMessage.warning %></center>
+          </div>
+        <% } %>
       </div>
     </header>
     <%- body %>
