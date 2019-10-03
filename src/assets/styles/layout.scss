@@ -5,6 +5,8 @@ html, body {
 }
 
 .topnav {
+  position: fixed;
+  width: 100%;
   padding-top: 15px;
   display: flex;
   background-color: #26bfbf;
