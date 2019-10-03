@@ -14,7 +14,7 @@
       <div >
         <% if (locals.error) { %>
           <div class="body-item" id="error">
-            <%= error %>
+            <a class="user-parag-list" ><%= error %></a>
           </div>
         <% } %>
       </div>
@@ -35,12 +35,18 @@
           <div class="body-item">
             <input class="input" type="password" name="password" value="<%= locals.password %>" />
           </div>
-          <div class="end-user-login">
-              <input id="boton" type="submit" name="sign-in" value="Ingresar" />
+          <div class="body-item">
+              <div class="end-user-login">
+                  <input id="boton" type="submit" name="sign-in" value="Ingresar" />
+              </div>
           </div>
         </form>
+        <div class="end-user-login">
+            <form action="<%- newUserPath %>">
+                <input id="boton" type="submit" value="Crear Usuario" />
+            </form>
+        </div>
       </div>
-
     </div>
   </div>
 </div>
