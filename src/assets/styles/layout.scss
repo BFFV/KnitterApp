@@ -1,4 +1,27 @@
+
 html, body {
   margin: 0;
   padding: 0;
+}
+
+.topnav {
+  position: fixed;
+  width: 100%;
+  padding-top: 15px;
+  display: flex;
+  background-color: #26bfbf;
+  top: 0;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.nav-text {
+  text-decoration: none;
+  font-family: "Dancing Script";
+  font-size: 30px;
+  color: white;
+  font-weight: normal;
+  align-self: auto;
+  padding-left: 20px;
 }
