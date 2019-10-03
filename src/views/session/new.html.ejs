@@ -1,25 +1,44 @@
-<div>
-  <% if (locals.notice) { %>
-    <div className="notice"><%= notice %></div>
-  <% } %>
-  <h1>Iniciar Sesión</h1>
-  <% if (locals.error) { %>
-    <div class="error">
-      <%= error %>
+<div class ="body-content">
+  <div class="user-session-login-content">
+    <div class="border-css">
+      <div>
+          <% if (locals.notice) { %>
+            <div className="notice"><%= notice %></div>
+          <% } %>
+      </div>
+      <div >
+        <h1 class="title">Iniciar Sesión</h1>
+      </div>
+      <div >
+        <% if (locals.error) { %>
+          <div class="body-item" id="error">
+            <%= error %>
+          </div>
+        <% } %>
+      </div>
+      <div class="login-sub-content">
+        <form action="<%= createSessionPath %>" method="POST">
+          <div class="body-item">
+            <input type="hidden" name="_method" value="PUT" />
+          </div>
+          <div class="body-item">
+            <label for="email"><p class="label-content">Correo:</p></label>
+          </div>
+          <div class="body-item">
+            <input class="input" type="email" name="email" value="<%= locals.email %>" />
+          </div >
+          <div class="body-item">
+            <label for="password"><p class="label-content">Contraseña:</p></label>
+          </div>
+          <div class="body-item">
+            <input class="input" type="password" name="password" value="<%= locals.password %>" />
+          </div>
+          <div class="end-user-login">
+              <input id="boton" type="submit" name="sign-in" value="Ingresar" />
+          </div>
+        </form>
+      </div>
+
     </div>
-  <% } %>
-  <form action="<%= createSessionPath %>" method="POST">
-    <input type="hidden" name="_method" value="PUT" />
-    <div class="field">
-      <label for="email">Correo:</label>
-      <input type="email" name="email" value="<%= locals.email %>" />
-    </div>
-    <div class="field">
-      <label for="password">Contraseña:</label>
-      <input type="password" name="password" value="<%= locals.password %>" />
-    </div>
-    <div class="field">
-      <input type="submit" name="sign-in" value="Ingresar" />
-    </div>
-  </form>
+  </div>
 </div>

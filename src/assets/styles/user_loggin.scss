@@ -1,0 +1,68 @@
+
+.body-content{
+  margin: 30px;
+}
+
+.user-session-login-content{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-block-color: #26bfbf;
+
+}
+
+.border-css{
+  border-style: solid;
+  border-top-style: none;
+  padding: 30px;
+  border-color:  #26bfbf;
+}
+
+.login-sub-content{
+  padding-bottom: 30px;
+  align-items: center;
+}
+
+.title{
+  padding-bottom: 5px;
+}
+
+.body-item{
+  padding-bottom: 15px;
+}
+
+.body-item2{
+  padding-top: 15px;
+}
+
+.label-content{
+  font-family: "Dancing Script";
+  font-size: 30px;
+  margin: 0px;
+  color: gray;
+}
+
+input{
+  width: 100%;
+  height: 20px;
+  border-color: none;
+
+
+}
+
+.end-user-login{
+  padding-top: 20px;
+  width: 100%;
+
+}
+
+#boton{
+  background-color: #26bfbf;
+  width: 100%;
+  height: 40px;
+  font-family: "Dancing Script";
+  font-size: 20px;
+  border-style: none;
+  color: white;
+
+}
