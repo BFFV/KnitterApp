@@ -1,50 +1,54 @@
-<h1>Patrones</h1>
-<% if (currentUser) { %>
-  <form action="<%- newPatternPath %>">
-      <input type="submit" value="Crear Patrón de Dibujo" />
-  </form>
-<% } %>
-<div id="panel">
-<h2>Lista de Patrones</h2>
-<% if (!patternsList.length) { %>
-  <p>No hay patrones!</p>
-<% } else { %>
-  <table>
-    <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Puntaje</th>
-          <th colspan="2">Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-      <% patternsList.forEach((pattern) => { %>
-        <tr>
-          <td><a href="<%- patternPath(pattern) %>"><%- pattern.name %></a></td>
-          <td><%- pattern.score %>/5</td>
-          <% if (currentUser) { %>
-            <% if ((currentUser.id === pattern.authorId) || (currentUser.role === 'admin')) { %>
-            <td>
-              <form action="<%- editPatternPath(pattern) %>">
-                <input type="submit" value="Editar" />
-              </form>
-            </td>
-            <td>
-              <form action="<%- deletePatternPath(pattern) %>" onclick="return confirm('Estás seguro?');"
-                method="POST">
-                <input type="hidden" name="_method" value="delete" />
-                <input type="submit" value="Eliminar" />
-              </form>
-            </td>
+<div>
+  <h1>Patrones</h1>
+  <% if (currentUser) { %>
+    <form action="<%- newPatternPath %>">
+        <input type="submit" value="Crear Patrón de Dibujo" />
+    </form>
+  <% } %>
+
+
+  <div id="panel">
+  <h2>Lista de Patrones</h2>
+  <% if (!patternsList.length) { %>
+    <p>No hay patrones!</p>
+  <% } else { %>
+    <table>
+      <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Puntaje</th>
+            <th colspan="2">Acciones</th>
+          </tr>
+      </thead>
+      <tbody>
+        <% patternsList.forEach((pattern) => { %>
+          <tr>
+            <td><a href="<%- patternPath(pattern) %>"><%- pattern.name %></a></td>
+            <td><%- pattern.score %>/5</td>
+            <% if (currentUser) { %>
+              <% if ((currentUser.id === pattern.authorId) || (currentUser.role === 'admin')) { %>
+              <td>
+                <form action="<%- editPatternPath(pattern) %>">
+                  <input type="submit" value="Editar" />
+                </form>
+              </td>
+              <td>
+                <form action="<%- deletePatternPath(pattern) %>" onclick="return confirm('Estás seguro?');"
+                  method="POST">
+                  <input type="hidden" name="_method" value="delete" />
+                  <input type="submit" value="Eliminar" />
+                </form>
+              </td>
+              <% } else { %>
+                <td>Ninguna</td>
+              <% } %>
             <% } else { %>
               <td>Ninguna</td>
             <% } %>
-          <% } else { %>
-            <td>Ninguna</td>
-          <% } %>
-        </tr>
-      <% }) %>
-    </tbody>
-  </table>
-<% } %>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  <% } %>
+  </div>
 </div>

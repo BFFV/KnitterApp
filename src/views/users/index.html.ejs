@@ -1,45 +1,39 @@
-<h1>Usuarios</h1>
-<div id="button">
-    <form action="<%- newUserPath %>">
-        <input type="submit" value="Crear Usuario" />
-    </form>
-</div>
-<div id="panel">
-<h2>Lista de Usuarios</h2>
-<% if (!usersList.length) { %>
-  <p>No hay usuarios!</p>
-<% } else { %>
-  <table>
-    <thead>
-        <tr>
-          <th>Username</th>
-          <th>Correo</th>
-          <th>Edad</th>
-          <th>Rol</th>
-          <th colspan="2">Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-      <% usersList.forEach((user) => { %>
-        <tr>
-          <td><a href="<%- userPath(user) %>"><%- user.username %></a></td>
-          <td><%- user.email %></td>
-          <td><%- user.age %></td>
-          <td><%- user.role %></td>
-          <td>
-            <form action="<%- editUserPath(user) %>">
-              <input type="submit" value="Editar" />
-            </form>
-          </td>
-          <td>
-            <form action="<%- deleteUserPath(user) %>" method="POST">
-              <input type="hidden" name="_method" value="delete" />
-              <input type="submit" value="Eliminar" />
-            </form>
-          </td>
-        </tr>
-      <% }) %>
-    </tbody>
-  </table>
-<% } %>
+<div class="contenedor-body">
+  <div>
+    <h1>Usuarios</h1>
+  </div>
+  <div>
+    <% if (!usersList.length) { %>
+      <p class="user-parag-list">No hay usuarios!</p>
+    <% } else { %>
+  </div>
+  <div class="all-users">
+    <% usersList.forEach((user) => { %>
+      <div class="user_container">
+        <a class="user_show" id="texto_de_pagina">
+          Nombre: <%= user.username %>
+        </a>
+        <a class="user_show" id="texto_de_pagina">
+          E-mail: <%= user.email %>
+        </a>
+        <a class="user_show" id="texto_de_pagina">
+          Años: <%- user.age %>
+        </a>
+        <a class="user_show" id="texto_de_pagina">
+          Rol: <%- user.role %>
+        </a>
+        <div class="user_show">
+          <form action="<%- editUserPath(user) %>">
+            <input id="boton" type="submit" value="Editar" />
+          </form>
+        </div>
+        <div class="user_show">
+          <form action="<%- deleteUserPath(user) %>" method="POST">
+            <input type="hidden" name="_method" value="delete" />
+            <input id="boton" type="submit" value="Eliminar" />
+          </form>
+        </div>
+      </div>
+    <% })} %>
+  </div>
 </div>
