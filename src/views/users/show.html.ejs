@@ -1,29 +1,31 @@
-<br>
-<h1><%- user.username %></h1>
-<br>
-<div id="hcontainer">
-    <div id="left">
-        <h4><%- user.photo %></h4>
-    </div>
-    <div id="middle">
-        <p>Correo: <%- user.email %></p>
-        <p>Edad: <%- user.age %></p>
-    </div>
-</div>
-<div class="user_show">
-  <form action="<%- editUserPath %>">
-    <input id="boton" type="submit" value="Editar Perfil" />
-  </form>
-</div>
-<div class="user_show">
-  <form action="<%- deleteUserPath %>" method="POST">
-    <input type="hidden" name="_method" value="delete" />
-    <input id="boton" type="submit" value="Eliminar Cuenta" />
-  </form>
-</div>
-<br><br>
-<div id="button">
-    <form action="<%- rootPath %>">
-        <input type="submit" value="Volver" />
+<div class="contenedor-body" id="body-container">
+  <div class="content-new-user">
+    <h1><%- user.username %></h1>
+  </div>
+  <div id="hcontainer">
+      <div id="left">
+          <h4><%- user.photo %></h4>
+      </div>
+      <div id="middle">
+          <p>Correo: <%- user.email %></p>
+          <p>Edad: <%- user.age %></p>
+      </div>
+  </div>
+  <div class="user_show">
+    <form action="<%- editUserPath %>">
+      <input id="boton" type="submit" value="Editar Perfil" />
     </form>
+  </div>
+  <div class="user_show">
+    <form action="<%- deleteUserPath %>" method="POST">
+      <input type="hidden" name="_method" value="delete" />
+      <input id="boton" type="submit" value="Eliminar Cuenta" />
+    </form>
+  </div>
+  <br><br>
+  <div id="button">
+      <form action="<%- rootPath %>">
+          <input type="submit" value="Volver" />
+      </form>
+  </div>
 </div>
