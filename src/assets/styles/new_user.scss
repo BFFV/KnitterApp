@@ -14,8 +14,6 @@
   flex-direction: column;
 }
 
-
-
 .panel-content{
   display: flex;
 }
@@ -29,17 +27,13 @@
 
 .content-new-user{
   justify-items: center;
-
-}
-
-.user-input-list{
 }
 
 .form{
   width:400px;
 }
 
-@media (max-width: 900px) {
+@media (min-width: 720px) {
   .form{
     width:100%;
   }
