@@ -15,7 +15,7 @@ module.exports = {
     score: {
       allowNull: false,
       defaultValue: 0,
-      type: Sequelize.INTEGER,
+      type: Sequelize.FLOAT,
     },
 
     instructions: {

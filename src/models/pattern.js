@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const pattern = sequelize.define('pattern', {
     name: DataTypes.STRING,
-    score: DataTypes.INTEGER,
+    score: DataTypes.FLOAT,
     instructions: DataTypes.TEXT,
     video: DataTypes.STRING,
     image: DataTypes.STRING,
