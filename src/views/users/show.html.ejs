@@ -1,18 +1,21 @@
-<br>
-<h1><%- user.username %></h1>
-<br>
-<div id="hcontainer">
-    <div id="left">
-        <h4><%- user.photo %></h4>
-    </div>
-    <div id="middle">
-        <p>Correo: <%- user.email %></p>
-        <p>Edad: <%- user.age %></p>
-    </div>
+<div class="contenedor-body" id="body-container">
+  <div class="content-new-user">
+    <h1><%- user.username %></h1>
+  </div>
+  <div id="hcontainer">
+      <div id="left">
+          <h4><%- user.photo %></h4>
+      </div>
+      <div id="middle">
+          <p>Correo: <%- user.email %></p>
+          <p>Edad: <%- user.age %></p>
+      </div>
+  </div>
+  <br><br>
+  <div id="button">
+      <form action="<%- rootPath %>">
+          <input type="submit" value="Volver" />
+      </form>
+  </div>
 </div>
-<br><br>
-<div id="button">
-    <form action="<%- rootPath %>">
-        <input type="submit" value="Volver" />
-    </form>
-</div>
+

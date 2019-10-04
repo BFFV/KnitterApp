@@ -35,6 +35,7 @@ router.get('users.edit', '/:id/edit', loadUser, async (ctx) => {
     user,
     userPath: ctx.router.url('users.show', { id: user.id }),
     submitUserPath: ctx.router.url('users.update', { id: user.id }),
+    rootPath: '/',
   });
 });
 
