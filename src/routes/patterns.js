@@ -106,7 +106,7 @@ router.get('patterns.edit', '/:id/edit', loadPattern, async (ctx) => {
     pattern,
     materials,
     materialsList,
-    patternsPath: ctx.router.url('patterns.list'),
+    patternPath: ctx.router.url('patterns.show', { id: pattern.id }),
     submitPatternPath: ctx.router.url('patterns.update', { id: pattern.id }),
   });
 });
@@ -125,7 +125,7 @@ router.post('patterns.create', '/', async (ctx) => {
       },
     );
     await setMaterials(materials, pattern);
-    ctx.redirect(ctx.router.url('patterns.list'));
+    ctx.redirect(ctx.router.url('patterns.show', { id: pattern.id }));
   } catch (validationError) {
     const { categoriesList, materialsList } = await newPatternInfo(ctx);
     materials = [];
@@ -143,6 +143,8 @@ router.post('patterns.create', '/', async (ctx) => {
 
 router.patch('patterns.update', '/:id', loadPattern, async (ctx) => {
   const { pattern } = ctx.state;
+  const materialsList = await ctx.orm.material.findAll();
+  const patternMaterials = await pattern.getMaterials();
   try {
     const {
       name, instructions, image, video, tension, materials,
@@ -151,12 +153,15 @@ router.patch('patterns.update', '/:id', loadPattern, async (ctx) => {
       name, instructions, image, video, tension,
     });
     await setMaterials(materials, pattern);
-    ctx.redirect(ctx.router.url('patterns.list'));
+    ctx.redirect(ctx.router.url('patterns.show', { id: pattern.id }));
   } catch (validationError) {
     await ctx.render('patterns/edit', {
       pattern,
+      materials: patternMaterials,
+      materialsList,
       errors: validationError.errors,
-      submitPatternPath: ctx.router.url('patterns.update'),
+      patternPath: ctx.router.url('patterns.show', { id: pattern.id }),
+      submitPatternPath: ctx.router.url('patterns.update', { id: pattern.id }),
     });
   }
 });
@@ -200,6 +205,8 @@ router.get('patterns.show', '/:id', loadPattern, async (ctx) => {
     materials,
     patternComments,
     patternsPath: ctx.router.url('patterns.list'),
+    editPatternPath: ctx.router.url('patterns.edit', { id: pattern.id }),
+    deletePatternPath: ctx.router.url('patterns.delete', { id: pattern.id }),
     votePatternPath: path,
     submitCommentPath: ctx.router.url('comments.create'),
     editCommentPath: (c) => ctx.router.url('comments.edit', { id: c.id }),
