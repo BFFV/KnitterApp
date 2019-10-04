@@ -13,6 +13,7 @@
     <thead>
         <tr>
           <th>Nombre</th>
+          <th>Descripción</th>
           <th colspan="1">Acciones</th>
         </tr>
     </thead>
@@ -20,6 +21,7 @@
       <% materialsList.forEach((material) => { %>
         <tr>
           <td><%- material.name %></td>
+          <td><%- material.description %></td>
           <td>
             <form action="<%- editMaterialPath(material) %>">
               <input type="submit" value="Editar" />

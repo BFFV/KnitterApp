@@ -10,10 +10,10 @@ async function loadCategory(ctx, next) {
 
 router.get('categories.list', '/', async (ctx) => {
   const categoriesList = await ctx.orm.category.findAll();
+  categoriesList.sort((a, b) => a.updatedAt - b.updatedAt).reverse();
   await ctx.render('categories/index', {
     categoriesList,
     newCategoryPath: ctx.router.url('categories.new'),
-    categoryPath: (category) => ctx.router.url('categories.show', { id: category.id }),
     editCategoryPath: (category) => ctx.router.url('categories.edit', { id: category.id }),
     deleteCategoryPath: (category) => ctx.router.url('categories.delete', { id: category.id }),
   });

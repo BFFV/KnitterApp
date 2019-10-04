@@ -23,6 +23,11 @@
           Rol: <%- user.role %>
         </a>
         <div class="user_show">
+          <form action="<%- userPath(user) %>">
+            <input id="boton" type="submit" value="Ver Perfil" />
+          </form>
+        </div>
+        <div class="user_show">
           <form action="<%- editUserPath(user) %>">
             <input id="boton" type="submit" value="Editar" />
           </form>

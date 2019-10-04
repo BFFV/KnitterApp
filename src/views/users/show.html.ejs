@@ -10,6 +10,17 @@
         <p>Edad: <%- user.age %></p>
     </div>
 </div>
+<div class="user_show">
+  <form action="<%- editUserPath %>">
+    <input id="boton" type="submit" value="Editar Perfil" />
+  </form>
+</div>
+<div class="user_show">
+  <form action="<%- deleteUserPath %>" method="POST">
+    <input type="hidden" name="_method" value="delete" />
+    <input id="boton" type="submit" value="Eliminar Cuenta" />
+  </form>
+</div>
 <br><br>
 <div id="button">
     <form action="<%- rootPath %>">
