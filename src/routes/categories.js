@@ -8,7 +8,17 @@ async function loadCategory(ctx, next) {
   return next();
 }
 
-router.get('categories.list', '/', async (ctx) => {
+// Protects routes from unauthorized access
+async function authenticate(ctx, next) {
+  if (!ctx.state.currentUser) {
+    ctx.redirect('/');
+  } else if (ctx.state.currentUser.role === 'common') {
+    ctx.redirect('/');
+  }
+  return next();
+}
+
+router.get('categories.list', '/', authenticate, async (ctx) => {
   const categoriesList = await ctx.orm.category.findAll();
   await ctx.render('categories/index', {
     categoriesList,
@@ -19,7 +29,7 @@ router.get('categories.list', '/', async (ctx) => {
   });
 });
 
-router.get('categories.new', '/new', async (ctx) => {
+router.get('categories.new', '/new', authenticate, async (ctx) => {
   const category = ctx.orm.category.build();
   await ctx.render('categories/new', {
     category,
@@ -28,7 +38,7 @@ router.get('categories.new', '/new', async (ctx) => {
   });
 });
 
-router.get('categories.edit', '/:id/edit', loadCategory, async (ctx) => {
+router.get('categories.edit', '/:id/edit', authenticate, loadCategory, async (ctx) => {
   const { category } = ctx.state;
   await ctx.render('categories/edit', {
     category,
@@ -37,7 +47,7 @@ router.get('categories.edit', '/:id/edit', loadCategory, async (ctx) => {
   });
 });
 
-router.post('categories.create', '/', async (ctx) => {
+router.post('categories.create', '/', authenticate, async (ctx) => {
   const category = ctx.orm.category.build(ctx.request.body);
   try {
     await category.save({ fields: ['name', 'description'] });
@@ -52,7 +62,7 @@ router.post('categories.create', '/', async (ctx) => {
   }
 });
 
-router.patch('categories.update', '/:id', loadCategory, async (ctx) => {
+router.patch('categories.update', '/:id', authenticate, loadCategory, async (ctx) => {
   const { category } = ctx.state;
   try {
     const {
@@ -72,7 +82,7 @@ router.patch('categories.update', '/:id', loadCategory, async (ctx) => {
   }
 });
 
-router.del('categories.delete', '/:id', loadCategory, async (ctx) => {
+router.del('categories.delete', '/:id', authenticate, loadCategory, async (ctx) => {
   const { category } = ctx.state;
   await category.destroy();
   ctx.redirect(ctx.router.url('categories.list'));
