@@ -24,7 +24,21 @@ async function updatePattern(ctx, next) {
   ctx.redirect(ctx.router.url('patterns.show', { id: patternId }));
 }
 
-router.post('vote_patterns.create', '/', updatePattern, async (ctx) => {
+// Protects routes from unauthorized access
+async function authenticate(ctx, next) {
+  const current = ctx.state.currentUser;
+  if ((ctx.request.method !== 'POST')) {
+    if ((current) && (current.id === ctx.state.votePattern.userId)) {
+      return next();
+    }
+  } else if (current) {
+    return next();
+  }
+  ctx.redirect('/');
+  return 'Unauthorized Access!';
+}
+
+router.post('vote_patterns.create', '/', authenticate, updatePattern, async (ctx) => {
   const votePattern = ctx.orm.vote_pattern.build(ctx.request.body);
   const { patternId } = ctx.request.body;
   try {
@@ -35,7 +49,7 @@ router.post('vote_patterns.create', '/', updatePattern, async (ctx) => {
   return patternId;
 });
 
-router.patch('vote_patterns.update', '/:id', loadVotePattern, updatePattern, async (ctx) => {
+router.patch('vote_patterns.update', '/:id', loadVotePattern, authenticate, updatePattern, async (ctx) => {
   const { votePattern } = ctx.state;
   try {
     const { rating } = ctx.request.body;
