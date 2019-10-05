@@ -5,6 +5,7 @@ const router = new KoaRouter();
 // Loads a particular pattern
 async function loadPattern(ctx, next) {
   ctx.state.pattern = await ctx.orm.pattern.findByPk(ctx.params.id);
+  ctx.state.access = 'protected';
   return next();
 }
 
@@ -93,6 +94,20 @@ async function searchPatterns(ctx, next) {
   return next();
 }
 
+// Protects routes from unauthorized access
+async function authenticate(ctx, next) {
+  const current = ctx.state.currentUser;
+  if (ctx.state.access === 'protected') {
+    if ((current) && ((current.role === 'admin') || (current.id === ctx.state.pattern.authorId))) {
+      return next();
+    }
+  } else if (current) {
+    return next();
+  }
+  ctx.redirect(ctx.router.url('patterns.list'));
+  return 'Unauthorized Access!';
+}
+
 router.get('patterns.list', '/', searchPatterns, async (ctx) => {
   const {
     patternsList, materials, categories,
@@ -109,7 +124,7 @@ router.get('patterns.list', '/', searchPatterns, async (ctx) => {
   });
 });
 
-router.get('patterns.new', '/new', async (ctx) => {
+router.get('patterns.new', '/new', authenticate, async (ctx) => {
   const pattern = ctx.orm.pattern.build();
   const { categoriesList, materialsList } = await newPatternInfo(ctx);
   const materials = [];
@@ -123,7 +138,7 @@ router.get('patterns.new', '/new', async (ctx) => {
   });
 });
 
-router.get('patterns.edit', '/:id/edit', loadPattern, async (ctx) => {
+router.get('patterns.edit', '/:id/edit', loadPattern, authenticate, async (ctx) => {
   if (!ctx.state.currentUser) {
     ctx.redirect(ctx.router.url('patterns.list'));
   }
@@ -139,7 +154,7 @@ router.get('patterns.edit', '/:id/edit', loadPattern, async (ctx) => {
   });
 });
 
-router.post('patterns.create', '/', async (ctx) => {
+router.post('patterns.create', '/', authenticate, async (ctx) => {
   ctx.params = ctx.request.body;
   if (ctx.state.currentUser) {
     ctx.params.authorId = ctx.state.currentUser.id;
@@ -169,7 +184,7 @@ router.post('patterns.create', '/', async (ctx) => {
   }
 });
 
-router.patch('patterns.update', '/:id', loadPattern, async (ctx) => {
+router.patch('patterns.update', '/:id', loadPattern, authenticate, async (ctx) => {
   const { pattern } = ctx.state;
   const materialsList = await ctx.orm.material.findAll();
   const patternMaterials = await pattern.getMaterials();
@@ -194,7 +209,7 @@ router.patch('patterns.update', '/:id', loadPattern, async (ctx) => {
   }
 });
 
-router.del('patterns.delete', '/:id', loadPattern, async (ctx) => {
+router.del('patterns.delete', '/:id', loadPattern, authenticate, async (ctx) => {
   if (ctx.state.currentUser) {
     const { pattern } = ctx.state;
     await pattern.destroy();
