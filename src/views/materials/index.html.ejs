@@ -1,39 +1,45 @@
-<h1>Materiales</h1>
-<div id="button">
-    <form action="<%- newMaterialPath %>">
-        <input type="submit" value="Crear Material" />
-    </form>
-</div>
-<div id="panel">
-<h2>Lista de Materiales</h2>
-<% if (!materialsList.length) { %>
-  <p>No hay Materiales!</p>
-<% } else { %>
-  <table>
-    <thead>
-        <tr>
-          <th>Nombre</th>
-          <th colspan="1">Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-      <% materialsList.forEach((material) => { %>
-        <tr>
-          <td><%- material.name %></td>
-          <td>
-            <form action="<%- editMaterialPath(material) %>">
-              <input type="submit" value="Editar" />
-            </form>
-          </td>
-          <td>
-            <form action="<%- deleteMaterialPath(material) %>" method="POST">
-              <input type="hidden" name="_method" value="delete" />
-              <input type="submit" value="Eliminar" />
-            </form>
-          </td>
-        </tr>
-      <% }) %>
-    </tbody>
-  </table>
-<% } %>
+<div class="contenedor-body-show">
+  <div class="material-show-head">
+    <div class="material-show-element">
+      <h1>Materiales</h1>
+    </div>
+    <div class="material-show-element">
+      <form action="<%- newMaterialPath %>">
+          <input class="material-add-button" type="submit" value="+" />
+      </form>
+    </div>
+  </div>
+  <div class="material-show-list">
+    <div class="list-materials">
+      <div class="title">
+        <h2 class="label-content">Lista de Materiales</h2>
+      </div>
+      <% if (!materialsList.length) { %>
+        <div>
+          <p>No hay Materiales!</p>
+        </div>
+      <% } else { %>
+      <div class="all-materials">
+        <% materialsList.forEach((material) => { %>
+          <div class="material_container">
+            <div class="material_element">
+                <a class="material-name" id="material-text"><%- material.name %></a>
+            </div>
+            <div class="material_element">
+              <form action="<%- editMaterialPath(material) %>">
+                <input class="boton-material" id="boton-material" type="submit" value="Editar" />
+              </form>
+            </div>
+            <div class="material_element">
+              <form action="<%- deleteMaterialPath(material) %>" method="POST">
+                <input type="hidden" name="_method" value="delete" />
+                <input class="boton-material" id="boton-material" type="submit" value="Eliminar" />
+              </form>
+            </div>
+          </div>
+        <% }) %>
+        <% } %>
+      </div>
+    </div>
+  </div>
 </div>

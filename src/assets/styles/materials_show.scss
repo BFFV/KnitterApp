@@ -1,0 +1,81 @@
+
+
+.contenedor-body-show{
+  margin: 30px;
+  margin-top: 100px;
+}
+
+.material-show-head{
+  display: flex;
+  flex-direction: row;
+  width: 40px;
+  align-items: center;
+  justify-items: left;
+}
+
+.material-show-element{
+  display: flex;
+  padding-right: 20px;
+}
+
+.material-add-button{
+  height: 40px;
+  width: 40px;
+  background-color: #26bfbf;
+  border-radius: 50%;
+  border-style: none;
+  color: white;
+  font-size: 25px;
+}
+
+.boton-material{
+  background-color: #26bfbf;
+  border-radius: 15px;
+  border-style: none;
+  color: white;
+  font-family: "Dancing Script";
+  font-size: 15px;
+}
+
+.boton-material#boton-material{
+  width: 100px;
+}
+
+.material-show-list{
+  display:flex;
+  flex-direction: column;
+}
+
+.all-materials{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 200px;
+  width: 100%;
+  margin-top: 20px;
+  overflow-y: scroll;
+}
+
+.material_container{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  height: 10%;
+  margin-bottom:10px;
+
+}
+
+.material_element{
+  width: 20%;
+  padding: 0px;
+  padding-right: 20px;
+}
+
+.material-name{
+  font-family: "Arial";
+  font-style: italic;
+  color: gray;
+}
+
+

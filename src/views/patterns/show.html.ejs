@@ -1,5 +1,17 @@
 <br>
 <h1><%- pattern.name %></h1>
+<% if ((currentUser) && ((currentUser.id === pattern.authorId) || (currentUser.role === 'admin'))) { %>
+  <div>
+    <form action="<%- editPatternPath %>">
+      <input type="submit" value="Editar" />
+    </form>
+    <form action="<%- deletePatternPath %>" onclick="return confirm('Estás seguro?');"
+      method="POST">
+      <input type="hidden" name="_method" value="delete" />
+      <input type="submit" value="Eliminar" />
+    </form>
+  </div>
+<% } %>
 <br>
 <div id="hcontainer">
     <div id="left">

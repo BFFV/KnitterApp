@@ -11,9 +11,9 @@ async function loadUser(ctx, next) {
 
 router.get('users.list', '/', async (ctx) => {
   const usersList = await ctx.orm.user.findAll();
+  usersList.sort((a, b) => a.updatedAt - b.updatedAt).reverse();
   await ctx.render('users/index', {
     usersList,
-    newUserPath: ctx.router.url('users.new'),
     userPath: (user) => ctx.router.url('users.show', { id: user.id }),
     editUserPath: (user) => ctx.router.url('users.edit', { id: user.id }),
     deleteUserPath: (user) => ctx.router.url('users.delete', { id: user.id }),
@@ -35,6 +35,7 @@ router.get('users.edit', '/:id/edit', loadUser, async (ctx) => {
     user,
     userPath: ctx.router.url('users.show', { id: user.id }),
     submitUserPath: ctx.router.url('users.update', { id: user.id }),
+    rootPath: '/',
   });
 });
 
@@ -84,6 +85,8 @@ router.get('users.show', '/:id', loadUser, async (ctx) => {
   await ctx.render('users/show', {
     user,
     rootPath: '/',
+    editUserPath: ctx.router.url('users.edit', { id: user.id }),
+    deleteUserPath: ctx.router.url('users.delete', { id: user.id }),
   });
 });
 

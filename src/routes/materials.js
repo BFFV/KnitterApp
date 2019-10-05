@@ -10,10 +10,10 @@ async function loadMaterial(ctx, next) {
 
 router.get('materials.list', '/', async (ctx) => {
   const materialsList = await ctx.orm.material.findAll();
+  materialsList.sort((a, b) => a.updatedAt - b.updatedAt).reverse();
   await ctx.render('materials/index', {
     materialsList,
     newMaterialPath: ctx.router.url('materials.new'),
-    materialPath: (material) => ctx.router.url('materials.show', { id: material.id }),
     editMaterialPath: (material) => ctx.router.url('materials.edit', { id: material.id }),
     deleteMaterialPath: (material) => ctx.router.url('materials.delete', { id: material.id }),
   });

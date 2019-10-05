@@ -18,7 +18,7 @@
         <% if (comment.isNewRecord) { %>
           <div>
             <textarea rows="8" cols="80" type="text" required name="content"></textarea>
-            <input type="hidden" name="userId" value="<%= currentUser.id %>">
+            <input  type="hidden" name="userId" value="<%= currentUser.id %>">
             <input type="hidden" id="patternId" name="patternId" value="<%= pattern.id %>">
           </div>
         <% } else { %>
