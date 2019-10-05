@@ -23,24 +23,6 @@ async function setMaterials(materials, pattern) {
   }
 }
 
-// Calculates the score of a particular pattern
-async function getScore(pattern) {
-  const scoreList = await pattern.getVote_patterns();
-  const average = scoreList.reduce((total, next) => total + next.rating, 0)
-  / scoreList.length;
-  if (!average) {
-    return 0;
-  }
-  return average;
-}
-
-// Calculates the score of multiple patterns
-async function getScoreArray(array) {
-  const asyncScores = [];
-  array.forEach((pattern) => asyncScores.push(getScore(pattern)));
-  return Promise.all(asyncScores);
-}
-
 // Obtains the possible categories & materials for a new pattern
 async function newPatternInfo(ctx) {
   const info = {};
@@ -63,17 +45,63 @@ async function checkVote(ctx) {
   return vote;
 }
 
-router.get('patterns.list', '/', async (ctx) => {
-  const patternsList = await ctx.orm.pattern.findAll();
-  patternsList.sort((a, b) => a.updatedAt - b.updatedAt).reverse();
-  const votePatternsList = await ctx.orm.vote_pattern.findAll();
-  const patternScores = await getScoreArray(patternsList);
-  for (let i = 0; i < patternsList.length; i += 1) {
-    patternsList[i].score = patternScores[i];
+// Searches for patterns
+async function searchPatterns(ctx, next) {
+  const params = ctx.request.query;
+  ctx.state.materials = await ctx.orm.material.findAll();
+  ctx.state.categories = await ctx.orm.category.findAll();
+  let patterns = [];
+  if (params.name) {
+    patterns = await ctx.orm.pattern.findAll({
+      where: { name: { [ctx.orm.Sequelize.Op.iLike]: `%${params.name}%` } },
+    });
   }
+  if ((params.category === 'all') || !params.category) {
+    if (!params.name) {
+      patterns = await ctx.orm.pattern.findAll();
+    }
+  } else if (!params.name) {
+    patterns = await ctx.orm.pattern.findAll({
+      where: { categoryId: params.category },
+    });
+  } else {
+    patterns = patterns.filter((pattern) => pattern.categoryId.toString() === params.category);
+  }
+  ctx.state.patternsList = patterns;
+  if (params.materials) {
+    ctx.state.patternsList = [];
+    if (typeof (params.materials) === 'string') {
+      params.materials = [params.materials];
+    }
+    const asyncMaterials = [];
+    patterns.forEach((pattern) => asyncMaterials.push(pattern.getMaterials()));
+    const patternMaterials = await Promise.all(asyncMaterials);
+    patterns.forEach((pattern) => {
+      const searchMaterials = params.materials;
+      let materials = patternMaterials.shift();
+      materials = materials.map((material) => material.id.toString());
+      if (!searchMaterials.filter((x) => !materials.includes(x)).length) {
+        ctx.state.patternsList.push(pattern);
+      }
+    });
+  }
+  if (params.sorting === 'popular') {
+    ctx.state.patternsList.sort((a, b) => a.score - b.score).reverse();
+  } else {
+    ctx.state.patternsList.sort((a, b) => a.updatedAt - b.updatedAt).reverse();
+  }
+  return next();
+}
+
+router.get('patterns.list', '/', searchPatterns, async (ctx) => {
+  const {
+    patternsList, materials, categories,
+  } = ctx.state;
   await ctx.render('patterns/index', {
+    materials,
+    categories,
     patternsList,
-    votePatternsList,
+    patternsPath: ctx.router.url('patterns.list'),
     newPatternPath: ctx.router.url('patterns.new'),
     patternPath: (pattern) => ctx.router.url('patterns.show', { id: pattern.id }),
     editPatternPath: (pattern) => ctx.router.url('patterns.edit', { id: pattern.id }),
@@ -176,7 +204,6 @@ router.del('patterns.delete', '/:id', loadPattern, async (ctx) => {
 
 router.get('patterns.show', '/:id', loadPattern, async (ctx) => {
   const { pattern } = ctx.state;
-  pattern.score = await getScore(pattern);
   const author = await pattern.getUser();
   const category = await pattern.getCategory();
   const materials = await pattern.getMaterials();
