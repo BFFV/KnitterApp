@@ -10,12 +10,16 @@ async function loadCategory(ctx, next) {
 
 // Protects routes from unauthorized access
 async function authenticate(ctx, next) {
-  if (!ctx.state.currentUser) {
-    ctx.redirect('/');
-  } else if (ctx.state.currentUser.role === 'common') {
-    ctx.redirect('/');
+  const current = ctx.state.currentUser;
+  if (ctx.request.method === 'DELETE') {
+    if ((current) && (current.role === 'admin')) {
+      return next();
+    }
+  } else if ((current) && ((current.role === 'admin') || (current.role === 'top'))) {
+    return next();
   }
-  return next();
+  ctx.redirect('/');
+  return 'Unauthorized Access!';
 }
 
 router.get('categories.list', '/', authenticate, async (ctx) => {

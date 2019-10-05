@@ -6,10 +6,25 @@ const router = new KoaRouter();
 async function loadUser(ctx, next) {
   ctx.state.user = await ctx.orm.user.findByPk(ctx.params.id);
   ctx.state.user.password = '';
+  ctx.state.access = 'user';
   return next();
 }
 
-router.get('users.list', '/', async (ctx) => {
+// Protects routes from unauthorized access
+async function authenticate(ctx, next) {
+  const current = ctx.state.currentUser;
+  if (ctx.state.access !== 'user') {
+    if ((current) && (current.role === 'admin')) {
+      return next();
+    }
+  } else if ((current) && ((current.role === 'admin') || (current.id === ctx.state.user.id))) {
+    return next();
+  }
+  ctx.redirect('/');
+  return 'Unauthorized Access!';
+}
+
+router.get('users.list', '/', authenticate, async (ctx) => {
   const usersList = await ctx.orm.user.findAll();
   await ctx.render('users/index', {
     usersList,
@@ -29,7 +44,7 @@ router.get('users.new', '/new', async (ctx) => {
   });
 });
 
-router.get('users.edit', '/:id/edit', loadUser, async (ctx) => {
+router.get('users.edit', '/:id/edit', loadUser, authenticate, async (ctx) => {
   const { user } = ctx.state;
   await ctx.render('users/edit', {
     user,
@@ -53,7 +68,7 @@ router.post('users.create', '/', async (ctx) => {
   }
 });
 
-router.patch('users.update', '/:id', loadUser, async (ctx) => {
+router.patch('users.update', '/:id', loadUser, authenticate, async (ctx) => {
   const { user } = ctx.state;
   try {
     const {
@@ -73,7 +88,7 @@ router.patch('users.update', '/:id', loadUser, async (ctx) => {
   }
 });
 
-router.del('users.delete', '/:id', loadUser, async (ctx) => {
+router.del('users.delete', '/:id', loadUser, authenticate, async (ctx) => {
   const { user } = ctx.state;
   await user.destroy();
   ctx.redirect('/');

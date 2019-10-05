@@ -8,7 +8,21 @@ async function loadMaterial(ctx, next) {
   return next();
 }
 
-router.get('materials.list', '/', async (ctx) => {
+// Protects routes from unauthorized access
+async function authenticate(ctx, next) {
+  const current = ctx.state.currentUser;
+  if (ctx.request.method === 'DELETE') {
+    if ((current) && (current.role === 'admin')) {
+      return next();
+    }
+  } else if ((current) && ((current.role === 'admin') || (current.role === 'top'))) {
+    return next();
+  }
+  ctx.redirect('/');
+  return 'Unauthorized Access!';
+}
+
+router.get('materials.list', '/', authenticate, async (ctx) => {
   const materialsList = await ctx.orm.material.findAll();
   await ctx.render('materials/index', {
     materialsList,
@@ -19,7 +33,7 @@ router.get('materials.list', '/', async (ctx) => {
   });
 });
 
-router.get('materials.new', '/new', async (ctx) => {
+router.get('materials.new', '/new', authenticate, async (ctx) => {
   const material = ctx.orm.material.build();
   await ctx.render('materials/new', {
     material,
@@ -28,7 +42,7 @@ router.get('materials.new', '/new', async (ctx) => {
   });
 });
 
-router.get('materials.edit', '/:id/edit', loadMaterial, async (ctx) => {
+router.get('materials.edit', '/:id/edit', authenticate, loadMaterial, async (ctx) => {
   const { material } = ctx.state;
   await ctx.render('materials/edit', {
     material,
@@ -37,7 +51,7 @@ router.get('materials.edit', '/:id/edit', loadMaterial, async (ctx) => {
   });
 });
 
-router.post('materials.create', '/', async (ctx) => {
+router.post('materials.create', '/', authenticate, async (ctx) => {
   const material = ctx.orm.material.build(ctx.request.body);
   try {
     await material.save({ fields: ['name', 'description'] });
@@ -52,7 +66,7 @@ router.post('materials.create', '/', async (ctx) => {
   }
 });
 
-router.patch('materials.update', '/:id', loadMaterial, async (ctx) => {
+router.patch('materials.update', '/:id', authenticate, loadMaterial, async (ctx) => {
   const { material } = ctx.state;
   try {
     const {
@@ -72,7 +86,7 @@ router.patch('materials.update', '/:id', loadMaterial, async (ctx) => {
   }
 });
 
-router.del('materials.delete', '/:id', loadMaterial, async (ctx) => {
+router.del('materials.delete', '/:id', authenticate, loadMaterial, async (ctx) => {
   const { material } = ctx.state;
   await material.destroy();
   ctx.redirect(ctx.router.url('materials.list'));

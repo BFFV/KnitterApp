@@ -8,7 +8,21 @@ async function loadComment(ctx, next) {
   return next();
 }
 
-router.get('comments.edit', '/:id/edit', loadComment, async (ctx) => {
+// Protects routes from unauthorized access
+async function authenticate(ctx, next) {
+  const current = ctx.state.currentUser;
+  if ((ctx.request.method !== 'POST')) {
+    if ((current) && ((current.role === 'admin') || (current.id === ctx.state.comment.userId))) {
+      return next();
+    }
+  } else if (current) {
+    return next();
+  }
+  ctx.redirect('/');
+  return 'Unauthorized Access!';
+}
+
+router.get('comments.edit', '/:id/edit', loadComment, authenticate, async (ctx) => {
   const { comment } = ctx.state;
   await ctx.render('comments/edit', {
     comment,
@@ -17,7 +31,7 @@ router.get('comments.edit', '/:id/edit', loadComment, async (ctx) => {
   });
 });
 
-router.post('comments.create', '/', async (ctx) => {
+router.post('comments.create', '/', authenticate, async (ctx) => {
   const comment = ctx.orm.comment.build(ctx.request.body);
   const { patternId } = ctx.request.body;
   try {
@@ -28,7 +42,7 @@ router.post('comments.create', '/', async (ctx) => {
   }
 });
 
-router.patch('comments.update', '/:id', loadComment, async (ctx) => {
+router.patch('comments.update', '/:id', loadComment, authenticate, async (ctx) => {
   const { comment } = ctx.state;
   try {
     const { content } = ctx.request.body;
@@ -44,7 +58,7 @@ router.patch('comments.update', '/:id', loadComment, async (ctx) => {
   }
 });
 
-router.del('comments.delete', '/:id', loadComment, async (ctx) => {
+router.del('comments.delete', '/:id', loadComment, authenticate, async (ctx) => {
   const { comment } = ctx.state;
   const { patternId } = comment;
   await comment.destroy();
