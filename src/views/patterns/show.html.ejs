@@ -1,5 +1,17 @@
 <br>
 <h1><%- pattern.name %></h1>
+<% if ((currentUser) && ((currentUser.id === pattern.authorId) || (currentUser.role === 'admin'))) { %>
+  <div>
+    <form action="<%- editPatternPath %>">
+      <input type="submit" value="Editar" />
+    </form>
+    <form action="<%- deletePatternPath %>" onclick="return confirm('Estás seguro?');"
+      method="POST">
+      <input type="hidden" name="_method" value="delete" />
+      <input type="submit" value="Eliminar" />
+    </form>
+  </div>
+<% } %>
 <br>
 <div id="hcontainer">
     <div id="left">
@@ -26,11 +38,30 @@
 <div id="long">
     <%- pattern.instructions %>
 </div>
-<h4>Comentarios</h4>
+<% if (currentUser) { %>
+  <%- include('../vote_patterns/_form') %>
+<% } %>
+<br><br>
+<h2><%= patternComments.length %> Comentarios</h2>
 <div id="long">
-  <% commentsList.forEach(comment => { %>
-      <p>- <%- comment.content %><br>
-  <% }); %>
+  <% if (currentUser) { %>
+    <%- include('../comments/_form') %>
+  <% } %>
+  <% patternComments.forEach(comment => { %>
+    <div id="hcontainer">
+      <p><%- comment[0].content %></p>
+      posteado por <%- comment[1].username %>
+      <% if ((currentUser) && ((currentUser.id === comment[1].id) || (currentUser.role === 'admin'))) { %>
+        <form action="<%- editCommentPath(comment[0]) %>">
+          <input type="submit" value="Editar" />
+        </form>
+        <form action="<%- deleteCommentPath(comment[0]) %>" onclick="return confirm('Estás seguro?');" method="POST">
+          <input type="hidden" name="_method" value="delete" />
+          <input type="submit" value="Eliminar" />
+        </form>
+      <% } %>
+    </div>
+  <% }) %>
 </div>
 <br><br>
 <div id="button">

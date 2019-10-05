@@ -1,40 +1,46 @@
-<h1>Category</h1>
-<div id="button">
-    <form action="<%- newCategoryPath %>">
-        <input type="submit" value="Crear Categoría" />
-    </form>
+<div class="contenedor-body-show">
+  <div class="material-show-head">
+    <div class="material-show-element">
+      <h1>Categoría</h1>
+    </div>
+    <div class="material-show-element">
+      <form action="<%- newCategoryPath %>">
+          <input class="material-add-button" type="submit" value="+" />
+      </form>
+    </div>
+  </div>
+  <div class="material-show-list">
+    <div class="list-materials">
+      <div class="title">
+        <h2 class="label-content">Lista de Categorías</h2>
+      </div>
+      <% if (!categoriesList.length) { %>
+        <div>
+          <p>No hay categorías!</p>
+        </div>
+      <% } else { %>
+      <div class="all-materials">
+        <% categoriesList.forEach((category) => { %>
+          <div class="material_container">
+            <div class="material_element">
+                <a class="material-name" id="material-text"><%- category.name %></a>
+            </div>
+            <div class="material_element">
+              <form action="<%- editCategoryPath(category) %>">
+                <input class="boton-material" id="boton-material" type="submit" value="Editar" />
+              </form>
+            </div>
+            <div class="material_element">
+              <form action="<%- deleteCategoryPath(category) %>" method="POST">
+                <input type="hidden" name="_method" value="delete" />
+                <input class="boton-material" id="boton-material" type="submit" value="Eliminar" />
+              </form>
+            </div>
+          </div>
+        <% }) %>
+        <% } %>
+      </div>
+    </div>
+  </div>
 </div>
-<div id="panel">
-<h2>Lista de Categorias</h2>
-<% if (!categoriesList.length) { %>
-  <p>No hay categorías!</p>
-<% } else { %>
-  <table>
-    <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Puntaje</th>
-          <th colspan="2">Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-      <% categoriesList.forEach((category) => { %>
-        <tr>
-          <td><%- category.name %></td>
-          <td>
-            <form action="<%- editCategoryPath(category) %>">
-              <input type="submit" value="Editar" />
-            </form>
-          </td>
-          <td>
-            <form action="<%- deleteCategoryPath(category) %>" method="POST">
-              <input type="hidden" name="_method" value="delete" />
-              <input type="submit" value="Eliminar" />
-            </form>
-          </td>
-        </tr>
-      <% }) %>
-    </tbody>
-  </table>
-<% } %>
-</div>
+

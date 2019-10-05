@@ -2,6 +2,7 @@ const KoaRouter = require('koa-router');
 
 const router = new KoaRouter();
 
+// Loads a particular material
 async function loadMaterial(ctx, next) {
   ctx.state.material = await ctx.orm.material.findByPk(ctx.params.id);
   return next();
@@ -9,10 +10,10 @@ async function loadMaterial(ctx, next) {
 
 router.get('materials.list', '/', async (ctx) => {
   const materialsList = await ctx.orm.material.findAll();
+  materialsList.sort((a, b) => a.updatedAt - b.updatedAt).reverse();
   await ctx.render('materials/index', {
     materialsList,
     newMaterialPath: ctx.router.url('materials.new'),
-    materialPath: (material) => ctx.router.url('materials.show', { id: material.id }),
     editMaterialPath: (material) => ctx.router.url('materials.edit', { id: material.id }),
     deleteMaterialPath: (material) => ctx.router.url('materials.delete', { id: material.id }),
   });
@@ -45,6 +46,7 @@ router.post('materials.create', '/', async (ctx) => {
     await ctx.render('materials/new', {
       material,
       errors: validationError.errors,
+      materialsPath: ctx.router.url('materials.list'),
       submitMaterialPath: ctx.router.url('materials.create'),
     });
   }
@@ -54,16 +56,17 @@ router.patch('materials.update', '/:id', loadMaterial, async (ctx) => {
   const { material } = ctx.state;
   try {
     const {
-      name, instructions, image, video,
+      name, description,
     } = ctx.request.body;
     await material.update({
-      name, instructions, image, video,
+      name, description,
     });
     ctx.redirect(ctx.router.url('materials.list'));
   } catch (validationError) {
     await ctx.render('materials/edit', {
       material,
       errors: validationError.errors,
+      materialsPath: ctx.router.url('materials.list'),
       submitMaterialPath: ctx.router.url('materials.update'),
     });
   }
@@ -74,7 +77,5 @@ router.del('materials.delete', '/:id', loadMaterial, async (ctx) => {
   await material.destroy();
   ctx.redirect(ctx.router.url('materials.list'));
 });
-
-
 
 module.exports = router;

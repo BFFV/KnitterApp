@@ -11,22 +11,27 @@ module.exports = {
       allowNull: false,
       type: Sequelize.STRING,
     },
+
     score: {
       allowNull: false,
       defaultValue: 0,
-      type: Sequelize.INTEGER,
+      type: Sequelize.FLOAT,
     },
+
     instructions: {
       allowNull: false,
       type: Sequelize.TEXT,
     },
+
     video: {
       type: Sequelize.STRING,
     },
+
     image: {
       allowNull: false,
       type: Sequelize.STRING,
     },
+
     tension: {
       allowNull: false,
       type: Sequelize.STRING,
@@ -37,6 +42,7 @@ module.exports = {
       allowNull: false,
       type: Sequelize.DATE,
     },
+
     updatedAt: {
       allowNull: false,
       type: Sequelize.DATE,

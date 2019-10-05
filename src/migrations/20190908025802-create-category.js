@@ -11,10 +11,12 @@ module.exports = {
       allowNull: false,
       type: Sequelize.STRING,
     },
+
     description: {
       allowNull: false,
       type: Sequelize.TEXT,
     },
+
     accepted: {
       allowNull: false,
       defaultValue: false,
@@ -26,6 +28,7 @@ module.exports = {
       allowNull: false,
       type: Sequelize.DATE,
     },
+
     updatedAt: {
       allowNull: false,
       type: Sequelize.DATE,

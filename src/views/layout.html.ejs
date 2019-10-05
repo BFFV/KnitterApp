@@ -7,34 +7,58 @@
     <% if (env !== 'development') { %>
       <link rel="stylesheet" href="<%= assetPath('app.css') %>">
     <% } %>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Dancing+Script" />
   </head>
 
   <body>
     <header>
       <div class="topnav" id="navbar">
-        <a class="active" href="/">Home</a>
-        <a href="/patterns">Patrones</a>
-        <a href="/categories">Categorías</a>
-        <a href="/materials">Materiales</a>
-        <a href="/users">Usuarios</a>
-        <a href="/vote_patterns">Votos</a>
-        <a href="/comments">Comentarios</a>
-        <div id="user-bar">
-          <% if (currentUser) { %>
-            <span class="name">Hola <%= currentUser.username %></span>
+        <div>
+          <!-- poner logo-->
+          <a class="nav-text" href="/">Home</a>
+        </div>
+        <div>
+          <a class="nav-text" href="/patterns">Patrones</a>
+        </div>
+        <% if ((currentUser) && ((currentUser.role === 'admin') || (currentUser.role === 'top'))) { %>
+          <div class="hide-500">
+            <a class="nav-text"  href="/categories">Categorías</a>
+          </div>
+          <div class="hide-690">
+            <a class="nav-text" href="/materials">Materiales</a>
+          </div>
+        <% } %>
+        <% if ((currentUser) && (currentUser.role === 'admin')) { %>
+          <div class="hide-750">
+              <a class="nav-text" href="/users">Usuarios</a>
+          </div>
+        <% } %>
+        <% if (currentUser) { %>
+          <div class="hide-750">
+            <a class="nav-text" href="/users/<%- currentUser.id %>">Perfil</a>
+          </div>
+          <div>
+            <span class="name">Hola <%= currentUser.username %>!</span>
             <form action="<%= destroySessionPath %>" method="post">
               <input type="hidden" name="_method" value="delete" />
-              <input type="submit" value="Logout" />
+              <input type="submit" value="Cerrar Sesión" />
             </form>
-          <% } else { %>
-            <span class="name"></span>
-            <a href="<%= newSessionPath %>">Login</a>
-          <% } %>
+          </div>
+        <% } else { %>
+          <div>
+            <a class="nav-text" href="<%= newSessionPath %>">Iniciar Sesión</a>
+          </div>
+        <% } %>
+        <% if (flashMessage) { %>
+          <div class="alert-container"><br>
+            <center><%= flashMessage.warning %></center>
+          </div>
+        <% } %>
+        <div class="nav-text">
         </div>
       </div>
     </header>
     <%- body %>
     <script src="<%= assetPath('app.js') %>"></script>
   </body>
-
 </html>

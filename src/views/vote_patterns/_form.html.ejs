@@ -1,74 +1,31 @@
 <div>
-    <% if (locals.errors) { %>
-      <div class="errors">
-        Ocurrieron los siguientes errores:
-        <ul>
-          <% errors.forEach(error => { %>
-            <li><%= error.message %></li>
-          <% }); %>
-        </ul>
+  <% if (locals.errors) { %>
+    <div class="errors">
+      Ocurrieron los siguientes errores:
+      <ul>
+        <% errors.forEach(error => { %>
+          <li><%= error.message %></li>
+        <% }); %>
+      </ul>
+    </div>
+  <% } %>
+  <form action="<%= votePatternPath %>" method="POST">
+    <% if (!votePattern.isNewRecord) { %>
+      <input type="hidden" name="_method" value="PATCH">
+    <% } else { %>
+      <div>
+        <input type="hidden" name="userId" value="<%= currentUser.id %>">
+        <input type="hidden" name="patternId" value="<%= pattern.id %>">
       </div>
     <% } %>
-    <form action="<%= submitVote_patternPath %>" method="post">
-      <% if (!vote_pattern.isNewRecord) { %>
-        <input type="hidden" name="_method" value="patch" />
-        <div id="panel">
-          <div>
-            <label for="userId">UserId:</label>
-            <select name="userId" required>
-              <% usersList.forEach(user => { %>
-                <option value="<%- user.id %>"><%- user.username %></option>
-              <% }); %>
-            </select>
-          </div>
-          <div>
-            <label for="patternId">Patrón:</label>
-            <select name="patternId" required>
-              <% patternsList.forEach(pattern => { %>
-                <option value="<%- pattern.id %>"><%- pattern.name %></option>
-              <% }); %>
-            </select>
-          </div>
-          <div>
-            <label for="rating">Calidad:</label>
-            <select name="rating" required>
-              <% options.forEach(option => { %>
-                <option value="<%- option %>"><%- option %></option>
-              <% }); %>
-            </select>
-          </div>
-        </div>
-      <% } %>
-      <div id="hcontainer">
-      <% if (vote_pattern.isNewRecord) { %>
-        <div>
-          <label for="userId">Votante:</label>
-          <select name="userId" required>
-            <% usersList.forEach(user => { %>
-              <option value="<%- user.id %>"><%- user.username %></option>
-            <% }); %>
-          </select>
-        </div>
-        <div>
-          <label for="patternId">Patron a votar:</label>
-          <select name="patternId" required>
-            <% patternsList.forEach(pattern => { %>
-              <option value="<%- pattern.id %>"><%- pattern.name %></option>
-            <% }); %>
-          </select>
-        </div>
-        <div>
-          <label for="rating">Calidad:</label>
-          <select name="rating" required>
-            <% options.forEach(option => { %>
-              <option value="<%- option %>"><%- option %></option>
-            <% }); %>
-          </select>
-        </div>
-        <input type="submit" name="create" value="Crear" />
-      <% } else { %>
-        <input type="submit" name="update" value="Actualizar" />
-      <% } %>
-        </div>
-    </form>
-  </div>
+    <div>
+      <label for="rating">Calidad:</label>
+      <select name="rating" required>
+        <% options.forEach(option => { %>
+          <option value="<%- option %>"><%- option %></option>
+        <% }); %>
+      </select>
+    </div>
+    <input type="submit" name="create" value="Puntuar" />
+  </form>
+</div>

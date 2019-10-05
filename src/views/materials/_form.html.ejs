@@ -1,32 +1,38 @@
-<div>
-    <% if (locals.errors) { %>
-      <div class="errors">
-        Ocurrieron los siguientes errores:
-        <ul>
-          <% errors.forEach(error => { %>
-            <li><%= error.message %></li>
-          <% }); %>
-        </ul>
-      </div>
+<div class="form">
+  <% if (locals.errors) { %>
+    <div class="errors">
+      Ocurrieron los siguientes errores:
+      <ul>
+        <% errors.forEach(error => { %>
+          <li><%= error.message %></li>
+        <% }); %>
+      </ul>
+    </div>
+  <% } %>
+  <form action="<%= submitMaterialPath %>" method="POST">
+    <% if (!material.isNewRecord) { %>
+      <input type="hidden" name="_method" value="PATCH" />
     <% } %>
-    <form action="<%= submitMaterialPath %>" method="post">
-      <% if (!material.isNewRecord) { %>
-        <input type="hidden" name="_method" value="patch" />
-      <% } %>
-      <div id="panel">
-      <div>
-        <label for="name">Nombre:</label>
+    <div id="panel">
+      <div class="panel-content">
+        <label class="user-parag-list" for="name">Nombre:</label>
+      </div>
+      <div class="panel-content">
         <input type="text" name="name" size="40" value="<%= material.name %>" required/>
       </div>
-      <div>
-        <label for="description">Descripción:</label><br><br>
+      <div class="panel-content">
+        <label class="user-parag-list" for="description">Descripción:</label>
+      </div>
+      <div class="panel-content">
         <textarea rows="8" cols="100" type="text" required name="description"><%= material.description %></textarea>
       </div>
-      <% if (material.isNewRecord) { %>
-        <input type="submit" name="create" value="Crear" />
-      <% } else { %>
-        <input type="submit" name="update" value="Actualizar" />
-      <% } %>
+      <div class="button_space">
+        <% if (material.isNewRecord) { %>
+          <input id="boton" type="submit" name="create" value="Crear" />
+        <% } else { %>
+          <input id="boton" type="submit" name="update" value="Actualizar" />
+        <% } %>
       </div>
-    </form>
-  </div>
+    </div>
+  </form>
+</div>

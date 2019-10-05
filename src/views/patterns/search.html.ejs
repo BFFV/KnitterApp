@@ -1,0 +1,24 @@
+<div>
+  <form action="<%- patternsPath %>", method="GET">
+    <label for="name">Nombre:</label>
+    <input type="text" name="name" />
+    <label for="category">Categoría:</label>
+    <select name="category">
+      <option value="all">Todas</option>
+      <% categories.forEach(category => { %>
+        <option value="<%- category.id %>"><%- category.name %></option>
+      <% }); %>
+    </select>
+    <label for="sorting">Ordenar por:</label>
+    <select name="sorting">
+      <option value="recent">Más Reciente</option>
+      <option value="popular">Más Popular</option>
+    </select>
+    <br>
+    <label for="materials">Materiales:</label><br>
+    <% materials.forEach(material => { %>
+      <input type="checkbox" name="materials" value="<%- material.id %>"><%- material.name %><br>
+    <% }); %>
+    <input type="submit" value="Buscar" />
+  </form>
+</div>

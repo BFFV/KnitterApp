@@ -2,6 +2,7 @@ const KoaRouter = require('koa-router');
 
 const router = new KoaRouter();
 
+// Loads a particular category
 async function loadCategory(ctx, next) {
   ctx.state.category = await ctx.orm.category.findByPk(ctx.params.id);
   return next();
@@ -9,10 +10,10 @@ async function loadCategory(ctx, next) {
 
 router.get('categories.list', '/', async (ctx) => {
   const categoriesList = await ctx.orm.category.findAll();
+  categoriesList.sort((a, b) => a.updatedAt - b.updatedAt).reverse();
   await ctx.render('categories/index', {
     categoriesList,
     newCategoryPath: ctx.router.url('categories.new'),
-    categoryPath: (category) => ctx.router.url('categories.show', { id: category.id }),
     editCategoryPath: (category) => ctx.router.url('categories.edit', { id: category.id }),
     deleteCategoryPath: (category) => ctx.router.url('categories.delete', { id: category.id }),
   });
@@ -45,6 +46,7 @@ router.post('categories.create', '/', async (ctx) => {
     await ctx.render('categories/new', {
       category,
       errors: validationError.errors,
+      categoriesPath: ctx.router.url('categories.list'),
       submitCategoryPath: ctx.router.url('categories.create'),
     });
   }
@@ -54,16 +56,17 @@ router.patch('categories.update', '/:id', loadCategory, async (ctx) => {
   const { category } = ctx.state;
   try {
     const {
-      name, instructions, image, video,
+      name, description,
     } = ctx.request.body;
     await category.update({
-      name, instructions, image, video,
+      name, description,
     });
     ctx.redirect(ctx.router.url('categories.list'));
   } catch (validationError) {
     await ctx.render('categories/edit', {
       category,
       errors: validationError.errors,
+      categoriesPath: ctx.router.url('categories.list'),
       submitCategoryPath: ctx.router.url('categories.update'),
     });
   }
@@ -74,7 +77,5 @@ router.del('categories.delete', '/:id', loadCategory, async (ctx) => {
   await category.destroy();
   ctx.redirect(ctx.router.url('categories.list'));
 });
-
-
 
 module.exports = router;

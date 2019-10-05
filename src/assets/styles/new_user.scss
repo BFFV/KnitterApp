@@ -1,0 +1,40 @@
+
+
+.button_space{
+  padding-top: 15px;
+}
+
+.hide{
+  display: none;
+}
+
+.panel{
+  display: flex;
+  justify-items: flex-start;
+  flex-direction: column;
+}
+
+.panel-content{
+  display: flex;
+}
+
+.contenedor-body#body-container{
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+}
+
+.content-new-user{
+  justify-items: center;
+}
+
+.form{
+  width:400px;
+}
+
+@media (min-width: 720px) {
+  .form{
+    width:100%;
+  }
+}
