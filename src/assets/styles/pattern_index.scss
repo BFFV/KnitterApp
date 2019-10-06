@@ -1,0 +1,110 @@
+
+h2 {
+  text-decoration: none;
+  font-family: "Dancing Script";
+  font-size: 40px;
+  color:  #26bfbf;
+  font-weight: 700 ;
+  align-self: auto;
+  margin: 0px;
+  padding-bottom: 20px;
+}
+
+.pattern-seach{
+  display: flex;
+  flex-direction: row;
+  padding-bottom:40px;
+}
+
+.search-container{
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 20px;
+  height: 200px;
+
+}
+
+.search-element{
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  justify-items: left;
+  align-items: left;
+  padding-right: 10%;
+
+}
+
+.search-element-content{
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  height: 100%;
+}
+
+.search-subelement{
+  display: flex;
+  flex-direction: row;
+  height: 30%;
+  padding-bottom:20px;
+  align-items: center;
+}
+
+.box-select{
+  height: 20px;
+  width: 50%;
+}
+
+.material-checkbox-search{
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+}
+
+.material-checkbox-search#checkbox-pattern{
+  height: 200px;;
+}
+
+.material-check-box-content{
+  display: flex;
+  flex-direction: row;
+  justify-items: flex-start;
+  align-items: center;
+}
+
+#materials-text{
+  padding: 0px;
+  margin: 0px;
+}
+
+#content-sub-body{
+  margin-top:20px;
+}
+
+.all-pattern{
+  display:flex;
+  flex-direction: row;
+  overflow-y: scroll;
+  height: 200px;
+}
+
+.pattern-container{
+  width: 30%;
+  border-style: solid;
+  border-color: #26bfbf;
+  border-radius: 15px;
+  padding: 15px;
+  padding-bottom: 30px;
+}
+
+.pattern{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 200px;
+  margin-bottom: 20px;
+}
+
+.pattern-element{
+  padding-bottom: 20px;
+
+}

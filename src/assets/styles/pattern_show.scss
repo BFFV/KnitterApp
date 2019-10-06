@@ -1,0 +1,62 @@
+
+.content-body-header{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 400px;
+  flex-wrap: wrap;
+}
+
+.picture-show{
+  width: 30%;
+  height: 90%;
+  border-radius: 50%;
+  border-style: solid;
+  border-color: #26bfbf;
+  align-items: center;
+  justify-items: center;
+}
+
+.center-header{
+  padding-left:80px;
+  width: 30%;
+  height: 90%;
+  align-items: center;
+  justify-items: center;
+  place-items: center;
+}
+
+.youtube{
+  height: 80%;
+  width: 100%;
+}
+
+.parag{
+  font-family: arial;
+  font-size: 13px;
+  color: gray;
+
+}
+
+#boton-vote{
+  background-color: #26bfbf;
+  margin-top: 15px;
+  width: 70%;
+  height: 30px;
+  font-family: "Dancing Script";
+  font-size: 20px;
+  border-style: none;
+  color: white;
+  border-radius: 15px;
+
+}
+
+.middle-show{
+  display:  flex;
+  flex-direction: row;
+  width: 100%;
+  height: 150px;
+}
+
+
+

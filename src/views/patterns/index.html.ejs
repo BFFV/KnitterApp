@@ -1,50 +1,65 @@
 
-<h1>Patrones</h1>
-<% if (currentUser) { %>
-  <form action="<%- newPatternPath %>">
-      <input type="submit" value="Crear Patrón de Dibujo" />
-  </form>
-<% } %>
-<div id="panel">
-<h2>Buscar Patrones</h2>
-<%- include('search') %>
-<h2>Lista de Patrones</h2>
-<% if (!patternsList.length) { %>
-  <p>No hay patrones!</p>
-<% } else { %>
-  <table>
-    <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Puntaje</th>
-          <th colspan="2">Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-      <% patternsList.forEach((pattern) => { %>
-        <tr>
-          <td><a href="<%- patternPath(pattern) %>"><%- pattern.name %></a></td>
-          <td><%- pattern.score %>/5</td>
-          <% if (currentUser) { %>
-            <% if ((currentUser.id === pattern.authorId) || (currentUser.role === 'admin')) { %>
-            <td>
-              <form action="<%- editPatternPath(pattern) %>">
-                <input type="submit" value="Editar" />
-              </form>
-            </td>
-            <td>
-              <form action="<%- deletePatternPath(pattern) %>" onclick="return confirm('Estás seguro?');"
-                method="POST">
-                <input type="hidden" name="_method" value="delete" />
-                <input type="submit" value="Eliminar" />
-              </form>
-            </td>
-            <% } else { %>
-              <td>Ninguna</td>
-            <% } %>
-          </tr>
+<div class="contenedor-body-show">
+  <div class="material-show-head">
+    <div class="material-show-element">
+        <h1>Patrones</h1>
+    </div>
+    <div class="material-show-element">
+      <% if (currentUser) { %>
+        <form action="<%- newPatternPath %>">
+            <input class="material-add-button" type="submit" value="+" />
+        </form>
+      <% } %>
+    </div>
+  </div>
+  <div class="pattern-search">
+    <div class="search-content">
+      <h2>Buscar Patrones</h2>
+    </div>
+    <div class="search-content">
+      <%- include('search') %>
+    </div>
+  </div>
+  <div class="patterns-list" id="content-sub-body">
+    <div class="pattern-list-element">
+      <h2>Lista de Patrones</h2>
+    </div>
+    <div class="pattern-list-element">
+      <div class="all-pattern">
+        <% if (!patternsList.length) { %>
+          <p>No hay patrones!</p>
+        <% } else { %>
+        <div class="pattern-container">
+          <% patternsList.forEach((pattern) => { %>
+          <div class="pattern">
+            <div class="pattern-element">
+              <a class="parag-list" href="<%- patternPath(pattern) %>"><%- pattern.name %></a>
+            </div>
+            <div class="pattern-element">
+              <a class="parag-list">Puntaje: <%- pattern.score %>/5</a>
+            </div>
+            <% if (currentUser) { %>
+              <% if ((currentUser.id === pattern.authorId) || (currentUser.role === 'admin')) { %>
+                <div class="pattern-element">
+                <form action="<%- editPatternPath(pattern) %>">
+                  <input id="boton" type="submit" value="Editar" />
+                </form>
+                </div>
+                <div class="pattern-element">
+                <form action="<%- deletePatternPath(pattern) %>" onclick="return confirm('Estás seguro?');"
+                  method="POST">
+                  <input id="boton" type="hidden" name="_method" value="delete" />
+                  <input id="boton" type="submit" value="Eliminar" />
+                </form>
+                </div>
+              <% } else { %>
+              <p>Ninguna!</p>
+              <% } %>
+          </div>
+        </div>
         <% }})}; %>
-
-      </tbody>
-    </table>
+      </div>
+    </div>
+  </div>
 </div>
+

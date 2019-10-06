@@ -1,24 +1,49 @@
-<div>
+<div class="form-search">
   <form action="<%- patternsPath %>", method="GET">
-    <label for="name">Nombre:</label>
-    <input type="text" name="name" />
-    <label for="category">Categoría:</label>
-    <select name="category">
-      <option value="all">Todas</option>
-      <% categories.forEach(category => { %>
-        <option value="<%- category.id %>"><%- category.name %></option>
-      <% }); %>
-    </select>
-    <label for="sorting">Ordenar por:</label>
-    <select name="sorting">
-      <option value="recent">Más Reciente</option>
-      <option value="popular">Más Popular</option>
-    </select>
-    <br>
-    <label for="materials">Materiales:</label><br>
-    <% materials.forEach(material => { %>
-      <input type="checkbox" name="materials" value="<%- material.id %>"><%- material.name %><br>
-    <% }); %>
-    <input type="submit" value="Buscar" />
+    <div class="search-container">
+      <div class="search-element">
+        <div class="search-element-content">
+          <div class="search-subelement">
+            <label class="parag-list" for="name">Nombre:</label>
+            <input type="text" name="name" />
+          </div>
+          <div class="search-subelement">
+            <label class="parag-list" for="category">Categoría:</label>
+            <select class="box-select" name="category">
+              <option value="all">Todas</option>
+              <% categories.forEach(category => { %>
+                <option value="<%- category.id %>"><%- category.name %></option>
+              <% }); %>
+            </select>
+          </div>
+          <div class="search-subelement">
+            <label class="parag-list" for="sorting">Ordenar por:</label>
+            <select class="box-select" name="sorting">
+              <option value="recent">Más Reciente</option>
+              <option value="popular">Más Popular</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+      <div class="search-element">
+        <div class="material-search">
+          <label class="parag-list" id="materials-title" for="materials">Materiales:</label>
+        </div>
+        <div class="material-checkbox-search" id="checkbox-pattern">
+          <% materials.forEach(material => { %>
+            <div class="material-check-box-content">
+              <div class="material-checkbox">
+                <p class="parag-list" id="materials-text"> <%- material.name %> </p>
+              </div>
+              <div class="material-checkbox">
+                <input class="checkbox" type="checkbox" name="materials" value="<%- material.id %>">
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+    </div>
+    <input id="boton" type="submit" value="Buscar" />
   </form>
 </div>
