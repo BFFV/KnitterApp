@@ -18,14 +18,16 @@
   display: flex;
 }
 
-.contenedor-body#body-container{
+.content-body{
   display: flex;
   flex-direction: column;
   justify-items: center;
   align-items: center;
+  margin: 30px;
+  margin-top: 100px;
 }
 
-.content-new-user{
+.content-sub-form{
   justify-items: center;
 }
 
