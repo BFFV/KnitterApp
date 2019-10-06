@@ -1,7 +1,6 @@
 <div>
   <% if (locals.errors) { %>
     <div class="errors">
-      Ocurrieron los siguientes errores:
       <ul>
         <% errors.forEach(error => { %>
           <li><%= error.message %></li>
@@ -18,7 +17,6 @@
         <% if (comment.isNewRecord) { %>
           <div>
             <textarea rows="8" cols="80" type="text" required name="content"></textarea>
-            <input  type="hidden" name="userId" value="<%= currentUser.id %>">
             <input type="hidden" id="patternId" name="patternId" value="<%= pattern.id %>">
           </div>
         <% } else { %>

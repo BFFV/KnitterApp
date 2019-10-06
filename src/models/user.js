@@ -2,19 +2,65 @@ const bcrypt = require('bcrypt');
 
 const PASSWORD_SALT = 10;
 
-async function buildPasswordHash(instance) {
+async function buildPasswordHash(instance, options) {
   if (instance.changed('password')) {
     const hash = await bcrypt.hash(instance.password, PASSWORD_SALT);
     instance.set('password', hash);
+    // eslint-disable-next-line no-param-reassign
+    options.validate = false;
   }
 }
 
 module.exports = (sequelize, DataTypes) => {
   const user = sequelize.define('user', {
-    username: DataTypes.STRING,
-    password: DataTypes.STRING,
-    email: DataTypes.STRING,
-    age: DataTypes.INTEGER,
+    username: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'El nombre no puede ser vacío!',
+        },
+      },
+    },
+    password: {
+      type: DataTypes.STRING,
+      validate: {
+        len: {
+          args: [6, 40],
+          msg: 'La contraseña debe tener entre 6 y 40 caracteres!',
+        },
+        isAlphanumeric: {
+          args: true,
+          msg: 'La contraseña debe tener sólo letras y números!',
+        },
+      },
+    },
+    email: {
+      type: DataTypes.STRING,
+      validate: {
+        isEmail: {
+          args: true,
+          msg: 'Email no válido!',
+        },
+      },
+    },
+    age: {
+      type: DataTypes.INTEGER,
+      validate: {
+        isInt: {
+          args: true,
+          msg: 'La edad debe ser un número entero!',
+        },
+        min: {
+          args: 1,
+          msg: 'La edad debe ser mayor o igual a 1!',
+        },
+        max: {
+          args: 150,
+          msg: 'La edad debe ser menor o igual a 150!',
+        },
+      },
+    },
     photo: DataTypes.STRING,
     role: DataTypes.STRING,
   }, {});
@@ -27,8 +73,8 @@ module.exports = (sequelize, DataTypes) => {
     user.belongsToMany(models.user, { through: 'followers', as: 'followed_by' });
   };
 
-  user.beforeUpdate(buildPasswordHash);
   user.beforeCreate(buildPasswordHash);
+  user.beforeUpdate(buildPasswordHash);
 
   user.prototype.checkPassword = function checkPassword(password) {
     return bcrypt.compare(password, this.password);

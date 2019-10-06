@@ -57,9 +57,13 @@ router.post('categories.create', '/', authenticate, async (ctx) => {
     await category.save({ fields: ['name', 'description'] });
     ctx.redirect(ctx.router.url('categories.list'));
   } catch (validationError) {
+    let { errors } = validationError;
+    if (!errors.length) {
+      errors = [{ message: 'Ese nombre ya está en uso!' }];
+    }
     await ctx.render('categories/new', {
       category,
-      errors: validationError.errors,
+      errors,
       categoriesPath: ctx.router.url('categories.list'),
       submitCategoryPath: ctx.router.url('categories.create'),
     });
@@ -77,9 +81,13 @@ router.patch('categories.update', '/:id', authenticate, loadCategory, async (ctx
     });
     ctx.redirect(ctx.router.url('categories.list'));
   } catch (validationError) {
+    let { errors } = validationError;
+    if (!errors.length) {
+      errors = [{ message: 'Ese nombre ya está en uso!' }];
+    }
     await ctx.render('categories/edit', {
       category,
-      errors: validationError.errors,
+      errors,
       categoriesPath: ctx.router.url('categories.list'),
       submitCategoryPath: ctx.router.url('categories.update'),
     });

@@ -22,6 +22,20 @@ async function authenticate(ctx, next) {
   return 'Unauthorized Access!';
 }
 
+// Validates required parameters
+async function validate(ctx, next) {
+  if (!parseInt(ctx.request.body.patternId, 10)) {
+    ctx.redirect(ctx.router.url('patterns.list'));
+    return 'Invalid Pattern!';
+  }
+  const exists = await ctx.orm.pattern.findByPk(ctx.request.body.patternId);
+  if (exists) {
+    return next();
+  }
+  ctx.redirect(ctx.router.url('patterns.list'));
+  return 'Invalid Pattern!';
+}
+
 router.get('comments.edit', '/:id/edit', loadComment, authenticate, async (ctx) => {
   const { comment } = ctx.state;
   await ctx.render('comments/edit', {
@@ -31,14 +45,16 @@ router.get('comments.edit', '/:id/edit', loadComment, authenticate, async (ctx) 
   });
 });
 
-router.post('comments.create', '/', authenticate, async (ctx) => {
-  const comment = ctx.orm.comment.build(ctx.request.body);
+router.post('comments.create', '/', authenticate, validate, async (ctx) => {
+  const params = ctx.request.body;
+  params.userId = ctx.state.currentUser.id;
+  const comment = ctx.orm.comment.build(params);
   const { patternId } = ctx.request.body;
   try {
     await comment.save({ fields: ['patternId', 'userId', 'content'] });
     ctx.redirect(ctx.router.url('patterns.show', { id: comment.patternId }));
   } catch (validationError) {
-    ctx.redirect(ctx.router.url('patterns.show', { id: patternId, errors: validationError.errors }));
+    ctx.redirect(ctx.router.url('patterns.show', { id: patternId }));
   }
 });
 
@@ -53,7 +69,7 @@ router.patch('comments.update', '/:id', loadComment, authenticate, async (ctx) =
       comment,
       patternPath: ctx.router.url('patterns.show', { id: comment.patternId }),
       errors: validationError.errors,
-      submitCommentPath: ctx.router.url('/'),
+      submitCommentPath: ctx.router.url('comments.update', { id: comment.id }),
     });
   }
 });

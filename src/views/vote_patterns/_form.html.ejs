@@ -1,7 +1,6 @@
 <div>
   <% if (locals.errors) { %>
     <div class="errors">
-      Ocurrieron los siguientes errores:
       <ul>
         <% errors.forEach(error => { %>
           <li><%= error.message %></li>
@@ -14,7 +13,6 @@
       <input type="hidden" name="_method" value="PATCH">
     <% } else { %>
       <div>
-        <input type="hidden" name="userId" value="<%= currentUser.id %>">
         <input type="hidden" name="patternId" value="<%= pattern.id %>">
       </div>
     <% } %>

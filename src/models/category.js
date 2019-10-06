@@ -1,7 +1,23 @@
 module.exports = (sequelize, DataTypes) => {
   const category = sequelize.define('category', {
-    name: DataTypes.STRING,
-    description: DataTypes.TEXT,
+    name: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'El nombre no puede ser vacío!',
+        },
+      },
+    },
+    description: {
+      type: DataTypes.TEXT,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'La descripción no puede ser vacía!',
+        },
+      },
+    },
     accepted: DataTypes.BOOLEAN,
   }, {});
 
