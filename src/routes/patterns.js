@@ -172,12 +172,18 @@ router.post('patterns.create', '/', authenticate, async (ctx) => {
   } catch (validationError) {
     const { categoriesList, materialsList } = await newPatternInfo(ctx);
     materials = [];
+    let { errors } = validationError;
+    if (validationError.name === 'SequelizeUniqueConstraintError') {
+      errors = [{ message: 'Ese nombre ya está en uso!' }];
+    } else if (!errors) {
+      errors = [{ message: 'Parámetros NO válidos!' }];
+    }
     await ctx.render('patterns/new', {
       pattern,
       categoriesList,
       materials,
       materialsList,
-      errors: validationError.errors,
+      errors,
       patternsPath: ctx.router.url('patterns.list'),
       submitPatternPath: ctx.router.url('patterns.create'),
     });
@@ -198,11 +204,15 @@ router.patch('patterns.update', '/:id', loadPattern, authenticate, async (ctx) =
     await setMaterials(materials, pattern);
     ctx.redirect(ctx.router.url('patterns.show', { id: pattern.id }));
   } catch (validationError) {
+    let { errors } = validationError;
+    if (!errors.length) {
+      errors = [{ message: 'Ese nombre ya está en uso!' }];
+    }
     await ctx.render('patterns/edit', {
       pattern,
       materials: patternMaterials,
       materialsList,
-      errors: validationError.errors,
+      errors,
       patternPath: ctx.router.url('patterns.show', { id: pattern.id }),
       submitPatternPath: ctx.router.url('patterns.update', { id: pattern.id }),
     });

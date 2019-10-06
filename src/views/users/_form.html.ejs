@@ -1,7 +1,6 @@
 <div class="form">
     <% if (locals.errors) { %>
       <div class="errors">
-        Ocurrieron los siguientes errores:
         <ul>
           <% errors.forEach(error => { %>
             <li><%= error.message %></li>
@@ -30,22 +29,19 @@
           <label class="user-parag-list" for="password">Contraseña:</label>
         </div>
         <div class="panel-content">
-          <input class="user-input-list" type="password" name="password" size="40" value="<%= user.password %>" required/>
+          <input class="user-input-list" type="password" name="password" size="40" required/>
         </div >
         <div class="panel-content">
           <label class="user-parag-list" for="age">Edad:</label>
         </div>
         <div class="panel-content">
-          <input class="user-input-list" type="number" name="age" min="0" max="150" step="1" value="<%= user.age %>" required/>
+          <input class="user-input-list" type="number" name="age" min="1" max="150" step="1" value="<%= user.age %>" required/>
         </div>
         <div class="panel-content">
           <label class="user-parag-list" for="age">Foto:</label>
         </div>
         <div class="panel-content">
           <input class="user-input-list" type="text" name="photo" size="40" value="<%= user.photo %>" required/>
-        </div>
-        <div class="hide">
-          <input type="hidden" name="role" value="common" />
         </div>
         <div class="button_space">
           <% if (user.isNewRecord) { %>

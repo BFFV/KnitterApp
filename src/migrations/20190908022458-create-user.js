@@ -10,6 +10,7 @@ module.exports = {
     username: {
       allowNull: false,
       type: Sequelize.STRING,
+      unique: true,
     },
 
     password: {
@@ -20,6 +21,7 @@ module.exports = {
     email: {
       allowNull: false,
       type: Sequelize.STRING,
+      unique: true,
     },
 
     age: {

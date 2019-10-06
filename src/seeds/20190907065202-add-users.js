@@ -21,7 +21,7 @@ module.exports = {
         email: 'nariera@uc.cl',
         age: 22,
         photo: 'Foto2',
-        role: 'admin',
+        role: 'top',
         createdAt: new Date(),
         updatedAt: new Date(),
       },

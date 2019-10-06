@@ -1,7 +1,6 @@
 <div class="form">
   <% if (locals.errors) { %>
     <div class="errors">
-      Ocurrieron los siguientes errores:
       <ul>
         <% errors.forEach(error => { %>
           <li><%= error.message %></li>

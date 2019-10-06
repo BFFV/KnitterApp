@@ -57,9 +57,13 @@ router.post('materials.create', '/', authenticate, async (ctx) => {
     await material.save({ fields: ['name', 'description'] });
     ctx.redirect(ctx.router.url('materials.list'));
   } catch (validationError) {
+    let { errors } = validationError;
+    if (!errors.length) {
+      errors = [{ message: 'Ese nombre ya está en uso!' }];
+    }
     await ctx.render('materials/new', {
       material,
-      errors: validationError.errors,
+      errors,
       materialsPath: ctx.router.url('materials.list'),
       submitMaterialPath: ctx.router.url('materials.create'),
     });
@@ -77,9 +81,13 @@ router.patch('materials.update', '/:id', authenticate, loadMaterial, async (ctx)
     });
     ctx.redirect(ctx.router.url('materials.list'));
   } catch (validationError) {
+    let { errors } = validationError;
+    if (!errors.length) {
+      errors = [{ message: 'Ese nombre ya está en uso!' }];
+    }
     await ctx.render('materials/edit', {
       material,
-      errors: validationError.errors,
+      errors,
       materialsPath: ctx.router.url('materials.list'),
       submitMaterialPath: ctx.router.url('materials.update'),
     });
