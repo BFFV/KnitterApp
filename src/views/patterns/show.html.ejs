@@ -63,44 +63,50 @@
     </div>
   </div>
   <div class="middle-show">
-    <div >
-        <div id="long">
-            <%- pattern.instructions %>
-        </div>
-
-        <br><br>
-        <h2><%= patternComments.length %> Comentarios</h2>
-        <div id="long">
-          <% if (currentUser) { %>
-            <%- include('../comments/_form') %>
-          <% } %>
-          <% patternComments.forEach(comment => { %>
-            <div id="hcontainer">
-              <p><%- comment[0].content %></p>
-              posteado por <%- comment[1].username %>
-              <% if ((currentUser) && ((currentUser.id === comment[1].id) || (currentUser.role === 'admin'))) { %>
-                <form action="<%- editCommentPath(comment[0]) %>">
-                  <input type="submit" value="Editar" />
-                </form>
-                <form action="<%- deleteCommentPath(comment[0]) %>" onclick="return confirm('Estás seguro?');" method="POST">
-                  <input type="hidden" name="_method" value="delete" />
-                  <input type="submit" value="Eliminar" />
-                </form>
-              <% } %>
-            </div>
-          <% }) %>
-        </div>
-        <br><br>
-        <div id="button">
-            <form action="<%- patternsPath %>">
-                <input type="submit" value="Volver" />
-            </form>
-        </div>
+    <div class="instruction-content">
+      <h2>Intrucciones:</h2>
+      <p><%- pattern.instructions %></p>
     </div>
-    <div>
-
+    <div class="comment-form">
+      <h2><%= patternComments.length %> Comentarios</h2>
+      <% if (currentUser) { %>
+        <%- include('../comments/_form') %>
+      <% } %>
     </div>
   </div>
+  <div  class="bottom-show">
+    <div class="comments-all">
+      <% patternComments.forEach(comment => { %>
+        <div class="comment">
+          <div class="comment-item">
+            <p  class="parag"><%- comment[0].content %></p>
+          </div>
+          <% if ((currentUser) && ((currentUser.id === comment[1].id) || (currentUser.role === 'admin'))) { %>
+          <div class="comment-item">
+            <form action="<%- editCommentPath(comment[0]) %>">
+              <input type="submit" value="Editar" />
+            </form>
+          </div>
+          <div class="comment-item">
+            <form action="<%- deleteCommentPath(comment[0]) %>" onclick="return confirm('Estás seguro?');" method="POST">
+              <input type="hidden" name="_method" value="delete" />
+              <input type="submit" value="Eliminar" />
+            </form>
+          </div>
+          <% } else { %>
+          <div class="comment-item">
+            <p> posteado por <%- comment[1].username %> </p>
+          </div>
+        </div>
+      <% }}); %>
+    </div>
+  </div>
+  <form action="<%- patternsPath %>">
+      <input type="submit" value="Volver" />
+  </form>
 </div>
+
+
+
 
 

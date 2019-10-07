@@ -55,8 +55,42 @@
   display:  flex;
   flex-direction: row;
   width: 100%;
-  height: 150px;
+  height: 250px;
 }
 
+.instruction-content{
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  padding-right: 100px;
+}
 
+.comment-form{
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+}
+
+.comments-all{
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+
+  height: 150px;
+  margin-bottom: 20px;
+}
+
+.comment{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+
+}
+
+.comment-item{
+  align-items: center;
+  justify-items: center;
+  padding-right: 20px;
+}
 
