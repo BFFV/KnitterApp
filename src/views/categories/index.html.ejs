@@ -26,12 +26,16 @@
                 <a class="material-name" id="material-text"><%- category.name %></a>
             </div>
             <div class="material_element">
+              <a class="material-name" id="material-text"><%- category.description %></a>
+            </div>
+            <div class="material_element">
               <form action="<%- editCategoryPath(category) %>">
                 <input class="boton-material" id="boton-material" type="submit" value="Editar" />
               </form>
             </div>
             <div class="material_element">
-              <form action="<%- deleteCategoryPath(category) %>" method="POST">
+              <form action="<%- deleteCategoryPath(category) %>" onclick="return confirm('Estás seguro?');"
+                method="POST">
                 <input type="hidden" name="_method" value="delete" />
                 <input class="boton-material" id="boton-material" type="submit" value="Eliminar" />
               </form>
@@ -41,6 +45,11 @@
         <% } %>
       </div>
     </div>
+  </div>
+  <div class="material-show-element">
+    <form action="<%- rootPath %>">
+      <input class="boton-material" id="boton-material" type="submit" value="Volver" />
+    </form>
   </div>
 </div>
 

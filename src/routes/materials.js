@@ -30,6 +30,7 @@ router.get('materials.list', '/', authenticate, async (ctx) => {
     newMaterialPath: ctx.router.url('materials.new'),
     editMaterialPath: (material) => ctx.router.url('materials.edit', { id: material.id }),
     deleteMaterialPath: (material) => ctx.router.url('materials.delete', { id: material.id }),
+    rootPath: '/',
   });
 });
 

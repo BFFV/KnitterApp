@@ -30,6 +30,7 @@ router.get('categories.list', '/', authenticate, async (ctx) => {
     newCategoryPath: ctx.router.url('categories.new'),
     editCategoryPath: (category) => ctx.router.url('categories.edit', { id: category.id }),
     deleteCategoryPath: (category) => ctx.router.url('categories.delete', { id: category.id }),
+    rootPath: '/',
   });
 });
 

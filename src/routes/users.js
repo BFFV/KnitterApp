@@ -31,6 +31,7 @@ router.get('users.list', '/', authenticate, async (ctx) => {
     userPath: (user) => ctx.router.url('users.show', { id: user.id }),
     editUserPath: (user) => ctx.router.url('users.edit', { id: user.id }),
     deleteUserPath: (user) => ctx.router.url('users.delete', { id: user.id }),
+    rootPath: '/',
   });
 });
 
@@ -49,7 +50,6 @@ router.get('users.edit', '/:id/edit', loadUser, authenticate, async (ctx) => {
     user,
     userPath: ctx.router.url('users.show', { id: user.id }),
     submitUserPath: ctx.router.url('users.update', { id: user.id }),
-    rootPath: '/',
   });
 });
 
@@ -112,7 +112,7 @@ router.get('users.show', '/:id', loadUser, async (ctx) => {
   const { user } = ctx.state;
   await ctx.render('users/show', {
     user,
-    rootPath: '/',
+    usersPath: ctx.router.url('users.list'),
     editUserPath: ctx.router.url('users.edit', { id: user.id }),
     deleteUserPath: ctx.router.url('users.delete', { id: user.id }),
   });

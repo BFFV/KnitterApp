@@ -5,6 +5,7 @@ const router = new KoaRouter();
 router.get('session.new', '/new', (ctx) => ctx.render('session/new', {
   createSessionPath: ctx.router.url('session.create'),
   newUserPath: ctx.router.url('users.new'),
+  rootPath: '/',
   notice: ctx.flashMessage.notice,
 }));
 

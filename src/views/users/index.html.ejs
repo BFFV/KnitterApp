@@ -33,12 +33,18 @@
           </form>
         </div>
         <div class="user_show">
-          <form action="<%- deleteUserPath(user) %>" method="POST">
+          <form action="<%- deleteUserPath(user) %>" onclick="return confirm('Estás seguro?');"
+            method="POST">
             <input type="hidden" name="_method" value="delete" />
             <input id="boton" type="submit" value="Eliminar" />
           </form>
         </div>
       </div>
     <% })} %>
+  </div>
+  <div>
+    <form action="<%- rootPath %>">
+      <input class="boton-material" id="boton-material" type="submit" value="Volver" />
+    </form>
   </div>
 </div>
