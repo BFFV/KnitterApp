@@ -1,7 +1,6 @@
 <div>
   <% if (locals.errors) { %>
     <div class="errors">
-      Ocurrieron los siguientes errores:
       <ul>
         <% errors.forEach(error => { %>
           <li><%= error.message %></li>
@@ -14,18 +13,17 @@
       <input type="hidden" name="_method" value="PATCH">
     <% } else { %>
       <div>
-        <input type="hidden" name="userId" value="<%= currentUser.id %>">
         <input type="hidden" name="patternId" value="<%= pattern.id %>">
       </div>
     <% } %>
     <div>
-      <label for="rating">Calidad:</label>
-      <select name="rating" required>
+      <label  class="parag" for="rating">Calidad:</label>
+      <select  name="rating" required>
         <% options.forEach(option => { %>
           <option value="<%- option %>"><%- option %></option>
         <% }); %>
       </select>
     </div>
-    <input type="submit" name="create" value="Puntuar" />
+    <input id="boton-vote" type="submit" name="create" value="Puntuar" />
   </form>
 </div>

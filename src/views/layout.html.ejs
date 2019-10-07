@@ -37,8 +37,8 @@
           <div class="hide-750">
             <a class="nav-text" href="/users/<%- currentUser.id %>">Perfil</a>
           </div>
-          <div>
-            <span class="name">Hola <%= currentUser.username %>!</span>
+          <div class="hide-750">
+            <span class="nav-text">Hola <%= currentUser.username %>!</span>
             <form action="<%= destroySessionPath %>" method="post">
               <input type="hidden" name="_method" value="delete" />
               <input type="submit" value="Cerrar Sesión" />

@@ -4,7 +4,7 @@
   flex-direction: row;
   justify-content: flex-start;
   flex-wrap: wrap;
-  height: 350px;
+  height: 400px;
   overflow-y: scroll;
   margin-top: 20px;
 }
@@ -26,18 +26,15 @@
   display: block;
 }
 
-.user-parag-list{
-  color: gray
-}
-
 .user_show#texto_de_pagina{
   font-family: Arial;
 }
 
-.user-parag-list{
+.parag-list{
   font-family: Arial;
   font-weight: 400 ;
   padding: 10px;
   padding-left: 0px;
   font-style: italic;
+  color: gray
 }

@@ -1,0 +1,96 @@
+
+.content-body-header{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 400px;
+  flex-wrap: wrap;
+}
+
+.picture-show{
+  width: 30%;
+  height: 90%;
+  border-radius: 50%;
+  border-style: solid;
+  border-color: #26bfbf;
+  align-items: center;
+  justify-items: center;
+}
+
+.center-header{
+  padding-left:80px;
+  width: 30%;
+  height: 90%;
+  align-items: center;
+  justify-items: center;
+  place-items: center;
+}
+
+.youtube{
+  height: 80%;
+  width: 100%;
+}
+
+.parag{
+  font-family: arial;
+  font-size: 13px;
+  color: gray;
+
+}
+
+#boton-vote{
+  background-color: #26bfbf;
+  margin-top: 15px;
+  width: 70%;
+  height: 30px;
+  font-family: "Dancing Script";
+  font-size: 20px;
+  border-style: none;
+  color: white;
+  border-radius: 15px;
+
+}
+
+.middle-show{
+  display:  flex;
+  flex-direction: row;
+  width: 100%;
+  height: 250px;
+}
+
+.instruction-content{
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  padding-right: 100px;
+}
+
+.comment-form{
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+}
+
+.comments-all{
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+
+  height: 150px;
+  margin-bottom: 20px;
+}
+
+.comment{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+
+}
+
+.comment-item{
+  align-items: center;
+  justify-items: center;
+  padding-right: 20px;
+}
+

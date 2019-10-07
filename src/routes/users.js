@@ -5,7 +5,6 @@ const router = new KoaRouter();
 // Loads a particular user
 async function loadUser(ctx, next) {
   ctx.state.user = await ctx.orm.user.findByPk(ctx.params.id);
-  ctx.state.user.password = '';
   ctx.state.access = 'user';
   return next();
 }
@@ -32,6 +31,7 @@ router.get('users.list', '/', authenticate, async (ctx) => {
     userPath: (user) => ctx.router.url('users.show', { id: user.id }),
     editUserPath: (user) => ctx.router.url('users.edit', { id: user.id }),
     deleteUserPath: (user) => ctx.router.url('users.delete', { id: user.id }),
+    rootPath: '/',
   });
 });
 
@@ -50,19 +50,26 @@ router.get('users.edit', '/:id/edit', loadUser, authenticate, async (ctx) => {
     user,
     userPath: ctx.router.url('users.show', { id: user.id }),
     submitUserPath: ctx.router.url('users.update', { id: user.id }),
-    rootPath: '/',
   });
 });
 
 router.post('users.create', '/', async (ctx) => {
-  const user = ctx.orm.user.build(ctx.request.body);
+  const params = ctx.request.body;
+  params.role = 'common';
+  const user = ctx.orm.user.build(params);
   try {
     await user.save({ fields: ['username', 'password', 'email', 'age', 'photo', 'role'] });
     ctx.redirect(ctx.router.url('session.new'));
   } catch (validationError) {
+    let { errors } = validationError;
+    if (validationError.name === 'SequelizeUniqueConstraintError') {
+      errors = [{ message: 'El nombre de usuario o correo ya están en uso!' }];
+    } else if (!errors) {
+      errors = [{ message: 'Parámetros NO válidos!' }];
+    }
     await ctx.render('users/new', {
       user,
-      errors: validationError.errors,
+      errors,
       rootPath: '/',
       submitUserPath: ctx.router.url('users.create'),
     });
@@ -80,9 +87,15 @@ router.patch('users.update', '/:id', loadUser, authenticate, async (ctx) => {
     });
     ctx.redirect(ctx.router.url('users.show', { id: user.id }));
   } catch (validationError) {
+    let { errors } = validationError;
+    if (validationError.name === 'SequelizeUniqueConstraintError') {
+      errors = [{ message: 'El nombre de usuario o correo ya están en uso!' }];
+    } else if (!errors) {
+      errors = [{ message: 'Parámetros NO válidos!' }];
+    }
     await ctx.render('users/edit', {
       user,
-      errors: validationError.errors,
+      errors,
       userPath: ctx.router.url('users.show', { id: user.id }),
       submitUserPath: ctx.router.url('users.update', { id: user.id }),
     });
@@ -92,14 +105,14 @@ router.patch('users.update', '/:id', loadUser, authenticate, async (ctx) => {
 router.del('users.delete', '/:id', loadUser, authenticate, async (ctx) => {
   const { user } = ctx.state;
   await user.destroy();
-  ctx.redirect('/');
+  ctx.redirect(ctx.router.url('users.list'));
 });
 
 router.get('users.show', '/:id', loadUser, async (ctx) => {
   const { user } = ctx.state;
   await ctx.render('users/show', {
     user,
-    rootPath: '/',
+    usersPath: ctx.router.url('users.list'),
     editUserPath: ctx.router.url('users.edit', { id: user.id }),
     deleteUserPath: ctx.router.url('users.delete', { id: user.id }),
   });

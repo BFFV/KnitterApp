@@ -1,6 +1,14 @@
 module.exports = (sequelize, DataTypes) => {
   const comment = sequelize.define('comment', {
-    content: DataTypes.TEXT,
+    content: {
+      type: DataTypes.TEXT,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'El comentario no puede ser vacío!',
+        },
+      },
+    },
     userId: DataTypes.INTEGER,
     patternId: DataTypes.INTEGER,
   }, {});

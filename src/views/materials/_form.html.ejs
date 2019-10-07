@@ -1,7 +1,6 @@
 <div class="form">
   <% if (locals.errors) { %>
     <div class="errors">
-      Ocurrieron los siguientes errores:
       <ul>
         <% errors.forEach(error => { %>
           <li><%= error.message %></li>
@@ -13,18 +12,18 @@
     <% if (!material.isNewRecord) { %>
       <input type="hidden" name="_method" value="PATCH" />
     <% } %>
-    <div id="panel">
+    <div class="panel">
       <div class="panel-content">
-        <label class="user-parag-list" for="name">Nombre:</label>
+        <label class="parag-list" for="name">Nombre:</label>
       </div>
       <div class="panel-content">
-        <input type="text" name="name" size="40" value="<%= material.name %>" required/>
+        <input class="input-list" type="text" name="name" size="40" value="<%= material.name %>" required/>
       </div>
       <div class="panel-content">
-        <label class="user-parag-list" for="description">Descripción:</label>
+        <label class="parag-list" for="description">Descripción:</label>
       </div>
       <div class="panel-content">
-        <textarea rows="8" cols="100" type="text" required name="description"><%= material.description %></textarea>
+        <textarea class="input-list" rows="8" cols="100" type="text" required name="description"><%= material.description %></textarea>
       </div>
       <div class="button_space">
         <% if (material.isNewRecord) { %>

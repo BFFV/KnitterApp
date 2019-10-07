@@ -1,11 +1,35 @@
 module.exports = (sequelize, DataTypes) => {
   const pattern = sequelize.define('pattern', {
-    name: DataTypes.STRING,
+    name: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'El nombre no puede ser vacío!',
+        },
+      },
+    },
     score: DataTypes.FLOAT,
-    instructions: DataTypes.TEXT,
+    instructions: {
+      type: DataTypes.TEXT,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'Las instrucciones no pueden ser vacías!',
+        },
+      },
+    },
     video: DataTypes.STRING,
     image: DataTypes.STRING,
-    tension: DataTypes.STRING,
+    tension: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'La tensión no puede ser vacía!',
+        },
+      },
+    },
   }, {});
 
   pattern.associate = function associate(models) {

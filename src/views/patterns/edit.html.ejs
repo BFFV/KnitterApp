@@ -1,8 +1,14 @@
-<br>
-<h1>Editar Patrón de Dibujo</h1>
-<%- include('_form') %>
-<div id="button">
+
+<div class="content-body" >
+  <div class="content-sub-form">
+    <h1 class="panel-content">Editar Patrón de Dibujo</h1>
+  </div>
+  <div class="content-sub-form">
+    <%- include('_form') %>
+  </div><br>
+  <div>
     <form action="<%- patternPath %>">
-        <input type="submit" value="Volver" />
+      <input class="boton-material" id="boton-material" type="submit" value="Volver" />
     </form>
+  </div>
 </div>

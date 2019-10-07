@@ -19,7 +19,7 @@ async function updatePattern(ctx, next) {
     },
     attributes: [[ctx.orm.sequelize.fn('AVG', ctx.orm.sequelize.col('rating')), 'ratingAvg']],
   });
-  const score = parseFloat(ratingAvg);
+  const score = parseFloat(ratingAvg).toFixed(1);
   await pattern.update({ score });
   ctx.redirect(ctx.router.url('patterns.show', { id: patternId }));
 }
@@ -38,13 +38,29 @@ async function authenticate(ctx, next) {
   return 'Unauthorized Access!';
 }
 
-router.post('vote_patterns.create', '/', authenticate, updatePattern, async (ctx) => {
-  const votePattern = ctx.orm.vote_pattern.build(ctx.request.body);
+// Validates required parameters
+async function validate(ctx, next) {
+  if (!parseInt(ctx.request.body.patternId, 10)) {
+    ctx.redirect(ctx.router.url('patterns.list'));
+    return 'Invalid Pattern!';
+  }
+  const exists = await ctx.orm.pattern.findByPk(ctx.request.body.patternId);
+  if (exists) {
+    return next();
+  }
+  ctx.redirect(ctx.router.url('patterns.list'));
+  return 'Invalid Pattern!';
+}
+
+router.post('vote_patterns.create', '/', authenticate, validate, updatePattern, async (ctx) => {
+  const params = ctx.request.body;
+  params.userId = ctx.state.currentUser.id;
+  const votePattern = ctx.orm.vote_pattern.build(params);
   const { patternId } = ctx.request.body;
   try {
     await votePattern.save({ fields: ['patternId', 'userId', 'rating'] });
   } catch (validationError) {
-    ctx.redirect(ctx.router.url('patterns.show', { id: patternId, errors: validationError.errors }));
+    ctx.redirect(ctx.router.url('patterns.show', { id: patternId }));
   }
   return patternId;
 });
@@ -55,6 +71,7 @@ router.patch('vote_patterns.update', '/:id', loadVotePattern, authenticate, upda
     const { rating } = ctx.request.body;
     await votePattern.update({ rating });
   } catch (validationError) {
+    console.log(validationError);
     ctx.redirect(ctx.router.url('patterns.show', { id: votePattern.patternId }));
   }
   return votePattern.patternId;
