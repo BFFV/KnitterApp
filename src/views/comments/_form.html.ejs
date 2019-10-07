@@ -16,7 +16,7 @@
       <div>
         <% if (comment.isNewRecord) { %>
           <div>
-            <textarea rows="8" cols="80" type="text" required name="content"></textarea>
+            <textarea rows="8" cols="61" type="text" required name="content"></textarea>
             <input type="hidden" id="patternId" name="patternId" value="<%= pattern.id %>">
           </div>
         <% } else { %>
@@ -28,9 +28,9 @@
     </div>
     <div id="hcontainer">
     <% if (comment.isNewRecord) { %>
-      <input type="submit" name="create" value="Comentar" />
+      <input id="boton" type="submit" name="create" value="Comentar" />
     <% } else { %>
-      <input type="submit" name="update" value="Actualizar" />
+      <input id="boton" type="submit" name="update" value="Actualizar" />
     <% } %>
     </div>
   </form>
