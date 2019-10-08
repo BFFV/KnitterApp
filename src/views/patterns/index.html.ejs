@@ -29,33 +29,34 @@
         <% if (!patternsList.length) { %>
           <p>No hay patrones!</p>
         <% } else { %>
-        <div class="pattern-container">
-          <% patternsList.forEach((pattern) => { %>
-          <div class="pattern">
-            <div class="pattern-element">
-              <a class="parag-list" href="<%- patternPath(pattern) %>"><%- pattern.name %></a>
-            </div>
-            <div class="pattern-element">
-              <a class="parag-list">Puntaje: <%- pattern.score %>/5</a>
-            </div>
-            <% if (currentUser) { %>
-              <% if ((currentUser.id === pattern.authorId) || (currentUser.role === 'admin')) { %>
-                <div class="pattern-element">
-                <form action="<%- editPatternPath(pattern) %>">
-                  <input id="boton" type="submit" value="Editar" />
-                </form>
-                </div>
-                <div class="pattern-element">
-                <form action="<%- deletePatternPath(pattern) %>" onclick="return confirm('Estás seguro?');"
-                  method="POST">
-                  <input id="boton" type="hidden" name="_method" value="delete" />
-                  <input id="boton" type="submit" value="Eliminar" />
-                </form>
-                </div>
-              <% } %>
-          </div>
-        </div>
-        <% }})}; %>
+        <% patternsList.forEach((pattern) => { %>
+            <div class="pattern">
+              <div class="pattern-element">
+                <a class="parag-list" href="<%- patternPath(pattern) %>"><%- pattern.name %></a>
+              </div>
+              <div class="pattern-element">
+                <a class="parag-list">Puntaje: <%- pattern.score %>/5</a>
+              </div>
+              <% if (currentUser) { %>
+                <% if ((currentUser.id === pattern.authorId) || (currentUser.role === 'admin')) { %>
+                  <div class="pattern-element">
+                  <form action="<%- editPatternPath(pattern) %>">
+                    <input id="boton" type="submit" value="Editar" />
+                  </form>
+                  </div>
+                  <div class="pattern-element">
+                  <form action="<%- deletePatternPath(pattern) %>" onclick="return confirm('Estás seguro?');"
+                    method="POST">
+                    <input id="boton" type="hidden" name="_method" value="delete" />
+                    <input id="boton" type="submit" value="Eliminar" />
+                  </form>
+                  </div>
+                <% } else { %>
+                <p>Ninguna!</p>
+                <% } %>
+              </div>
+              <% }}) %>
+        <% }; %>
       </div>
     </div>
   </div>
@@ -65,4 +66,3 @@
     </form>
   </div>
 </div>
-
