@@ -17,15 +17,16 @@
     </form>
   </div>
   <div class="user_show">
-    <form action="<%- deleteUserPath %>" method="POST">
+    <form action="<%- deleteUserPath %>" onclick="return confirm('Estás seguro?');"
+      method="POST">
       <input type="hidden" name="_method" value="delete" />
       <input id="boton" type="submit" value="Eliminar Cuenta" />
     </form>
   </div>
   <br><br>
-  <div id="button">
-      <form action="<%- rootPath %>">
-          <input type="submit" value="Volver" />
-      </form>
+  <div>
+    <form action="<%- usersPath %>">
+      <input class="boton-material" id="boton-material" type="submit" value="Volver" />
+    </form>
   </div>
 </div>

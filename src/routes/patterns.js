@@ -121,6 +121,7 @@ router.get('patterns.list', '/', searchPatterns, async (ctx) => {
     patternPath: (pattern) => ctx.router.url('patterns.show', { id: pattern.id }),
     editPatternPath: (pattern) => ctx.router.url('patterns.edit', { id: pattern.id }),
     deletePatternPath: (pattern) => ctx.router.url('patterns.delete', { id: pattern.id }),
+    rootPath: '/',
   });
 });
 
