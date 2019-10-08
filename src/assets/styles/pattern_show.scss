@@ -66,6 +66,7 @@
 .instruction-content{
   display: flex;
   flex-direction: column;
+  white-space: pre-line;
   width: 40%;
   padding-right: 100px;
 }
