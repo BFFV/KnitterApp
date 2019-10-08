@@ -35,7 +35,12 @@
   font-family: arial;
   font-size: 13px;
   color: gray;
+}
 
+.comment-text{
+  font-family: arial;
+  font-size: 14px;
+  color: black;
 }
 
 #boton-vote{
@@ -75,7 +80,6 @@
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
-
   height: 150px;
   margin-bottom: 20px;
 }
