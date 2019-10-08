@@ -46,6 +46,34 @@ async function checkVote(ctx) {
   return vote;
 }
 
+// Gets the time since a comment has been updated
+function updatedTime(date1, date2) {
+  let difference = date2 - date1;
+  let time;
+  const daysDifference = Math.floor(difference / 1000 / 86400);
+  difference -= daysDifference * 1000 * 86400;
+  const hoursDifference = Math.floor(difference / 1000 / 3600);
+  difference -= hoursDifference * 1000 * 3600;
+  const minutesDifference = Math.floor(difference / 1000 / 60);
+  difference -= minutesDifference * 1000 * 60;
+  if (daysDifference > 1) {
+    time = `Hace ${daysDifference} días`;
+  } else if (daysDifference === 1) {
+    time = `Hace ${daysDifference} día`;
+  } else if (hoursDifference > 1) {
+    time = `Hace ${hoursDifference} horas`;
+  } else if (hoursDifference === 1) {
+    time = `Hace ${hoursDifference} hora`;
+  } else if (minutesDifference > 1) {
+    time = `Hace ${minutesDifference} minutos`;
+  } else if (minutesDifference === 1) {
+    time = `Hace ${minutesDifference} minuto`;
+  } else {
+    time = 'Hace unos segundos';
+  }
+  return time;
+}
+
 // Searches for patterns
 async function searchPatterns(ctx, next) {
   const params = ctx.request.query;
@@ -237,7 +265,9 @@ router.get('patterns.show', '/:id', loadPattern, async (ctx) => {
   commentsList.sort((a, b) => a.updatedAt - b.updatedAt).reverse();
   const commentUsers = commentsList.map((c) => c.getUser());
   const usersList = await Promise.all(commentUsers);
-  const patternComments = commentsList.map((e, i) => [e, usersList[i]]);
+  const date = new Date();
+  const patternComments = commentsList.map((e, i) => [e, usersList[i],
+    updatedTime(e.updatedAt, date)]);
   let path = ctx.router.url('vote_patterns.create');
   let votePattern = null;
   if (ctx.state.currentUser) {

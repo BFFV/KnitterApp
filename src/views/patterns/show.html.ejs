@@ -79,7 +79,8 @@
       <% patternComments.forEach(comment => { %>
         <div class="comment">
           <div class="comment-item">
-            <p  class="parag"><%- comment[0].content %></p>
+            <p class="comment-text"><%- comment[0].content %></p>
+            <p class="parag"> <%- comment[2] %> por <%- comment[1].username %> </p>
           </div>
           <% if ((currentUser) && ((currentUser.id === comment[1].id) || (currentUser.role === 'admin'))) { %>
           <div class="comment-item">
@@ -93,12 +94,9 @@
               <input type="submit" value="Eliminar" />
             </form>
           </div>
-          <% } else { %>
-          <div class="comment-item">
-            <p> posteado por <%- comment[1].username %> </p>
-          </div>
+          <% } %>
         </div>
-      <% }}); %>
+      <% }); %>
     </div>
   </div>
   <div>
