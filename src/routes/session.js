@@ -26,6 +26,7 @@ router.put('session.create', '/', async (ctx) => {
     email,
     createSessionPath: ctx.router.url('session.create'),
     newUserPath: ctx.router.url('users.new'),
+    rootPath: '/',
     error,
   });
 });
