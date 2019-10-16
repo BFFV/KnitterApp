@@ -60,10 +60,16 @@ router.post('users.create', '/', async (ctx) => {
   try {
     if (params.password == params.r_password) {
       await user.save({ fields: ['username', 'password', 'email', 'age', 'photo', 'role'] });
-      ctx.redirect(ctx.router.url('session.new'));
+      return ctx.redirect(ctx.router.url('session.new'));
     }
     else {
       errors = [{ message: 'Las contraseñas no coinciden' }]
+      await ctx.render('users/new', {
+      user,
+      errors,
+      rootPath: '/',
+      submitUserPath: ctx.router.url('users.create'),
+    });
     }
   } catch (validationError) {
     let { errors } = validationError;
@@ -72,14 +78,16 @@ router.post('users.create', '/', async (ctx) => {
     } else if (!errors) {
       errors = [{ message: 'Parámetros NO válidos!' }];
     }
-  }
-  await ctx.render('users/new', {
-    user,
-    errors,
-    rootPath: '/',
-    submitUserPath: ctx.router.url('users.create'),
-  });
-});
+      await ctx.render('users/new', {
+      user,
+      errors,
+      rootPath: '/',
+      submitUserPath: ctx.router.url('users.create'),
+    });
+  }});
+
+
+
 
 router.patch('users.update', '/:id', loadUser, authenticate, async (ctx) => {
   const { user } = ctx.state;
