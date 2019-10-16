@@ -29,7 +29,21 @@
         <label class="parag-list" for="password">Contraseña:</label>
       </div>
       <div class="panel-content">
-        <input class="input-list" type="password" name="password" size="40" required/>
+      	<% if (!user.isNewRecord) { %>
+        	<input class="input-list" type="password" name="password" size="40" required/>
+        <% } else { %>
+            <input class="input-list" type="password" name="password" size="40"/>
+        <% } %>
+      </div >
+      <div class="panel-content">
+        <label class="parag-list" for="r-password">Repetir Contraseña:</label>
+      </div>
+      <div class="panel-content">
+        <% if (!user.isNewRecord) { %>
+        	<input class="input-list" type="password" name="r_password" size="40" required/>
+        <% } else { %>
+            <input class="input-list" type="password" name="r_password" size="40"/>
+        <% } %>
       </div >
       <div class="panel-content">
         <label class="parag-list" for="age">Edad:</label>
@@ -47,6 +61,12 @@
         <% if (user.isNewRecord) { %>
           <input id="boton" type="submit" name="create" value="Crear" />
         <% } else { %>
+          <div class="panel-content">
+          	<label class="input-list" for="p_password">Contraseña Actual:</label>
+          </div>
+          <div class="panel-content">
+        	<input class="input-list" type="password" name="p_password" size="40" required/>
+      	  </div>
           <input id="boton" type="submit" name="update" value="Actualizar" />
         <% } %>
       </div>

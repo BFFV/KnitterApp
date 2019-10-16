@@ -58,8 +58,13 @@ router.post('users.create', '/', async (ctx) => {
   params.role = 'common';
   const user = ctx.orm.user.build(params);
   try {
-    await user.save({ fields: ['username', 'password', 'email', 'age', 'photo', 'role'] });
-    ctx.redirect(ctx.router.url('session.new'));
+    if (params.password == params.r_password) {
+      await user.save({ fields: ['username', 'password', 'email', 'age', 'photo', 'role'] });
+      ctx.redirect(ctx.router.url('session.new'));
+    }
+    else {
+      errors = [{ message: 'Las contraseñas no coinciden' }]
+    }
   } catch (validationError) {
     let { errors } = validationError;
     if (validationError.name === 'SequelizeUniqueConstraintError') {
@@ -67,20 +72,20 @@ router.post('users.create', '/', async (ctx) => {
     } else if (!errors) {
       errors = [{ message: 'Parámetros NO válidos!' }];
     }
-    await ctx.render('users/new', {
-      user,
-      errors,
-      rootPath: '/',
-      submitUserPath: ctx.router.url('users.create'),
-    });
   }
+  await ctx.render('users/new', {
+    user,
+    errors,
+    rootPath: '/',
+    submitUserPath: ctx.router.url('users.create'),
+  });
 });
 
 router.patch('users.update', '/:id', loadUser, authenticate, async (ctx) => {
   const { user } = ctx.state;
   try {
     const {
-      username, password, email, age, photo,
+      username, password, email, age, photo, r_password, a_password
     } = ctx.request.body;
     await user.update({
       username, password, email, age, photo,
