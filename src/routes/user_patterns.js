@@ -2,16 +2,6 @@ const KoaRouter = require('koa-router');
 
 const router = new KoaRouter();
 
-// Loads a particular vote for a pattern
-async function loadVotePattern(ctx, next) {
-  ctx.state.votePattern = await ctx.orm.vote_pattern.findByPk(ctx.params.id);
-  if (ctx.state.votePattern) {
-    return next();
-  }
-  ctx.redirect('/');
-  return 'Invalid VotePattern!';
-}
-
 // Updates a pattern's score when a vote is casted
 async function updatePattern(ctx, next) {
   const patternId = await next();
@@ -30,12 +20,7 @@ async function updatePattern(ctx, next) {
 
 // Protects routes from unauthorized access
 async function authenticate(ctx, next) {
-  const current = ctx.state.currentUser;
-  if ((ctx.request.method !== 'POST')) {
-    if ((current) && (current.id === ctx.state.votePattern.userId)) {
-      return next();
-    }
-  } else if (current) {
+  if (ctx.state.currentUser) {
     return next();
   }
   ctx.redirect('/');
@@ -56,29 +41,28 @@ async function validate(ctx, next) {
   return 'Invalid Pattern!';
 }
 
-router.post('vote_patterns.create', '/', authenticate, validate, updatePattern, async (ctx) => {
-  const params = ctx.request.body;
-  params.userId = ctx.state.currentUser.id;
-  const votePattern = ctx.orm.vote_pattern.build(params);
+router.post('user_patterns.add', '/', authenticate, validate, async (ctx) => {
+  const user = ctx.state.currentUser;
   const { patternId } = ctx.request.body;
   try {
-    await votePattern.save({ fields: ['patternId', 'userId', 'rating'] });
+    await user.addUsedPattern(patternId);
+    ctx.redirect(ctx.router.url('patterns.show', { id: patternId }));
   } catch (validationError) {
     ctx.redirect(ctx.router.url('patterns.show', { id: patternId }));
   }
   return patternId;
 });
 
-router.patch('vote_patterns.update', '/:id', loadVotePattern, authenticate, updatePattern, async (ctx) => {
-  const { votePattern } = ctx.state;
+router.del('user_patterns.delete', '/', authenticate, validate, async (ctx) => {
+  const user = ctx.state.currentUser;
+  const { patternId } = ctx.request.body;
   try {
-    const { rating } = ctx.request.body;
-    await votePattern.update({ rating });
+    await user.removeUsedPattern(patternId);
+    ctx.redirect(ctx.router.url('patterns.show', { id: patternId }));
   } catch (validationError) {
-    console.log(validationError);
-    ctx.redirect(ctx.router.url('patterns.show', { id: votePattern.patternId }));
+    ctx.redirect(ctx.router.url('patterns.show', { id: patternId }));
   }
-  return votePattern.patternId;
+  return patternId;
 });
 
 module.exports = router;

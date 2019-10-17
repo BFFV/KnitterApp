@@ -1,5 +1,3 @@
-
-
 <div class="contenedor-body-show">
   <div class="material-show-head">
     <div class="material-show-element">
@@ -28,7 +26,7 @@
       <div class="center-header">
         <div class="center-header-content">
           <div>
-            <p class="parag">Diseñado por: <%- author.username %></p>
+            <p class="parag">Diseñado por: <a class= "parag" href="<%- authorPath %>"><%- author.username %></a></p>
           </div>
           <div>
             <p class="parag">Categoría: <%- category.name %></p>
@@ -47,11 +45,13 @@
               <p class="parag-list">- <%- material.name %><br>
             <% }); %>
           </div>
-          <div>
-            <% if (currentUser) { %>
+          <% if (currentUser) { %>
+            <div>
               <%- include('../vote_patterns/_form') %>
-            <% } %>
-          </div>
+              <br>
+              <%- include('_formAdd') %>
+            </div>
+          <% } %>
         </div>
       </div>
       <div class="youtube-video">
@@ -105,8 +105,3 @@
     </form>
   </div>
 </div>
-
-
-
-
-
