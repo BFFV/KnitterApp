@@ -58,8 +58,19 @@ router.post('users.create', '/', async (ctx) => {
   params.role = 'common';
   const user = ctx.orm.user.build(params);
   try {
-    await user.save({ fields: ['username', 'password', 'email', 'age', 'photo', 'role'] });
-    ctx.redirect(ctx.router.url('session.new'));
+    if (params.password == params.r_password) {
+      await user.save({ fields: ['username', 'password', 'email', 'age', 'photo', 'role'] });
+      return ctx.redirect(ctx.router.url('session.new'));
+    }
+    else {
+      errors = [{ message: 'Las contraseñas no coinciden' }]
+      await ctx.render('users/new', {
+      user,
+      errors,
+      rootPath: '/',
+      submitUserPath: ctx.router.url('users.create'),
+    });
+    }
   } catch (validationError) {
     let { errors } = validationError;
     if (validationError.name === 'SequelizeUniqueConstraintError') {
@@ -67,25 +78,58 @@ router.post('users.create', '/', async (ctx) => {
     } else if (!errors) {
       errors = [{ message: 'Parámetros NO válidos!' }];
     }
-    await ctx.render('users/new', {
+      await ctx.render('users/new', {
       user,
       errors,
       rootPath: '/',
       submitUserPath: ctx.router.url('users.create'),
     });
-  }
-});
+  }});
+
+
+
 
 router.patch('users.update', '/:id', loadUser, authenticate, async (ctx) => {
   const { user } = ctx.state;
   try {
     const {
-      username, password, email, age, photo,
+      username, password, email, age, photo, r_password, p_password
     } = ctx.request.body;
-    await user.update({
-      username, password, email, age, photo,
-    });
-    ctx.redirect(ctx.router.url('users.show', { id: user.id }));
+    if (await user.checkPassword(p_password)){
+      if (password===""){
+        await user.update({
+          username, p_password, email, age, photo,
+        });
+        return ctx.redirect(ctx.router.url('users.show', { id: user.id }));
+      }
+      else{
+        if (password == r_password){
+          await user.update({
+            username, password, email, age, photo,
+          });
+          return ctx.redirect(ctx.router.url('users.show', { id: user.id }));
+        }
+        else {
+          errors = [{ message: 'Las contraseñas no coinciden' }]
+          await ctx.render('users/edit', {
+            user,
+            errors,
+            userPath: ctx.router.url('users.show', { id: user.id }),
+            submitUserPath: ctx.router.url('users.update', { id: user.id }),
+          });
+        };
+      };
+    }
+    else{
+      errors = [{message: 'Contrseña incorrecta'}]
+      await ctx.render('users/edit', {
+            user,
+            errors,
+            userPath: ctx.router.url('users.show', { id: user.id }),
+            submitUserPath: ctx.router.url('users.update', { id: user.id }),
+          });
+    };
+    
   } catch (validationError) {
     let { errors } = validationError;
     if (validationError.name === 'SequelizeUniqueConstraintError') {
@@ -99,7 +143,9 @@ router.patch('users.update', '/:id', loadUser, authenticate, async (ctx) => {
       userPath: ctx.router.url('users.show', { id: user.id }),
       submitUserPath: ctx.router.url('users.update', { id: user.id }),
     });
+    
   }
+  
 });
 
 router.del('users.delete', '/:id', loadUser, authenticate, async (ctx) => {
