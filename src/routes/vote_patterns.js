@@ -5,7 +5,11 @@ const router = new KoaRouter();
 // Loads a particular vote for a pattern
 async function loadVotePattern(ctx, next) {
   ctx.state.votePattern = await ctx.orm.vote_pattern.findByPk(ctx.params.id);
-  return next();
+  if (ctx.state.votePattern) {
+    return next();
+  }
+  ctx.redirect('/');
+  return 'Invalid VotePattern!';
 }
 
 // Updates a pattern's score when a vote is casted

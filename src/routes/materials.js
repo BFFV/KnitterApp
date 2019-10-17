@@ -5,7 +5,11 @@ const router = new KoaRouter();
 // Loads a particular material
 async function loadMaterial(ctx, next) {
   ctx.state.material = await ctx.orm.material.findByPk(ctx.params.id);
-  return next();
+  if (ctx.state.material) {
+    return next();
+  }
+  ctx.redirect(ctx.router.url('materials.list'));
+  return 'Invalid Material!';
 }
 
 // Protects routes from unauthorized access

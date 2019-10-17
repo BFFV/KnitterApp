@@ -5,7 +5,31 @@ const router = new KoaRouter();
 // Loads a particular user
 async function loadUser(ctx, next) {
   ctx.state.user = await ctx.orm.user.findByPk(ctx.params.id);
-  ctx.state.access = 'user';
+  if (ctx.state.user) {
+    ctx.state.access = 'user';
+    ctx.state.createdPatterns = await ctx.state.user.getPatterns();
+    ctx.state.usedPatterns = await ctx.state.user.getUsedPatterns();
+    ctx.state.favoritePatterns = await ctx.state.user.getFavoritePatterns();
+    return next();
+  }
+  ctx.redirect(ctx.router.url('users.list'));
+  return 'Invalid User!';
+}
+
+// Checks if the current user has already followed this user
+async function checkState(ctx, next) {
+  let followerPath = ctx.router.url('followers.add');
+  let following = false;
+  if (ctx.state.currentUser) {
+    const followingList = await ctx.state.currentUser.getFollowing()
+      .then((users) => users.filter((x) => x.id === ctx.state.user.id));
+    if (followingList.length) {
+      followerPath = ctx.router.url('followers.delete');
+      following = true;
+    }
+  }
+  ctx.state.followerPath = followerPath;
+  ctx.state.following = following;
   return next();
 }
 
@@ -16,7 +40,9 @@ async function authenticate(ctx, next) {
     if ((current) && (current.role === 'admin')) {
       return next();
     }
-  } else if ((current) && ((current.role === 'admin') || (current.id === ctx.state.user.id))) {
+  } else if ((current) && (current.id === ctx.state.user.id)) {
+    return next();
+  } else if ((ctx.request.method === 'DELETE') && (current.role === 'admin')) {
     return next();
   }
   ctx.redirect('/');
@@ -154,13 +180,21 @@ router.del('users.delete', '/:id', loadUser, authenticate, async (ctx) => {
   ctx.redirect(ctx.router.url('users.list'));
 });
 
-router.get('users.show', '/:id', loadUser, async (ctx) => {
-  const { user } = ctx.state;
+router.get('users.show', '/:id', loadUser, checkState, async (ctx) => {
+  const {
+    user, createdPatterns, followerPath, following, usedPatterns, favoritePatterns,
+  } = ctx.state;
   await ctx.render('users/show', {
     user,
+    following,
+    followerPath,
+    usedPatterns,
+    favoritePatterns,
+    createdPatterns,
     usersPath: ctx.router.url('users.list'),
     editUserPath: ctx.router.url('users.edit', { id: user.id }),
     deleteUserPath: ctx.router.url('users.delete', { id: user.id }),
+    patternPath: (pattern) => ctx.router.url('patterns.show', { id: pattern.id }),
   });
 });
 

@@ -1,0 +1,24 @@
+<div>
+  <% if (locals.errors) { %>
+    <div class="errors">
+      <ul>
+        <% errors.forEach(error => { %>
+          <li><%= error.message %></li>
+        <% }); %>
+      </ul>
+    </div>
+  <% } %>
+  <form action="<%= addPatternPath %>" method="POST">
+    <% if (userPattern) { %>
+      <input type="hidden" name="_method" value="DELETE" />
+    <% } %>
+    <div id="hcontainer">
+      <input type="hidden" name="patternId" value="<%= pattern.id %>">
+    <% if (!userPattern) { %>
+      <input id="boton" type="submit" name="create" value="Marcar Como Realizado" />
+    <% } else { %>
+      <input id="boton" type="submit" name="delete" value="Desmarcar" />
+    <% } %>
+    </div>
+  </form>
+</div>

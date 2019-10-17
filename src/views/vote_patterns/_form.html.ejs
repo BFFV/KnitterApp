@@ -9,7 +9,7 @@
     </div>
   <% } %>
   <form action="<%= votePatternPath %>" method="POST">
-    <% if (!votePattern.isNewRecord) { %>
+    <% if (votePattern) { %>
       <input type="hidden" name="_method" value="PATCH">
     <% } else { %>
       <div>

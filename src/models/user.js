@@ -63,14 +63,17 @@ module.exports = (sequelize, DataTypes) => {
     },
     photo: DataTypes.STRING,
     role: DataTypes.STRING,
+    popularity: DataTypes.INTEGER,
   }, {});
 
   user.associate = function associate(models) {
     user.hasMany(models.pattern, { foreignKey: 'authorId' });
     user.hasMany(models.vote_pattern, { foreignKey: 'userId' });
     user.hasMany(models.comment, { foreignKey: 'userId' });
-    user.belongsToMany(models.pattern, { through: 'user_patterns', as: 'used_patterns' });
-    user.belongsToMany(models.user, { through: 'followers', as: 'followed_by' });
+    user.belongsToMany(models.pattern, { through: 'user_patterns', as: 'usedPatterns' });
+    user.belongsToMany(models.user, { through: 'followers', as: 'followedBy', foreignKey: 'followedId' });
+    user.belongsToMany(models.user, { through: 'followers', as: 'following', foreignKey: 'followerId' });
+    user.belongsToMany(models.pattern, { through: 'favorites', as: 'favoritePatterns' });
   };
 
   user.beforeCreate(buildPasswordHash);
