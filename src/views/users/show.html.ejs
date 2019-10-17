@@ -9,6 +9,7 @@
       <div id="middle">
           <p>Correo: <%- user.email %></p>
           <p>Edad: <%- user.age %></p>
+          <p>Seguidores: <%- user.popularity %></p>
       </div>
       <% if ((currentUser) && (currentUser.id !== user.id)) { %>
         <div>
@@ -16,8 +17,41 @@
         </div>
       <% } %>
   </div>
+  <h2>Patrones Creados</h2>
+  <% if (!createdPatterns.length) { %>
+    <div class="user_show">
+      <p>No haz creado patrones!<p>
+    </div>
+  <% } %>
+  <% createdPatterns.forEach((cp) => { %>
+    <div class="user_show">
+      <a href="<%- patternPath(cp) %>"><%- cp.name %></a>
+    </div>
+  <% }) %>
+  <h2>Patrones Utilizados</h2>
+  <% if (!usedPatterns.length) { %>
+    <div class="user_show">
+      <p>No tienes patrones utilizados!<p>
+    </div>
+  <% } %>
+  <% usedPatterns.forEach((up) => { %>
+    <div class="user_show">
+      <a href="<%- patternPath(up) %>"><%- up.name %></a>
+    </div>
+  <% }) %>
   <% if (currentUser) { %>
     <% if (currentUser.id === user.id) { %>
+      <h2>Mis Patrones Favoritos</h2>
+      <% if (!favoritePatterns.length) { %>
+        <div class="user_show">
+          <p>No tienes patrones favoritos!<p>
+        </div>
+      <% } %>
+      <% favoritePatterns.forEach((fp) => { %>
+        <div class="user_show">
+          <a href="<%- patternPath(fp) %>"><%- fp.name %></a>
+        </div>
+      <% }) %>
       <div class="user_show">
         <form action="<%- editUserPath %>">
           <input id="boton" type="submit" value="Editar Perfil" />

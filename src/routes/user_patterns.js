@@ -2,19 +2,12 @@ const KoaRouter = require('koa-router');
 
 const router = new KoaRouter();
 
-// Updates a pattern's score when a vote is casted
+// Updates a pattern's popularity when somebody adds it
 async function updatePattern(ctx, next) {
   const patternId = await next();
   const pattern = await ctx.orm.pattern.findByPk(patternId);
-  const { ratingAvg } = await ctx.orm.vote_pattern.findOne({
-    raw: true,
-    where: {
-      patternId: pattern.id,
-    },
-    attributes: [[ctx.orm.sequelize.fn('AVG', ctx.orm.sequelize.col('rating')), 'ratingAvg']],
-  });
-  const score = parseFloat(ratingAvg).toFixed(1);
-  await pattern.update({ score });
+  const popularity = await pattern.getUsedBy().then((x) => x.length);
+  await pattern.update({ popularity });
   ctx.redirect(ctx.router.url('patterns.show', { id: patternId }));
 }
 
@@ -41,24 +34,22 @@ async function validate(ctx, next) {
   return 'Invalid Pattern!';
 }
 
-router.post('user_patterns.add', '/', authenticate, validate, async (ctx) => {
+router.post('user_patterns.add', '/', authenticate, validate, updatePattern, async (ctx) => {
   const user = ctx.state.currentUser;
   const { patternId } = ctx.request.body;
   try {
     await user.addUsedPattern(patternId);
-    ctx.redirect(ctx.router.url('patterns.show', { id: patternId }));
   } catch (validationError) {
     ctx.redirect(ctx.router.url('patterns.show', { id: patternId }));
   }
   return patternId;
 });
 
-router.del('user_patterns.delete', '/', authenticate, validate, async (ctx) => {
+router.del('user_patterns.delete', '/', authenticate, validate, updatePattern, async (ctx) => {
   const user = ctx.state.currentUser;
   const { patternId } = ctx.request.body;
   try {
     await user.removeUsedPattern(patternId);
-    ctx.redirect(ctx.router.url('patterns.show', { id: patternId }));
   } catch (validationError) {
     ctx.redirect(ctx.router.url('patterns.show', { id: patternId }));
   }

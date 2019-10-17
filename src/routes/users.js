@@ -7,7 +7,9 @@ async function loadUser(ctx, next) {
   ctx.state.user = await ctx.orm.user.findByPk(ctx.params.id);
   if (ctx.state.user) {
     ctx.state.access = 'user';
-    // ctx.state.usedPatterns = await ctx.state.user.getFavoritePatterns();
+    ctx.state.createdPatterns = await ctx.state.user.getPatterns();
+    ctx.state.usedPatterns = await ctx.state.user.getUsedPatterns();
+    ctx.state.favoritePatterns = await ctx.state.user.getFavoritePatterns();
     return next();
   }
   ctx.redirect(ctx.router.url('users.list'));
@@ -133,14 +135,20 @@ router.del('users.delete', '/:id', loadUser, authenticate, async (ctx) => {
 });
 
 router.get('users.show', '/:id', loadUser, checkState, async (ctx) => {
-  const { user, followerPath, following } = ctx.state;
+  const {
+    user, createdPatterns, followerPath, following, usedPatterns, favoritePatterns,
+  } = ctx.state;
   await ctx.render('users/show', {
     user,
     following,
     followerPath,
+    usedPatterns,
+    favoritePatterns,
+    createdPatterns,
     usersPath: ctx.router.url('users.list'),
     editUserPath: ctx.router.url('users.edit', { id: user.id }),
     deleteUserPath: ctx.router.url('users.delete', { id: user.id }),
+    patternPath: (pattern) => ctx.router.url('patterns.show', { id: pattern.id }),
   });
 });
 

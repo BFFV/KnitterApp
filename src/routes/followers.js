@@ -2,20 +2,13 @@ const KoaRouter = require('koa-router');
 
 const router = new KoaRouter();
 
-// Updates a pattern's score when a vote is casted
-async function updatePattern(ctx, next) {
-  const patternId = await next();
-  const pattern = await ctx.orm.pattern.findByPk(patternId);
-  const { ratingAvg } = await ctx.orm.vote_pattern.findOne({
-    raw: true,
-    where: {
-      patternId: pattern.id,
-    },
-    attributes: [[ctx.orm.sequelize.fn('AVG', ctx.orm.sequelize.col('rating')), 'ratingAvg']],
-  });
-  const score = parseFloat(ratingAvg).toFixed(1);
-  await pattern.update({ score });
-  ctx.redirect(ctx.router.url('patterns.show', { id: patternId }));
+// Updates an user's popularity when somebody follows him/her
+async function updateUser(ctx, next) {
+  const userId = await next();
+  const user = await ctx.orm.user.findByPk(userId);
+  const popularity = await user.getFollowedBy().then((x) => x.length);
+  await user.update({ popularity });
+  ctx.redirect(ctx.router.url('users.show', { id: userId }));
 }
 
 // Protects routes from unauthorized access
@@ -41,24 +34,22 @@ async function validate(ctx, next) {
   return 'Invalid User!';
 }
 
-router.post('followers.add', '/', authenticate, validate, async (ctx) => {
+router.post('followers.add', '/', authenticate, validate, updateUser, async (ctx) => {
   const user = ctx.state.currentUser;
   const { userId } = ctx.request.body;
   try {
     await user.addFollowing(userId);
-    ctx.redirect(ctx.router.url('users.show', { id: userId }));
   } catch (validationError) {
     ctx.redirect(ctx.router.url('users.show', { id: userId }));
   }
   return userId;
 });
 
-router.del('followers.delete', '/', authenticate, validate, async (ctx) => {
+router.del('followers.delete', '/', authenticate, validate, updateUser, async (ctx) => {
   const user = ctx.state.currentUser;
   const { userId } = ctx.request.body;
   try {
     await user.removeFollowing(userId);
-    ctx.redirect(ctx.router.url('users.show', { id: userId }));
   } catch (validationError) {
     ctx.redirect(ctx.router.url('users.show', { id: userId }));
   }

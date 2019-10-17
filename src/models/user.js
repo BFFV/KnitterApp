@@ -63,6 +63,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     photo: DataTypes.STRING,
     role: DataTypes.STRING,
+    popularity: DataTypes.INTEGER,
   }, {});
 
   user.associate = function associate(models) {
