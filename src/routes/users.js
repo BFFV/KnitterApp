@@ -7,6 +7,7 @@ async function loadUser(ctx, next) {
   ctx.state.user = await ctx.orm.user.findByPk(ctx.params.id);
   if (ctx.state.user) {
     ctx.state.access = 'user';
+    // ctx.state.usedPatterns = await ctx.state.user.getFavoritePatterns();
     return next();
   }
   ctx.redirect(ctx.router.url('users.list'));
@@ -37,7 +38,9 @@ async function authenticate(ctx, next) {
     if ((current) && (current.role === 'admin')) {
       return next();
     }
-  } else if ((current) && ((current.role === 'admin') || (current.id === ctx.state.user.id))) {
+  } else if ((current) && (current.id === ctx.state.user.id)) {
+    return next();
+  } else if ((ctx.request.method === 'DELETE') && (current.role === 'admin')) {
     return next();
   }
   ctx.redirect('/');

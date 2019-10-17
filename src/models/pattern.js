@@ -39,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
     pattern.hasMany(models.comment, { foreignKey: 'patternId' });
     pattern.belongsTo(models.category);
     pattern.belongsToMany(models.material, { through: 'pattern_materials', as: 'materials' });
+    pattern.belongsToMany(models.user, { through: 'favorites' });
   };
 
   return pattern;

@@ -16,19 +16,23 @@
         </div>
       <% } %>
   </div>
-  <% if ((currentUser) && ((currentUser.id === user.id) || (currentUser.role === 'admin'))) { %>
-    <div class="user_show">
-      <form action="<%- editUserPath %>">
-        <input id="boton" type="submit" value="Editar Perfil" />
-      </form>
-    </div>
-    <div class="user_show">
-      <form action="<%- deleteUserPath %>" onclick="return confirm('Estás seguro?');"
-        method="POST">
-        <input type="hidden" name="_method" value="delete" />
-        <input id="boton" type="submit" value="Eliminar Cuenta" />
-      </form>
-    </div>
+  <% if (currentUser) { %>
+    <% if (currentUser.id === user.id) { %>
+      <div class="user_show">
+        <form action="<%- editUserPath %>">
+          <input id="boton" type="submit" value="Editar Perfil" />
+        </form>
+      </div>
+    <% } %>
+    <% if ((currentUser.id === user.id) || (currentUser.role === 'admin')) { %>
+      <div class="user_show">
+        <form action="<%- deleteUserPath %>" onclick="return confirm('Estás seguro?');"
+          method="POST">
+          <input type="hidden" name="_method" value="delete" />
+          <input id="boton" type="submit" value="Eliminar Cuenta" />
+        </form>
+      </div>
+    <% } %>
   <% } %>
   <br><br>
   <div>

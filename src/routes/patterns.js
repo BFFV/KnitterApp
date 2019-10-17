@@ -40,8 +40,10 @@ async function newPatternInfo(ctx) {
 async function checkState(ctx, next) {
   let votePath = ctx.router.url('vote_patterns.create');
   let addPath = ctx.router.url('user_patterns.add');
+  let favoritePath = ctx.router.url('user_patterns.favorite');
   let vote = false;
   let userPattern = false;
+  let favorite = false;
   if (ctx.state.currentUser) {
     vote = await ctx.orm.vote_pattern.findOne({
       where: {
@@ -58,11 +60,19 @@ async function checkState(ctx, next) {
       addPath = ctx.router.url('user_patterns.delete');
       userPattern = true;
     }
+    const favoritePatterns = await ctx.state.currentUser.getFavoritePatterns()
+      .then((patterns) => patterns.filter((x) => x.id === ctx.state.pattern.id));
+    if (favoritePatterns.length) {
+      favoritePath = ctx.router.url('user_patterns.remove');
+      favorite = true;
+    }
   }
   ctx.state.votePattern = vote;
   ctx.state.votePath = votePath;
   ctx.state.addPath = addPath;
   ctx.state.userPattern = userPattern;
+  ctx.state.favoritePath = favoritePath;
+  ctx.state.favorite = favorite;
   return next();
 }
 
@@ -278,7 +288,7 @@ router.del('patterns.delete', '/:id', loadPattern, authenticate, async (ctx) => 
 
 router.get('patterns.show', '/:id', loadPattern, checkState, async (ctx) => {
   const {
-    pattern, votePattern, votePath, userPattern, addPath,
+    pattern, votePattern, votePath, userPattern, addPath, favorite, favoritePath,
   } = ctx.state;
   const author = await pattern.getUser();
   const category = await pattern.getCategory();
@@ -311,6 +321,8 @@ router.get('patterns.show', '/:id', loadPattern, checkState, async (ctx) => {
     deleteCommentPath: (c) => ctx.router.url('comments.delete', { id: c.id }),
     userPattern,
     addPatternPath: addPath,
+    favorite,
+    favoritePath,
   });
 });
 

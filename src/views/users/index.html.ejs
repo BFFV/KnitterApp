@@ -28,11 +28,6 @@
           </form>
         </div>
         <div class="user_show">
-          <form action="<%- editUserPath(user) %>">
-            <input id="boton" type="submit" value="Editar" />
-          </form>
-        </div>
-        <div class="user_show">
           <form action="<%- deleteUserPath(user) %>" onclick="return confirm('Estás seguro?');"
             method="POST">
             <input type="hidden" name="_method" value="delete" />

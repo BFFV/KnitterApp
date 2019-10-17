@@ -65,4 +65,28 @@ router.del('user_patterns.delete', '/', authenticate, validate, async (ctx) => {
   return patternId;
 });
 
+router.post('user_patterns.favorite', '/favorite', authenticate, validate, async (ctx) => {
+  const user = ctx.state.currentUser;
+  const { patternId } = ctx.request.body;
+  try {
+    await user.addFavoritePattern(patternId);
+    ctx.redirect(ctx.router.url('patterns.show', { id: patternId }));
+  } catch (validationError) {
+    ctx.redirect(ctx.router.url('patterns.show', { id: patternId }));
+  }
+  return patternId;
+});
+
+router.del('user_patterns.remove', '/favorite', authenticate, validate, async (ctx) => {
+  const user = ctx.state.currentUser;
+  const { patternId } = ctx.request.body;
+  try {
+    await user.removeFavoritePattern(patternId);
+    ctx.redirect(ctx.router.url('patterns.show', { id: patternId }));
+  } catch (validationError) {
+    ctx.redirect(ctx.router.url('patterns.show', { id: patternId }));
+  }
+  return patternId;
+});
+
 module.exports = router;

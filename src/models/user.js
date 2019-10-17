@@ -72,6 +72,7 @@ module.exports = (sequelize, DataTypes) => {
     user.belongsToMany(models.pattern, { through: 'user_patterns', as: 'usedPatterns' });
     user.belongsToMany(models.user, { through: 'followers', as: 'followedBy', foreignKey: 'followedId' });
     user.belongsToMany(models.user, { through: 'followers', as: 'following', foreignKey: 'followerId' });
+    user.belongsToMany(models.pattern, { through: 'favorites', as: 'favoritePatterns' });
   };
 
   user.beforeCreate(buildPasswordHash);
