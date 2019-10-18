@@ -12,40 +12,96 @@
 
   <body>
     <header>
-      <div class="topnav" id="navbar">
-        <div>
-          <!-- poner logo-->
-          <a class="nav-text" href="/">Home</a>
-        </div>
-        <div>
-          <a class="nav-text" href="/patterns">Patrones</a>
+      <div>
+        <a class=" logo" href="/">Knitter</a>
+      </div>
+      <div class="toogle-nav">
+          <label id="toogle-nav" for="toogle">
+            <span></span>
+            <span></span>
+            <span></span>
+          </label>
+      </div>
+      <input type="checkbox" id="toogle">
+      <nav class="topnav">
+        <ul class="ul-nav">
+          <li class="li-nav">
+            <a class="nav-text" href="/patterns">Patrones</a>
+          </li>
+          <% if ((currentUser) && ((currentUser.role === 'admin') || (currentUser.role === 'top'))) { %>
+            <li class="li-nav">
+              <a class="nav-text"  href="/categories">Categorías</a>
+            </li>
+            <li class="li-nav">
+              <a class="nav-text" href="/materials">Materiales</a>
+            </li>
+          <% }; %>
+          <% if ((currentUser) && (currentUser.role === 'admin')) { %>
+            <li class="li-nav">
+              <a class="nav-text" href="/users">Usuarios</a>
+            </li>
+          <% }; %>
+          <% if (currentUser) { %>
+            <li class="li-nav">
+              <a class="nav-text" id="user-focus" href="#">Perfil</a>
+              <div class="user-nav-content">
+                <div class="user-nav-sub">
+                  <ul>
+                    <li>
+                      <a class="nav-text-li" href="/users/<%- currentUser.id %>">Ir al perfil</a>
+                    </li>
+                    <li>
+                        <form action="<%= destroySessionPath %>" method="post">
+                          <input type="hidden" name="_method" value="delete" />
+                          <input type="submit" value="Cerrar Sesión" />
+                        </form>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </li>
+          <% } else { %>
+            <li class="li-nav">
+              <a class="nav-text" href="<%= newSessionPath %>">Iniciar Sesión</a>
+            </li>
+          <% }; %>
+        </ul>
+      </nav>
+
+
+<!--       <div class="topnav">
+
+        <div class="nav-element">
+
         </div>
         <% if ((currentUser) && ((currentUser.role === 'admin') || (currentUser.role === 'top'))) { %>
-          <div class="hide-500">
+          <div class="nav-element">
             <a class="nav-text"  href="/categories">Categorías</a>
           </div>
-          <div class="hide-690">
+          <div class="nav-element">
             <a class="nav-text" href="/materials">Materiales</a>
           </div>
         <% } %>
         <% if ((currentUser) && (currentUser.role === 'admin')) { %>
-          <div class="hide-750">
+          <div class="nav-element">
               <a class="nav-text" href="/users">Usuarios</a>
           </div>
         <% } %>
         <% if (currentUser) { %>
-          <div class="hide-750">
+          <div class="nav-element">
             <a class="nav-text" href="/users/<%- currentUser.id %>">Perfil</a>
           </div>
-          <div class="hide-750">
+          <div class="nav-element">
             <span class="nav-text">Hola <%= currentUser.username %>!</span>
+          </div>
+          <div class="nav-element">
             <form action="<%= destroySessionPath %>" method="post">
               <input type="hidden" name="_method" value="delete" />
               <input type="submit" value="Cerrar Sesión" />
             </form>
           </div>
         <% } else { %>
-          <div>
+          <div class="nav-element">
             <a class="nav-text" href="<%= newSessionPath %>">Iniciar Sesión</a>
           </div>
         <% } %>
@@ -56,9 +112,11 @@
         <% } %>
         <div class="nav-text">
         </div>
-      </div>
+      </div> -->
     </header>
-    <%- body %>
-    <script src="<%= assetPath('app.js') %>"></script>
+    <div class="body-page-content">
+        <%- body %>
+        <script src="<%= assetPath('app.js') %>"></script>
+    </div>
   </body>
 </html>
