@@ -9,6 +9,7 @@ const session = require('./routes/session');
 const votePatterns = require('./routes/vote_patterns');
 const comments = require('./routes/comments');
 
+
 const router = new KoaRouter();
 
 router.use(async (ctx, next) => {
