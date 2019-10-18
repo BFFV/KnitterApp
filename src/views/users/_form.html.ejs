@@ -29,21 +29,13 @@
         <label class="parag-list" for="password">Contraseña:</label>
       </div>
       <div class="panel-content">
-      	<% if (!user.isNewRecord) { %>
-        	<input class="input-list" type="password" name="password" size="40" />
-        <% } else { %>
-            <input class="input-list" type="password" name="password" size="40"/>
-        <% } %>
+        <input class="input-list" type="password" name="password" size="40" required/>
       </div >
       <div class="panel-content">
         <label class="parag-list" for="r-password">Repetir Contraseña:</label>
       </div>
       <div class="panel-content">
-        <% if (!user.isNewRecord) { %>
-        	<input class="input-list" type="password" name="r_password" size="40"/>
-        <% } else { %>
-            <input class="input-list" type="password" name="r_password" size="40"/>
-        <% } %>
+        	<input class="input-list" type="password" name="r_password" size="40" required/>
       </div >
       <div class="panel-content">
         <label class="parag-list" for="age">Edad:</label>
@@ -57,16 +49,18 @@
       <div class="panel-content">
         <input class="input-list" type="text" name="photo" size="40" value="<%= user.photo %>" required/>
       </div>
+      <% if (!user.isNewRecord) { %>
+        <div class="panel-content">
+          <label class="parag-list" for="p_password">Contraseña Actual:</label>
+        </div>
+        <div class="panel-content">
+          <input class="input-list" type="password" name="p_password" size="40" required/>
+        </div>
+      <% } %>
       <div class="button_space">
         <% if (user.isNewRecord) { %>
           <input id="boton" type="submit" name="create" value="Crear" />
         <% } else { %>
-          <div class="panel-content">
-          	<label class="input-list" for="p_password">Contraseña Actual:</label>
-          </div>
-          <div class="panel-content">
-        	<input class="input-list" type="password" name="p_password" size="40" required/>
-      	  </div>
           <input id="boton" type="submit" name="update" value="Actualizar" />
         <% } %>
       </div>

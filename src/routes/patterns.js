@@ -144,10 +144,18 @@ async function searchPatterns(ctx, next) {
       }
     });
   }
-  if (params.sorting === 'popular') {
+  if (params.sorting === 'rating') {
     ctx.state.patternsList.sort((a, b) => a.score - b.score).reverse();
+  } else if (params.sorting === 'popular') {
+    ctx.state.patternsList.sort((a, b) => a.popularity - b.popularity).reverse();
   } else {
     ctx.state.patternsList.sort((a, b) => a.updatedAt - b.updatedAt).reverse();
+  }
+  if (params.sorting) {
+    ctx.state.sorting = params.sorting;
+  }
+  if (params.category) {
+    ctx.state.category = parseInt(params.category, 10);
   }
   return next();
 }
@@ -180,6 +188,9 @@ router.get('patterns.list', '/', searchPatterns, async (ctx) => {
     editPatternPath: (pattern) => ctx.router.url('patterns.edit', { id: pattern.id }),
     deletePatternPath: (pattern) => ctx.router.url('patterns.delete', { id: pattern.id }),
     rootPath: '/',
+    selSorting: ctx.state.sorting,
+    selCategory: ctx.state.category,
+    options: [['recent', 'Más Reciente'], ['popular', 'Más Popular'], ['rating', 'Mejor Valorado']],
   });
 });
 

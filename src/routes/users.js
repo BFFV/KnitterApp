@@ -33,6 +33,39 @@ async function checkState(ctx, next) {
   return next();
 }
 
+// Checks if the two passwords are right when creating/editing an user
+async function checkPassword(ctx, next) {
+  const params = ctx.request.body;
+  const { user } = ctx.state;
+  if (ctx.state.currentUser) {
+    const pPassword = await user.checkPassword(params.p_password);
+    let errors = [{ message: 'Contraseña Actual Incorrecta!' }];
+    if (pPassword) {
+      errors = [{ message: 'Las Contraseñas No Coinciden!' }];
+      if (params.password === params.r_password) {
+        return next();
+      }
+    }
+    await ctx.render('users/edit', {
+      user,
+      errors,
+      userPath: ctx.router.url('users.show', { id: user.id }),
+      submitUserPath: ctx.router.url('users.update', { id: user.id }),
+    });
+  } else if (params.password === params.r_password) {
+    return next();
+  } else {
+    const errors = [{ message: 'Las contraseñas no coinciden!' }];
+    await ctx.render('users/new', {
+      user: ctx.orm.user.build(ctx.request.body),
+      errors,
+      rootPath: '/',
+      submitUserPath: ctx.router.url('users.create'),
+    });
+  }
+  return 'Passwords are not equal!';
+}
+
 // Protects routes from unauthorized access
 async function authenticate(ctx, next) {
   const current = ctx.state.currentUser;
@@ -79,24 +112,14 @@ router.get('users.edit', '/:id/edit', loadUser, authenticate, async (ctx) => {
   });
 });
 
-router.post('users.create', '/', async (ctx) => {
+router.post('users.create', '/', checkPassword, async (ctx) => {
   const params = ctx.request.body;
   params.role = 'common';
+  params.token = params.username;
   const user = ctx.orm.user.build(params);
   try {
-    if (params.password == params.r_password) {
-      await user.save({ fields: ['username', 'password', 'email', 'age', 'photo', 'role'] });
-      return ctx.redirect(ctx.router.url('session.new'));
-    }
-    else {
-      errors = [{ message: 'Las contraseñas no coinciden' }]
-      await ctx.render('users/new', {
-      user,
-      errors,
-      rootPath: '/',
-      submitUserPath: ctx.router.url('users.create'),
-    });
-    }
+    await user.save({ fields: ['username', 'password', 'email', 'age', 'photo', 'role', 'token'] });
+    ctx.redirect(ctx.router.url('session.new'));
   } catch (validationError) {
     let { errors } = validationError;
     if (validationError.name === 'SequelizeUniqueConstraintError') {
@@ -104,58 +127,25 @@ router.post('users.create', '/', async (ctx) => {
     } else if (!errors) {
       errors = [{ message: 'Parámetros NO válidos!' }];
     }
-      await ctx.render('users/new', {
+    await ctx.render('users/new', {
       user,
       errors,
       rootPath: '/',
       submitUserPath: ctx.router.url('users.create'),
     });
-  }});
+  }
+});
 
-
-
-
-router.patch('users.update', '/:id', loadUser, authenticate, async (ctx) => {
+router.patch('users.update', '/:id', loadUser, authenticate, checkPassword, async (ctx) => {
   const { user } = ctx.state;
   try {
     const {
-      username, password, email, age, photo, r_password, p_password
+      username, password, email, age, photo,
     } = ctx.request.body;
-    if (await user.checkPassword(p_password)){
-      if (password===""){
-        await user.update({
-          username, p_password, email, age, photo,
-        });
-        return ctx.redirect(ctx.router.url('users.show', { id: user.id }));
-      }
-      else{
-        if (password == r_password){
-          await user.update({
-            username, password, email, age, photo,
-          });
-          return ctx.redirect(ctx.router.url('users.show', { id: user.id }));
-        }
-        else {
-          errors = [{ message: 'Las contraseñas no coinciden' }]
-          await ctx.render('users/edit', {
-            user,
-            errors,
-            userPath: ctx.router.url('users.show', { id: user.id }),
-            submitUserPath: ctx.router.url('users.update', { id: user.id }),
-          });
-        };
-      };
-    }
-    else{
-      errors = [{message: 'Contrseña incorrecta'}]
-      await ctx.render('users/edit', {
-            user,
-            errors,
-            userPath: ctx.router.url('users.show', { id: user.id }),
-            submitUserPath: ctx.router.url('users.update', { id: user.id }),
-          });
-    };
-    
+    await user.update({
+      username, password, email, age, photo,
+    });
+    ctx.redirect(ctx.router.url('users.show', { id: user.id }));
   } catch (validationError) {
     let { errors } = validationError;
     if (validationError.name === 'SequelizeUniqueConstraintError') {
@@ -169,9 +159,7 @@ router.patch('users.update', '/:id', loadUser, authenticate, async (ctx) => {
       userPath: ctx.router.url('users.show', { id: user.id }),
       submitUserPath: ctx.router.url('users.update', { id: user.id }),
     });
-    
   }
-  
 });
 
 router.del('users.delete', '/:id', loadUser, authenticate, async (ctx) => {
