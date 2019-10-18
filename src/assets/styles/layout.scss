@@ -126,10 +126,23 @@ span {
   background-color: darkcyan;
 }
 
+.resize{
+  display: none;
+}
+
+
 @media screen and (max-width: 875px){
 
   nav{
     display: none;
+  }
+
+  .extended{
+    display:none;
+  }
+
+  .resize{
+    display: block;
   }
 
   .button-out:hover {

@@ -25,7 +25,13 @@
             <a class="nav-element" href="/">Knitter</a>
           </li>
           <li class="dropdown">
-            <a class="nav-element" id="dropbtn">Patrones</a>
+            <div class="extended">
+              <a class="nav-element" id="dropbtn">Patrones</a>
+            </div>
+            <div class="resize">
+              <a class="nav-element" id="dropbtn" href="/patterns">Patrones</a>
+            </div>
+
             <div class="dropdown-content">
               <a class="nav-element"  href="/patterns">Ver Patrones</a>
               <% if ((currentUser) && ((currentUser.role === 'admin') || (currentUser.role === 'top'))) { %>
@@ -35,14 +41,26 @@
           </li>
           <% if ((currentUser) && ((currentUser.role === 'admin') || (currentUser.role === 'top'))) { %>
             <li class="dropdown">
-              <a class="nav-element" id="dropbtn">Categorías</a>
+              <div class="extended">
+                <a class="nav-element" id="dropbtn">Categorías</a>
+              </div>
+              <div class="resize">
+                <a class="nav-element" id="dropbtn" href="/categories">Categorías</a>
+              </div>
+
               <div class="dropdown-content">
                 <a class="nav-element" href="/categories">Ver Categorías</a>
                 <a class="nav-element" href="/categories/new">Crear</a>
               </div>
             </li>
             <li class="dropdown">
-              <a class="nav-element" id="dropbtn">Materiales</a>
+              <div class="extended">
+                <a class="nav-element" id="dropbtn">Materiales</a>
+              </div>
+              <div class="resize">
+                <a class="nav-element" id="dropbtn" href="/materials">Materiales</a>
+              </div>
+
               <div class="dropdown-content">
                 <a class="nav-element" href="/materials">Ver materiales</a>
                 <a class="nav-element" href="/materials/new">Crear</a>
