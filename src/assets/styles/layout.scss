@@ -4,223 +4,82 @@ html, body {
   padding: 0;
 }
 
-.topnav {
-  width: 100%;
-  display: flex;
-  background-color: #26bfbf;
-  flex-direction: row;
-  justify-content: flex-start;
-  height: 50px;
-}
-
-.logo{
-  text-decoration: none;
-  position: absolute;
-  height: 34px;
-  padding: 8px 30px;
-  font-family: "Dancing Script";
-  font-size: 30px;
-  color: white;
-  font-weight: normal;
-}
-
-.logo:hover {
-  background-color: darkcyan;
-}
-
-.li-nav:hover{
-  background-color: darkcyan;
-}
-
-.topnav > .ul-nav {
+ul {
+  list-style-type: none;
   margin: 0;
   padding: 0;
-  float: left;
-  list-style-type: none;
-  position: fixed;
-  right: 20px;
+  overflow: hidden;
+  background-color: #26bfbf;
 }
 
-.topnav > .ul-nav > .li-nav {
+li {
   float: left;
 }
 
-.nav-text{
-  display: inline-block;
-  padding: 8px 30px;
-  height: 34px;
+.button-out {
   text-decoration: none;
   font-family: "Dancing Script";
   font-size: 30px;
   color: white;
   font-weight: normal;
-}
-
-.user-nav-content .user-nav-sub ul li {
-  width: 133px;
-  padding: 5px 0px;
-}
-
-.user-nav-sub .nav-text-li{
-  text-decoration: none;
-  font-family: "Dancing Script";
-  font-size: 25px;
-  color: white;
-  font-weight: normal;
+  height: 100%;
+  justify-self: center;
+  align-self: center;
+  border-style: none;
   background-color: #26bfbf;
-  height: 50px;
-  padding: 10px;
-  width: 133px;
+  align-self: center;
+  justify-self: center;
+  padding: 14px 16px;
 }
 
-#toogle{
-  display: none;
-}
-
-.toogle-nav{
-  background: #26bfbf;
-  border-bottom: solid;
-  border-bottom-color: white;
-  height: 50px;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-content: center;
-}
-
-#toogle-nav{
-  margin-right: 30px;
-  margin-top: 10px;
-  background-color: white;
-  width: 30px;
-  height: 30px;
-  border-radius: 5px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+li a, #dropbtn {
+  display: inline-block;
+  text-align: center;
+  padding: 14px 16px;
 
 }
 
-.toogle-nav{
-  display: none;
-}
-
-.toogle-nav #toogle-nav span{
-  background-color: grey;
-  width: 80%;
-  height: 1px;
-  margin-top: 3px;
-  margin-bottom: 3px;
-  margin-left: 15px;
-  margin-right: 15px;
-}
-
-
-
-@media screen and (max-width: 875px){
-
-  .topnav{
-    display: none;
-  }
-
-  .toogle-nav{
-    display: flex;
-  }
-
-  .ul-nav {
-    display: flex;
-    flex-direction: column;
-    background: #26bfbf;
-    width: 133px;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .li-nav {
-    width: 100%;
-  }
-
-  .nav-text{
-    display: 100%;
-  }
-
-  #toogle:checked + .topnav {
-    height: 100%;
-    width: 100%;
-    display: block;
-    padding: 8px 30px;
-    text-decoration: none;
-    font-family: "Dancing Script";
-    font-size: 30px;
-    color: white;
-    font-weight: normal;
-
-  }
-
-  #toogle:checked + .topnav > .ul-nav{
-    position: fixed;
-    right: 0px;
-  }
-
-}
-
-.user-nav-content{
-  position: fixed;
-  top: 50px;
-  right: 5px;
-  overflow: hidden;
-}
-
-.user-nav-content input{
-  text-decoration: none;
-  border:none;
-  background-color: #26bfbf;
-  font-family: "Dancing Script";
-  font-size: 25px;
-  color: white;
-  font-weight: normal;
-  width: 133px;
-  height: 50px
-}
-
-.user-nav-content input:hover{
+li a:hover, .dropdown:hover #dropbtn {
   background-color: darkcyan;
 
 }
 
-.user-nav-content .nav-text-li:hover{
+li.dropdown {
+  display: inline-block;
+}
+
+input .button-out:hover {
   background-color: darkcyan;
-
 }
 
-.user-nav-sub > ul {
-  list-style-type: none;
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #26bfbf;
+  min-width: 160px;
+  z-index: 1;
 }
 
-.user-nav-content{
-  max-height: 0;
+.dropdown-content a {
+  padding: 12px 16px;
+  display: block;
+  text-align: left;
 }
 
-#user-focus:focus ~ .user-nav-content{
-  max-height: 400px;
+.dropdown-content a:hover {
+  background-color:darkcyan;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
   -webkit-transition: max-height 0.4s ease-in;
   -moz-transition: max-height 0.4s ease-in;
   transition: max-height 0,4s ease-in;
+
 }
 
 
-
-
-
-
-
-
-/*
-
-
-.nav-text {
+.nav-element {
   text-decoration: none;
   font-family: "Dancing Script";
   font-size: 30px;
@@ -231,19 +90,10 @@ html, body {
   align-self: center;
 }
 
-
-.nav-element{
-  align-self: center;
-  justify-content: center;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-right: 10px;
-  padding-left: 10px;
-
-}
-
-.nav-element:hover{
-  background-color: darkcyan;
+.toogle-nav{
+  display: none;
+  border-bottom: solid;
+  border-bottom-color: white;
 
 }
 
@@ -251,38 +101,19 @@ html, body {
   display: none;
 }
 
-.toogle-nav{
-  background: #26bfbf;
-  border-bottom: solid;
-  border-bottom-color: white;
-  height: 50px;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-content: center;
-}
-
 #toogle-nav{
-  margin-right: 30px;
-  margin-top: 10px;
+  width: 40px;
+  height: 40px;
   background-color: white;
-  width: 30px;
-  height: 30px;
-  border-radius: 5px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
+  margin: 13px;
+  border-radius: 15px;
   justify-content: center;
-  align-items: center;
 
 }
 
-.toogle-nav{
-  display: none;
-}
-
-.toogle-nav #toogle-nav span{
-  background-color: grey;
+span {
+  align-self: center;
+  background-color: gray;
   width: 80%;
   height: 1px;
   margin-top: 3px;
@@ -291,39 +122,76 @@ html, body {
   margin-right: 15px;
 }
 
-@media screen and (max-width: 700px){
-  .topnav{
-    display: none;
+.button-out:hover {
+  background-color: darkcyan;
+}
 
+@media screen and (max-width: 875px){
+
+  nav{
+    display: none;
+  }
+
+  .button-out:hover {
+    background-color: darkcyan;
   }
 
   .toogle-nav{
     display: flex;
+    height: 63.438px;
+    background: #26bfbf;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-content: center;
+  }
+
+  #toogle-nav{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: none;
   }
 
   .nav-element{
-
-    display:flex;
-    flex-direction: row;
-    align-content: center;
-    justify-content: flex-end;
-    width: 100%;
-    margin-right: 60px;
+    padding:14px 0px;
   }
 
-  .alert-container{
-    display: none;
+  li a, #dropbtn {
+    display: inline-block;
+    text-align: center;
+    padding: 14px 0px;
 
   }
+  #toogle:checked + nav {
+    display: inline;
+    justify-content: center;
+  }
 
-  #toogle:checked + .topnav{
+  #toogle:checked + nav ul{
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-content: center;
+    align-items: center;
 
   }
+
+  #toogle:checked + nav ul li{
+    float: unset;
+    width: 100%;
+   }
+
+  #toogle:checked + nav ul li input{
+    width: 100%;
+    align-self: center;
+    padding: 14px 0px;
+  }
+
+  #toogle:checked + nav ul li a{
+   width: 100%;
+  }
+
 }
 
-
- */

@@ -9,12 +9,8 @@
     <% } %>
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Dancing+Script" />
   </head>
-
   <body>
     <header>
-      <div>
-        <a class=" logo" href="/">Knitter</a>
-      </div>
       <div class="toogle-nav">
           <label id="toogle-nav" for="toogle">
             <span></span>
@@ -23,96 +19,59 @@
           </label>
       </div>
       <input type="checkbox" id="toogle">
-      <nav class="topnav">
-        <ul class="ul-nav">
-          <li class="li-nav">
-            <a class="nav-text" href="/patterns">Patrones</a>
+      <nav>
+        <ul>
+          <li>
+            <a class="nav-element" href="/">Knitter</a>
+          </li>
+          <li class="dropdown">
+            <a class="nav-element" id="dropbtn">Patrones</a>
+            <div class="dropdown-content">
+              <a class="nav-element"  href="/patterns">Ver Patrones</a>
+              <% if ((currentUser) && ((currentUser.role === 'admin') || (currentUser.role === 'top'))) { %>
+              <a class="nav-element" href="/patterns/new">Crear</a>
+              <% } %>
+            </div>
           </li>
           <% if ((currentUser) && ((currentUser.role === 'admin') || (currentUser.role === 'top'))) { %>
-            <li class="li-nav">
-              <a class="nav-text"  href="/categories">Categorías</a>
+            <li class="dropdown">
+              <a class="nav-element" id="dropbtn">Categorías</a>
+              <div class="dropdown-content">
+                <a class="nav-element" href="/categories">Ver Categorías</a>
+                <a class="nav-element" href="/categories/new">Crear</a>
+              </div>
             </li>
-            <li class="li-nav">
-              <a class="nav-text" href="/materials">Materiales</a>
+            <li class="dropdown">
+              <a class="nav-element" id="dropbtn">Materiales</a>
+              <div class="dropdown-content">
+                <a class="nav-element" href="/materials">Ver materiales</a>
+                <a class="nav-element" href="/materials/new">Crear</a>
+              </div>
             </li>
           <% }; %>
           <% if ((currentUser) && (currentUser.role === 'admin')) { %>
-            <li class="li-nav">
-              <a class="nav-text" href="/users">Usuarios</a>
+            <li>
+              <a class="nav-element" href="/users">Usuarios</a>
             </li>
-          <% }; %>
+          <% } %>
           <% if (currentUser) { %>
-            <li class="li-nav">
-              <a class="nav-text" id="user-focus" href="#">Perfil</a>
-              <div class="user-nav-content">
-                <div class="user-nav-sub">
-                  <ul>
-                    <li>
-                      <a class="nav-text-li" href="/users/<%- currentUser.id %>">Ir al perfil</a>
-                    </li>
-                    <li>
-                        <form action="<%= destroySessionPath %>" method="post">
-                          <input type="hidden" name="_method" value="delete" />
-                          <input type="submit" value="Cerrar Sesión" />
-                        </form>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+            <li style="float:right">
+              <form action="<%= destroySessionPath %>" method="post">
+                <input type="hidden" name="_method" value="delete" />
+                <input class="button-out" type="submit" value="Salir">
+              </form>
+            </li>
+            <li style="float:right">
+              <a class="nav-element" href="/users/<%- currentUser.id %>">Perfil</a>
             </li>
           <% } else { %>
-            <li class="li-nav">
-              <a class="nav-text" href="<%= newSessionPath %>">Iniciar Sesión</a>
+            <li style="float:right">
+              <a class="nav-element" href="<%= newSessionPath %>">Iniciar Sesión</a>
             </li>
-          <% }; %>
+          <% } %>
         </ul>
       </nav>
 
-
-<!--       <div class="topnav">
-
-        <div class="nav-element">
-
-        </div>
-        <% if ((currentUser) && ((currentUser.role === 'admin') || (currentUser.role === 'top'))) { %>
-          <div class="nav-element">
-            <a class="nav-text"  href="/categories">Categorías</a>
-          </div>
-          <div class="nav-element">
-            <a class="nav-text" href="/materials">Materiales</a>
-          </div>
-        <% } %>
-        <% if ((currentUser) && (currentUser.role === 'admin')) { %>
-          <div class="nav-element">
-              <a class="nav-text" href="/users">Usuarios</a>
-          </div>
-        <% } %>
-        <% if (currentUser) { %>
-          <div class="nav-element">
-            <a class="nav-text" href="/users/<%- currentUser.id %>">Perfil</a>
-          </div>
-          <div class="nav-element">
-            <span class="nav-text">Hola <%= currentUser.username %>!</span>
-          </div>
-          <div class="nav-element">
-            <form action="<%= destroySessionPath %>" method="post">
-              <input type="hidden" name="_method" value="delete" />
-              <input type="submit" value="Cerrar Sesión" />
-            </form>
-          </div>
-        <% } else { %>
-          <div class="nav-element">
-            <a class="nav-text" href="<%= newSessionPath %>">Iniciar Sesión</a>
-          </div>
-        <% } %>
-        <% if (flashMessage) { %>
-          <div class="alert-container"><br>
-            <center><%= flashMessage.warning %></center>
-          </div>
-        <% } %>
-        <div class="nav-text">
-        </div>
-      </div> -->
     </header>
     <div class="body-page-content">
         <%- body %>
