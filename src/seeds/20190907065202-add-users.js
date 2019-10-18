@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 
 const PASSWORD_SALT = 10;
+const TOKEN_SALT = 10;
 
 module.exports = {
   up: (queryInterface) => {
@@ -12,6 +13,7 @@ module.exports = {
         age: 20,
         photo: 'Foto',
         role: 'admin',
+        token: bcrypt.hashSync('BFFV', TOKEN_SALT),
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -22,6 +24,7 @@ module.exports = {
         age: 22,
         photo: 'Foto2',
         role: 'top',
+        token: bcrypt.hashSync('Nicolás Riera', TOKEN_SALT),
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -32,6 +35,7 @@ module.exports = {
         age: 22,
         photo: 'Foto3',
         role: 'common',
+        token: bcrypt.hashSync('Juan Aguillón', TOKEN_SALT),
         createdAt: new Date(),
         updatedAt: new Date(),
       },
