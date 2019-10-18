@@ -5,6 +5,8 @@
   margin-right: 30px;
 }
 
+
+
 .material-show-head{
   display: flex;
   flex-direction: row;
@@ -19,13 +21,7 @@
 }
 
 .material-add-button{
-  height: 40px;
-  width: 40px;
-  background-color: #26bfbf;
-  border-radius: 50%;
-  border-style: none;
-  color: white;
-  font-size: 25px;
+  display: none;
 }
 
 .boton-material{
@@ -78,4 +74,17 @@
   color: gray;
 }
 
+@media screen and (max-width: 875px){
 
+  .material-add-button{
+    display: block;
+    height: 40px;
+    width: 40px;
+    background-color: #26bfbf;
+    border-radius: 50%;
+    border-style: none;
+    color: white;
+    font-size: 25px;
+  }
+
+}
