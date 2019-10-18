@@ -115,9 +115,10 @@ router.get('users.edit', '/:id/edit', loadUser, authenticate, async (ctx) => {
 router.post('users.create', '/', checkPassword, async (ctx) => {
   const params = ctx.request.body;
   params.role = 'common';
+  params.token = params.username;
   const user = ctx.orm.user.build(params);
   try {
-    await user.save({ fields: ['username', 'password', 'email', 'age', 'photo', 'role'] });
+    await user.save({ fields: ['username', 'password', 'email', 'age', 'photo', 'role', 'token'] });
     ctx.redirect(ctx.router.url('session.new'));
   } catch (validationError) {
     let { errors } = validationError;

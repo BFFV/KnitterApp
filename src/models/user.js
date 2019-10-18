@@ -1,11 +1,21 @@
 const bcrypt = require('bcrypt');
 
 const PASSWORD_SALT = 10;
+const TOKEN_SALT = 10;
 
 async function buildPasswordHash(instance, options) {
   if (instance.changed('password')) {
     const hash = await bcrypt.hash(instance.password, PASSWORD_SALT);
     instance.set('password', hash);
+    // eslint-disable-next-line no-param-reassign
+    options.validate = false;
+  }
+}
+
+async function buildTokenHash(instance, options) {
+  if (instance.changed('token')) {
+    const hash = await bcrypt.hash(instance.token, TOKEN_SALT);
+    instance.set('token', hash);
     // eslint-disable-next-line no-param-reassign
     options.validate = false;
   }
@@ -64,6 +74,7 @@ module.exports = (sequelize, DataTypes) => {
     photo: DataTypes.STRING,
     role: DataTypes.STRING,
     popularity: DataTypes.INTEGER,
+    token: DataTypes.STRING,
   }, {});
 
   user.associate = function associate(models) {
@@ -78,6 +89,7 @@ module.exports = (sequelize, DataTypes) => {
 
   user.beforeCreate(buildPasswordHash);
   user.beforeUpdate(buildPasswordHash);
+  user.beforeCreate(buildTokenHash);
 
   user.prototype.checkPassword = function checkPassword(password) {
     return bcrypt.compare(password, this.password);

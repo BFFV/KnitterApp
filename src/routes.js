@@ -15,7 +15,9 @@ const router = new KoaRouter();
 
 router.use(async (ctx, next) => {
   Object.assign(ctx.state, {
-    currentUser: ctx.session.userId && await ctx.orm.user.findByPk(ctx.session.userId),
+    currentUser: ctx.session.token && await ctx.orm.user.findOne({
+      where: { token: ctx.session.token },
+    }),
     newSessionPath: ctx.router.url('session.new'),
     destroySessionPath: ctx.router.url('session.destroy'),
   });

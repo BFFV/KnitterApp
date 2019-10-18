@@ -16,7 +16,7 @@ router.put('session.create', '/', async (ctx) => {
     const user = await ctx.orm.user.findOne({ where: { email } });
     const isPasswordCorrect = user && await user.checkPassword(password);
     if (isPasswordCorrect) {
-      ctx.session.userId = user.id;
+      ctx.session.token = user.token;
       return ctx.redirect('/');
     }
   } catch (e) {
