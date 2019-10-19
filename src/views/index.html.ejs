@@ -1,3 +1,23 @@
-<div class = "contenedor-body">
-    <h1>Lo mejor para ti...</h1>
+<div class="content-body">
+  <div class="tittle-index">
+    <h1>Lista de Patrones!</h1>
+  </div>
+  <div class="patterns-content">
+    <% patterns.forEach((pattern) => { %>
+      <div class="pattern-index">
+        <div class="pattern-index-element-photo">
+          <a class="photo">Foto</a>
+        </div>
+        <div class="pattern-index-element">
+          <a class="parag-list" href="<%- patternPath(pattern) %>"><%- pattern.name %></a>
+        </div>
+        <div class="pattern-index-element">
+            <a class="parag-list">Puntaje: <%- pattern.score %>/5</a>
+        </div>
+        <div class="pattern-index-element">
+            <a class="parag-list">Popularidad: <%- pattern.popularity %></a>
+        </div>
+       </div>
+      <% }); %>
+    </div>
 </div>
