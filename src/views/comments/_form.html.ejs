@@ -16,12 +16,12 @@
       <div>
         <% if (comment.isNewRecord) { %>
           <div>
-            <textarea rows="8" cols="61" type="text" required name="content"></textarea>
+            <textarea rows="8" cols="47" type="text" required name="content"></textarea>
             <input type="hidden" id="patternId" name="patternId" value="<%= pattern.id %>">
           </div>
         <% } else { %>
           <div>
-            <textarea rows="8" cols="80" type="text" required name="content"><%= comment.content %></textarea>
+            <textarea class="input-comment-box" rows="8" cols="80" type="text" required name="content"><%= comment.content %></textarea>
           </div>
         <% } %>
       </div>
