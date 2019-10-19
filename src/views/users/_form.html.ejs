@@ -25,18 +25,31 @@
       <div class="panel-content">
         <input class="input-list" type="text" name="email" size="40" value="<%= user.email %>" required/>
       </div>
+
       <div class="panel-content">
         <label class="parag-list" for="password">Contraseña:</label>
       </div>
-      <div class="panel-content">
+      <% if (user.isNewRecord) { %>
+        <div class="panel-content">
         <input class="input-list" type="password" name="password" size="40" required/>
       </div >
+      <% } else { %>
+        <div class="panel-content">
+        <input class="input-list" type="password" name="password" size="40"/>
+      </div >
+      <% } %>
       <div class="panel-content">
         <label class="parag-list" for="r-password">Repetir Contraseña:</label>
       </div>
-      <div class="panel-content">
-        	<input class="input-list" type="password" name="r_password" size="40" required/>
-      </div >
+      <% if (user.isNewRecord) { %>
+        <div class="panel-content">
+          <input class="input-list" type="password" name="r_password" size="40" required/>
+        </div >
+      <% } else { %>
+        <div class="panel-content">
+          <input class="input-list" type="password" name="r_password" size="40"/>
+        </div >
+      <% } %>
       <div class="panel-content">
         <label class="parag-list" for="age">Edad:</label>
       </div>
@@ -47,7 +60,7 @@
         <label class="parag-list" for="age">Foto:</label>
       </div>
       <div class="panel-content">
-        <input class="input-list" type="text" name="photo" size="40" value="<%= user.photo %>" required/>
+        <input class="input-list" type="file" name="photo" multiple="multiple" value="<%= user.photo %>"  required/>
       </div>
       <% if (!user.isNewRecord) { %>
         <div class="panel-content">
