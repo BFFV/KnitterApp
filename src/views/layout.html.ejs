@@ -35,7 +35,7 @@
 
             <div class="dropdown-content">
               <a class="nav-element"  href="/patterns">Ver Patrones</a>
-              <% if ((currentUser) && ((currentUser.role === 'admin') || (currentUser.role === 'top'))) { %>
+              <% if (currentUser) { %>
               <a class="nav-element" href="/patterns/new">Crear</a>
               <% } %>
             </div>

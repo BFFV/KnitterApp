@@ -20,7 +20,16 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     video: DataTypes.STRING,
-    image: DataTypes.STRING,
+    image: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          args: true,
+          msg: 'Debes subir una imagen!',
+        },
+      },
+    },
+    imageId: DataTypes.STRING,
     tension: {
       type: DataTypes.STRING,
       validate: {

@@ -25,9 +25,8 @@
   </div>
   <div class="pattern-elements">
     <div class="pattern-photo">
-      <p></p>
+      <img src="<%- pattern.image %>">
     </div>
-
     <div class="pattern-video">
         <iframe class="youtube-video" allowFullScreen="allowFullScreen" src="https://www.youtube.com/embed/<%= pattern.video.slice(32) %>?ecver=1&amp;iv_load_policy=1
           &amp;rel=0&amp;yt:stretch=16:9&amp;autohide=1&amp;color=red"
@@ -36,7 +35,7 @@
     </div>
   </div>
   <div class="pattern-elements-2">
-    <div clasS="pattern-data">
+    <div class="pattern-data">
       <div>
         <p class="parag">Diseñado por: <a class= "parag" href="<%- authorPath %>"><%- author.username %></a></p>
       </div>

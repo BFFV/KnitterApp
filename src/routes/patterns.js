@@ -1,4 +1,5 @@
 const KoaRouter = require('koa-router');
+const cloudinary = require('../config/cloudinary');
 
 const router = new KoaRouter();
 
@@ -160,6 +161,22 @@ async function searchPatterns(ctx, next) {
   return next();
 }
 
+// Uploads an image to the cloud storage
+async function uploadImage(ctx, next) {
+  await next();
+  const { pattern } = ctx.state;
+  if (pattern.id) {
+    const { image } = ctx.request.files;
+    if (image.name) {
+      if (pattern.imageId !== 'default') {
+        await cloudinary.deletes(pattern.imageId);
+      }
+      const upload = await cloudinary.uploads(image.path);
+      await pattern.update({ image: upload.secure_url, imageId: upload.public_id });
+    }
+  }
+}
+
 // Protects routes from unauthorized access
 async function authenticate(ctx, next) {
   const current = ctx.state.currentUser;
@@ -224,12 +241,14 @@ router.get('patterns.edit', '/:id/edit', loadPattern, authenticate, async (ctx) 
   });
 });
 
-router.post('patterns.create', '/', authenticate, async (ctx) => {
+router.post('patterns.create', '/', authenticate, uploadImage, async (ctx) => {
   ctx.params = ctx.request.body;
+  ctx.params.image = ctx.request.files.image.name;
   if (ctx.state.currentUser) {
     ctx.params.authorId = ctx.state.currentUser.id;
   }
   const pattern = ctx.orm.pattern.build(ctx.params);
+  ctx.state.pattern = pattern;
   let { materials } = ctx.params;
   try {
     await pattern.save(
@@ -260,16 +279,16 @@ router.post('patterns.create', '/', authenticate, async (ctx) => {
   }
 });
 
-router.patch('patterns.update', '/:id', loadPattern, authenticate, async (ctx) => {
+router.patch('patterns.update', '/:id', loadPattern, authenticate, uploadImage, async (ctx) => {
   const { pattern } = ctx.state;
   const materialsList = await ctx.orm.material.findAll();
   const patternMaterials = await pattern.getMaterials();
   try {
     const {
-      name, instructions, image, video, tension, materials,
+      name, instructions, video, tension, materials,
     } = ctx.request.body;
     await pattern.update({
-      name, instructions, image, video, tension,
+      name, instructions, video, tension,
     });
     await setMaterials(materials, pattern);
     ctx.redirect(ctx.router.url('patterns.show', { id: pattern.id }));
