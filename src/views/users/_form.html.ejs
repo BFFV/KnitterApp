@@ -8,7 +8,7 @@
       </ul>
     </div>
   <% } %>
-  <form action="<%= submitUserPath %>" method="POST">
+  <form action="<%= submitUserPath %>" enctype="multipart/form-data" method="POST">
     <% if (!user.isNewRecord) { %>
       <input type="hidden" name="_method" value="PATCH" />
     <% } %>
@@ -57,10 +57,10 @@
         <input class="input-list" type="number" name="age" min="1" max="150" step="1" value="<%= user.age %>" required/>
       </div>
       <div class="panel-content">
-        <label class="parag-list" for="age">Foto:</label>
+        <label class="parag-list" for="photo">Foto:</label>
       </div>
       <div class="panel-content">
-        <input class="input-list" type="file" name="photo" multiple="multiple" value="<%= user.photo %>"  required/>
+        <input class="input-list" type="file" name="photo" value="<%= user.photo %>" />
       </div>
       <% if (!user.isNewRecord) { %>
         <div class="panel-content">
