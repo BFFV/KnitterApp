@@ -1,12 +1,17 @@
 const KoaRouter = require('koa-router');
+const cloudinary = require('../config/cloudinary');
 
 const router = new KoaRouter();
 
 // Loads a particular pattern
 async function loadPattern(ctx, next) {
   ctx.state.pattern = await ctx.orm.pattern.findByPk(ctx.params.id);
-  ctx.state.access = 'protected';
-  return next();
+  if (ctx.state.pattern) {
+    ctx.state.access = 'protected';
+    return next();
+  }
+  ctx.redirect(ctx.router.url('patterns.list'));
+  return 'Invalid Pattern!';
 }
 
 // Sets the materials used for a pattern
@@ -32,18 +37,44 @@ async function newPatternInfo(ctx) {
   return info;
 }
 
-// Checks if the user has already voted a pattern
-async function checkVote(ctx) {
-  let vote = await ctx.orm.vote_pattern.findOne({
-    where: {
-      userId: ctx.state.currentUser.id,
-      patternId: ctx.state.pattern.id,
-    },
-  });
-  if (!vote) {
-    vote = ctx.orm.vote_pattern.build();
+// Checks if the current user has already voted/added/saved as favorite this pattern
+async function checkState(ctx, next) {
+  let votePath = ctx.router.url('vote_patterns.create');
+  let addPath = ctx.router.url('user_patterns.add');
+  let favoritePath = ctx.router.url('user_patterns.favorite');
+  let vote = false;
+  let userPattern = false;
+  let favorite = false;
+  if (ctx.state.currentUser) {
+    vote = await ctx.orm.vote_pattern.findOne({
+      where: {
+        userId: ctx.state.currentUser.id,
+        patternId: ctx.state.pattern.id,
+      },
+    });
+    if (vote) {
+      votePath = ctx.router.url('vote_patterns.update', { id: vote.id });
+    }
+    const userPatterns = await ctx.state.currentUser.getUsedPatterns()
+      .then((patterns) => patterns.filter((x) => x.id === ctx.state.pattern.id));
+    if (userPatterns.length) {
+      addPath = ctx.router.url('user_patterns.delete');
+      userPattern = true;
+    }
+    const favoritePatterns = await ctx.state.currentUser.getFavoritePatterns()
+      .then((patterns) => patterns.filter((x) => x.id === ctx.state.pattern.id));
+    if (favoritePatterns.length) {
+      favoritePath = ctx.router.url('user_patterns.remove');
+      favorite = true;
+    }
   }
-  return vote;
+  ctx.state.votePattern = vote;
+  ctx.state.votePath = votePath;
+  ctx.state.addPath = addPath;
+  ctx.state.userPattern = userPattern;
+  ctx.state.favoritePath = favoritePath;
+  ctx.state.favorite = favorite;
+  return next();
 }
 
 // Gets the time since a comment has been updated
@@ -114,12 +145,36 @@ async function searchPatterns(ctx, next) {
       }
     });
   }
-  if (params.sorting === 'popular') {
+  if (params.sorting === 'rating') {
     ctx.state.patternsList.sort((a, b) => a.score - b.score).reverse();
+  } else if (params.sorting === 'popular') {
+    ctx.state.patternsList.sort((a, b) => a.popularity - b.popularity).reverse();
   } else {
     ctx.state.patternsList.sort((a, b) => a.updatedAt - b.updatedAt).reverse();
   }
+  if (params.sorting) {
+    ctx.state.sorting = params.sorting;
+  }
+  if (params.category) {
+    ctx.state.category = parseInt(params.category, 10);
+  }
   return next();
+}
+
+// Uploads an image to the cloud storage
+async function uploadImage(ctx, next) {
+  await next();
+  const { pattern } = ctx.state;
+  if (pattern.id) {
+    const { image } = ctx.request.files;
+    if (image.name) {
+      if (pattern.imageId !== 'default') {
+        await cloudinary.deletes(pattern.imageId);
+      }
+      const upload = await cloudinary.uploads(image.path);
+      await pattern.update({ image: upload.secure_url, imageId: upload.public_id });
+    }
+  }
 }
 
 // Protects routes from unauthorized access
@@ -150,6 +205,9 @@ router.get('patterns.list', '/', searchPatterns, async (ctx) => {
     editPatternPath: (pattern) => ctx.router.url('patterns.edit', { id: pattern.id }),
     deletePatternPath: (pattern) => ctx.router.url('patterns.delete', { id: pattern.id }),
     rootPath: '/',
+    selSorting: ctx.state.sorting,
+    selCategory: ctx.state.category,
+    options: [['recent', 'Más Reciente'], ['popular', 'Más Popular'], ['rating', 'Mejor Valorado']],
   });
 });
 
@@ -183,12 +241,14 @@ router.get('patterns.edit', '/:id/edit', loadPattern, authenticate, async (ctx) 
   });
 });
 
-router.post('patterns.create', '/', authenticate, async (ctx) => {
+router.post('patterns.create', '/', authenticate, uploadImage, async (ctx) => {
   ctx.params = ctx.request.body;
+  ctx.params.image = ctx.request.files.image.name;
   if (ctx.state.currentUser) {
     ctx.params.authorId = ctx.state.currentUser.id;
   }
   const pattern = ctx.orm.pattern.build(ctx.params);
+  ctx.state.pattern = pattern;
   let { materials } = ctx.params;
   try {
     await pattern.save(
@@ -219,16 +279,16 @@ router.post('patterns.create', '/', authenticate, async (ctx) => {
   }
 });
 
-router.patch('patterns.update', '/:id', loadPattern, authenticate, async (ctx) => {
+router.patch('patterns.update', '/:id', loadPattern, authenticate, uploadImage, async (ctx) => {
   const { pattern } = ctx.state;
   const materialsList = await ctx.orm.material.findAll();
   const patternMaterials = await pattern.getMaterials();
   try {
     const {
-      name, instructions, image, video, tension, materials,
+      name, instructions, video, tension, materials,
     } = ctx.request.body;
     await pattern.update({
-      name, instructions, image, video, tension,
+      name, instructions, video, tension,
     });
     await setMaterials(materials, pattern);
     ctx.redirect(ctx.router.url('patterns.show', { id: pattern.id }));
@@ -256,8 +316,10 @@ router.del('patterns.delete', '/:id', loadPattern, authenticate, async (ctx) => 
   ctx.redirect(ctx.router.url('patterns.list'));
 });
 
-router.get('patterns.show', '/:id', loadPattern, async (ctx) => {
-  const { pattern } = ctx.state;
+router.get('patterns.show', '/:id', loadPattern, checkState, async (ctx) => {
+  const {
+    pattern, votePattern, votePath, userPattern, addPath, favorite, favoritePath,
+  } = ctx.state;
   const author = await pattern.getUser();
   const category = await pattern.getCategory();
   const materials = await pattern.getMaterials();
@@ -268,14 +330,6 @@ router.get('patterns.show', '/:id', loadPattern, async (ctx) => {
   const date = new Date();
   const patternComments = commentsList.map((e, i) => [e, usersList[i],
     updatedTime(e.updatedAt, date)]);
-  let path = ctx.router.url('vote_patterns.create');
-  let votePattern = null;
-  if (ctx.state.currentUser) {
-    votePattern = await checkVote(ctx);
-    if (!votePattern.isNewRecord) {
-      path = ctx.router.url('vote_patterns.update', { id: votePattern.id });
-    }
-  }
   const comment = ctx.orm.comment.build();
   const options = [1, 2, 3, 4, 5];
   await ctx.render('patterns/show', {
@@ -290,10 +344,15 @@ router.get('patterns.show', '/:id', loadPattern, async (ctx) => {
     patternsPath: ctx.router.url('patterns.list'),
     editPatternPath: ctx.router.url('patterns.edit', { id: pattern.id }),
     deletePatternPath: ctx.router.url('patterns.delete', { id: pattern.id }),
-    votePatternPath: path,
+    authorPath: ctx.router.url('users.show', { id: author.id }),
+    votePatternPath: votePath,
     submitCommentPath: ctx.router.url('comments.create'),
     editCommentPath: (c) => ctx.router.url('comments.edit', { id: c.id }),
     deleteCommentPath: (c) => ctx.router.url('comments.delete', { id: c.id }),
+    userPattern,
+    addPatternPath: addPath,
+    favorite,
+    favoritePath,
   });
 });
 

@@ -8,7 +8,7 @@
       </ul>
     </div>
   <% } %>
-  <form action="<%= submitPatternPath %>" method="post">
+  <form action="<%= submitPatternPath %>" enctype="multipart/form-data" method="post">
     <% if (!pattern.isNewRecord) { %>
       <input type="hidden" name="_method" value="patch" />
     <% } %>
@@ -23,7 +23,7 @@
         <label class="parag-list" for="image">Imagen:</label>
       </div>
       <div class="panel-content">
-        <input type="text" name="image" size="40" value="<%= pattern.image %>" required/>
+        <input class="input-list" type="file" name="image" value="<%= pattern.image %>" required/>
       </div>
       <div class="panel-content">
         <label class="parag-list" for="tension">Tensión:</label>
@@ -53,7 +53,7 @@
             <% }); %>
           </select>
         </div>
-
+      <% } %>
       <% if (!pattern.isNewRecord) { %>
         <div class="panel-content">
           <p class="parag-list">Materiales Actuales:</p>
@@ -63,10 +63,7 @@
             <div class="material-checkbox">
               <p class="parag-list"> <%- material.name %> </p>
             </div>
-            <div class="material-checkbox">
-              <input class="checkbox" type="checkbox" name="materials" value="<%- material.id %>">
-            </div>
-        <% }); %>
+          <% }); %>
         </div>
 
         <div class="panel-content">
@@ -89,7 +86,8 @@
         <% }); %>
       </div>
       <div class="panel-content">
-        <input class="button-pattern" id="boton" type="submit" name="create" value="Crear" />
+        <% if (pattern.isNewRecord) { %>
+          <input class="button-pattern" id="boton" type="submit" name="create" value="Crear" />
         <% } else { %>
           <input class="button-pattern" id="boton" type="submit" name="update" value="Actualizar" />
         <% } %>

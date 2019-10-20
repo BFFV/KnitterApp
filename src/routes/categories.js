@@ -5,7 +5,11 @@ const router = new KoaRouter();
 // Loads a particular category
 async function loadCategory(ctx, next) {
   ctx.state.category = await ctx.orm.category.findByPk(ctx.params.id);
-  return next();
+  if (ctx.state.category) {
+    return next();
+  }
+  ctx.redirect(ctx.router.url('categories.list'));
+  return 'Invalid Category!';
 }
 
 // Protects routes from unauthorized access

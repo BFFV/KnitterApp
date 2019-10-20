@@ -1,11 +1,21 @@
 const bcrypt = require('bcrypt');
 
 const PASSWORD_SALT = 10;
+const TOKEN_SALT = 10;
 
 async function buildPasswordHash(instance, options) {
   if (instance.changed('password')) {
     const hash = await bcrypt.hash(instance.password, PASSWORD_SALT);
     instance.set('password', hash);
+    // eslint-disable-next-line no-param-reassign
+    options.validate = false;
+  }
+}
+
+async function buildTokenHash(instance, options) {
+  if (instance.changed('token')) {
+    const hash = await bcrypt.hash(instance.token, TOKEN_SALT);
+    instance.set('token', hash);
     // eslint-disable-next-line no-param-reassign
     options.validate = false;
   }
@@ -62,19 +72,25 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     photo: DataTypes.STRING,
+    photoId: DataTypes.STRING,
     role: DataTypes.STRING,
+    popularity: DataTypes.INTEGER,
+    token: DataTypes.STRING,
   }, {});
 
   user.associate = function associate(models) {
     user.hasMany(models.pattern, { foreignKey: 'authorId' });
     user.hasMany(models.vote_pattern, { foreignKey: 'userId' });
     user.hasMany(models.comment, { foreignKey: 'userId' });
-    user.belongsToMany(models.pattern, { through: 'user_patterns', as: 'used_patterns' });
-    user.belongsToMany(models.user, { through: 'followers', as: 'followed_by' });
+    user.belongsToMany(models.pattern, { through: 'user_patterns', as: 'usedPatterns' });
+    user.belongsToMany(models.user, { through: 'followers', as: 'followedBy', foreignKey: 'followedId' });
+    user.belongsToMany(models.user, { through: 'followers', as: 'following', foreignKey: 'followerId' });
+    user.belongsToMany(models.pattern, { through: 'favorites', as: 'favoritePatterns' });
   };
 
   user.beforeCreate(buildPasswordHash);
   user.beforeUpdate(buildPasswordHash);
+  user.beforeCreate(buildTokenHash);
 
   user.prototype.checkPassword = function checkPassword(password) {
     return bcrypt.compare(password, this.password);

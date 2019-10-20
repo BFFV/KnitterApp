@@ -1,12 +1,91 @@
 const KoaRouter = require('koa-router');
+const cloudinary = require('../config/cloudinary');
 
 const router = new KoaRouter();
 
 // Loads a particular user
 async function loadUser(ctx, next) {
   ctx.state.user = await ctx.orm.user.findByPk(ctx.params.id);
-  ctx.state.access = 'user';
+  if (ctx.state.user) {
+    ctx.state.access = 'user';
+    ctx.state.createdPatterns = await ctx.state.user.getPatterns();
+    ctx.state.usedPatterns = await ctx.state.user.getUsedPatterns();
+    ctx.state.favoritePatterns = await ctx.state.user.getFavoritePatterns();
+    return next();
+  }
+  ctx.redirect(ctx.router.url('users.list'));
+  return 'Invalid User!';
+}
+
+// Checks if the current user has already followed this user
+async function checkState(ctx, next) {
+  let followerPath = ctx.router.url('followers.add');
+  let following = false;
+  if (ctx.state.currentUser) {
+    const followingList = await ctx.state.currentUser.getFollowing()
+      .then((users) => users.filter((x) => x.id === ctx.state.user.id));
+    if (followingList.length) {
+      followerPath = ctx.router.url('followers.delete');
+      following = true;
+    }
+  }
+  ctx.state.followerPath = followerPath;
+  ctx.state.following = following;
   return next();
+}
+
+// Checks if the two passwords are right when creating/editing an user
+async function checkPassword(ctx, next) {
+  const params = ctx.request.body;
+  const { user } = ctx.state;
+  if (ctx.state.currentUser) {
+    const pPassword = await user.checkPassword(params.p_password);
+    let errors = [{ message: 'Contraseña Actual Incorrecta!' }];
+    if (pPassword) {
+      errors = [{ message: 'Las Contraseñas No Coinciden!' }];
+      if (params.password === params.r_password) {
+        return next();
+      }
+    }
+    await ctx.render('users/edit', {
+      user,
+      errors,
+      userPath: ctx.router.url('users.show', { id: user.id }),
+      submitUserPath: ctx.router.url('users.update', { id: user.id }),
+    });
+  } else if (params.password === params.r_password) {
+    return next();
+  } else {
+    const errors = [{ message: 'Las contraseñas no coinciden!' }];
+    await ctx.render('users/new', {
+      user: ctx.orm.user.build(ctx.request.body),
+      errors,
+      rootPath: '/',
+      submitUserPath: ctx.router.url('users.create'),
+    });
+  }
+  return 'Passwords are not equal!';
+}
+
+// Uploads an image to the cloud storage
+async function uploadImage(ctx, next) {
+  await next();
+  const { user } = ctx.state;
+  if (user.id) {
+    const image = ctx.request.files.photo;
+    if (image.name) {
+      if (user.photoId !== 'default') {
+        await cloudinary.deletes(user.photoId);
+      }
+      const upload = await cloudinary.uploads(image.path);
+      await user.update({ photo: upload.secure_url, photoId: upload.public_id });
+    } else if (user.photo === 'default') {
+      await user.update({
+        photo:
+         'https://res.cloudinary.com/webhitos/image/upload/v1571539053/hibale5troxdurtj9dlw.jpg',
+      });
+    }
+  }
 }
 
 // Protects routes from unauthorized access
@@ -16,7 +95,9 @@ async function authenticate(ctx, next) {
     if ((current) && (current.role === 'admin')) {
       return next();
     }
-  } else if ((current) && ((current.role === 'admin') || (current.id === ctx.state.user.id))) {
+  } else if ((current) && (current.id === ctx.state.user.id)) {
+    return next();
+  } else if ((ctx.request.method === 'DELETE') && (current.role === 'admin')) {
     return next();
   }
   ctx.redirect('/');
@@ -53,12 +134,15 @@ router.get('users.edit', '/:id/edit', loadUser, authenticate, async (ctx) => {
   });
 });
 
-router.post('users.create', '/', async (ctx) => {
+router.post('users.create', '/', checkPassword, uploadImage, async (ctx) => {
   const params = ctx.request.body;
   params.role = 'common';
+  params.token = params.username;
+  params.photo = 'default';
   const user = ctx.orm.user.build(params);
+  ctx.state.user = user;
   try {
-    await user.save({ fields: ['username', 'password', 'email', 'age', 'photo', 'role'] });
+    await user.save({ fields: ['username', 'password', 'email', 'age', 'photo', 'role', 'token'] });
     ctx.redirect(ctx.router.url('session.new'));
   } catch (validationError) {
     let { errors } = validationError;
@@ -76,14 +160,15 @@ router.post('users.create', '/', async (ctx) => {
   }
 });
 
-router.patch('users.update', '/:id', loadUser, authenticate, async (ctx) => {
+router.patch('users.update', '/:id', loadUser, authenticate, checkPassword, uploadImage, async (ctx) => {
   const { user } = ctx.state;
+  const params = ctx.request.body;
   try {
     const {
-      username, password, email, age, photo,
-    } = ctx.request.body;
+      username, password, email, age,
+    } = params;
     await user.update({
-      username, password, email, age, photo,
+      username, password, email, age,
     });
     ctx.redirect(ctx.router.url('users.show', { id: user.id }));
   } catch (validationError) {
@@ -108,13 +193,21 @@ router.del('users.delete', '/:id', loadUser, authenticate, async (ctx) => {
   ctx.redirect(ctx.router.url('users.list'));
 });
 
-router.get('users.show', '/:id', loadUser, async (ctx) => {
-  const { user } = ctx.state;
+router.get('users.show', '/:id', loadUser, checkState, async (ctx) => {
+  const {
+    user, createdPatterns, followerPath, following, usedPatterns, favoritePatterns,
+  } = ctx.state;
   await ctx.render('users/show', {
     user,
+    following,
+    followerPath,
+    usedPatterns,
+    favoritePatterns,
+    createdPatterns,
     usersPath: ctx.router.url('users.list'),
     editUserPath: ctx.router.url('users.edit', { id: user.id }),
     deleteUserPath: ctx.router.url('users.delete', { id: user.id }),
+    patternPath: (pattern) => ctx.router.url('patterns.show', { id: pattern.id }),
   });
 });
 

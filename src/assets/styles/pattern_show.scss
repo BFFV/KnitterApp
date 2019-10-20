@@ -1,101 +1,171 @@
 
-.content-body-header{
+/* Built */
+
+.body-show-pattern {
   display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 400px;
-  flex-wrap: wrap;
+  flex-direction: column;
 }
 
-.picture-show{
-  width: 30%;
-  height: 90%;
+.tittle-edit-delete {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0px 30px;
+}
+
+.pattern-elements {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  height: 400px;
+
+}
+
+.pattern-elements-2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  height: 400px;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
+.pattern-photo {
+  width: 400px;
+  height: 400px;
+  position: absolute;
   border-radius: 50%;
   border-style: solid;
   border-color: #26bfbf;
-  align-items: center;
-  justify-items: center;
+  margin: 0px 30px;
 }
 
-.center-header{
-  padding-left:80px;
-  width: 30%;
-  height: 90%;
-  align-items: center;
-  justify-items: center;
-  place-items: center;
-}
-
-.youtube{
-  height: 80%;
-  width: 100%;
-}
-
-.parag{
-  font-family: arial;
-  font-size: 13px;
-  color: gray;
-}
-
-.comment-text{
-  font-family: arial;
-  font-size: 14px;
-  color: black;
-}
-
-#boton-vote{
-  background-color: #26bfbf;
-  margin-top: 15px;
+.pattern-video {
   width: 70%;
-  height: 30px;
-  font-family: "Dancing Script";
-  font-size: 20px;
-  border-style: none;
-  color: white;
-  border-radius: 15px;
-
+  height: 80%;
+  padding-right: 30px ;
+  margin-left: 500px;
 }
 
-.middle-show{
-  display:  flex;
-  flex-direction: row;
-  width: 100%;
-  height: 250px;
+.pattern-data {
+  width: 20%;
+  margin: 0px 30px;
+  height: 100%;
 }
 
 .instruction-content{
   display: flex;
   flex-direction: column;
   white-space: pre-line;
-  width: 40%;
+  width: 30%;
   padding-right: 100px;
+  height: 100%;
 }
 
-.comment-form{
+.pattern-materials {
+  width: 20%;
+  margin-right: 20px;
+  height: 100%;
+}
+
+.pattern-comment {
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
-  width: 40%;
 }
 
-.comments-all{
+.pattern-comments {
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
-  height: 150px;
-  margin-bottom: 20px;
+  margin: 0px 30px;
 }
 
-.comment{
-  display: flex;
-  flex-direction: row;
+.comment {
+  max-width: 630px;
+}
+
+/* Details */
+
+.comment-pattern {
+  margin: 0px 30px;
+}
+
+.tittle-element {
+  padding-right: 20px;
+}
+
+.youtube-video {
   width: 100%;
-  align-items: center;
+  height: 100%;
+}
 
+.pattern-data {
+  height: 100%;
+}
+
+.comment-tittle{
+  margin-top: 30px;
 }
 
 .comment-item{
   align-items: center;
   justify-items: center;
   padding-right: 20px;
+}
+
+
+/* Interaction */
+
+
+@media screen and (max-width: 875px){
+
+  .pattern-elements {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+    height: 800px;
+
+  }
+
+  .pattern-photo {
+    margin:0px;
+    widows: 400px;
+    height: 400px;
+  }
+
+  .pattern-video {
+    margin: 0px;
+    margin-top: 470px;
+    padding: 0px;
+  }
+
+  .youtube-video {
+    padding-left: 0px;
+  }
+
+  .pattern-elements-2 {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+  }
+
+  .pattern-data {
+    width: 100%;
+  }
+
+  .pattern-materials {
+    width: 100%;
+    margin: 20px 30px;
+
+  }
+
+  .instruction-content {
+    width: 100%;
+    margin: 0px 30px;
+    white-space: pre-line;
+    padding: 0px;
+  }
 }
 

@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 
 const PASSWORD_SALT = 10;
+const TOKEN_SALT = 10;
 
 module.exports = {
   up: (queryInterface) => {
@@ -10,8 +11,10 @@ module.exports = {
         password: bcrypt.hashSync('123456', PASSWORD_SALT),
         email: 'bffarias@uc.cl',
         age: 20,
-        photo: 'Foto',
+        photo: 'https://res.cloudinary.com/webhitos/image/upload/v1571539053/hibale5troxdurtj9dlw.jpg',
+        photoId: 'default',
         role: 'admin',
+        token: bcrypt.hashSync('BFFV', TOKEN_SALT),
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -20,8 +23,10 @@ module.exports = {
         password: bcrypt.hashSync('123456', PASSWORD_SALT),
         email: 'nariera@uc.cl',
         age: 22,
-        photo: 'Foto2',
+        photo: 'https://res.cloudinary.com/webhitos/image/upload/v1571539053/hibale5troxdurtj9dlw.jpg',
+        photoId: 'default',
         role: 'top',
+        token: bcrypt.hashSync('Nicolás Riera', TOKEN_SALT),
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -30,8 +35,10 @@ module.exports = {
         password: bcrypt.hashSync('123456', PASSWORD_SALT),
         email: 'jjaguillon@uc.cl',
         age: 22,
-        photo: 'Foto3',
+        photo: 'https://res.cloudinary.com/webhitos/image/upload/v1571539053/hibale5troxdurtj9dlw.jpg',
+        photoId: 'default',
         role: 'common',
+        token: bcrypt.hashSync('Juan Aguillón', TOKEN_SALT),
         createdAt: new Date(),
         updatedAt: new Date(),
       },

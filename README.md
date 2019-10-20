@@ -13,3 +13,7 @@ Link App: https://web-hitos-knitter.herokuapp.com
 ## Entrega 3
 
 - Se aplicó una capa de CSS a la aplicación, mejorando su aspecto visual. La página es responsive y utiliza buenas prácticas para el posicionamiento de sus elementos. Se implementó además una vista de búsqueda, la que es capaz de filtrar patrones de dibujo según distintas combinaciones de entidades. También se mejoró la seguridad de la página, protegiendo las distintas rutas de accesos NO autorizados y de parámetros inválidos.
+
+## Entrega 4
+
+- Se terminaron las funcionalidades restantes de la plataforma, aparte de configurar nuevas dependencias (cloud storage para fotos, mailer) y seguir mejorando el front-end. También se mejoraron diversos detalles de las entregas pasadas, de manera de hacer a la plataforma más atractiva.

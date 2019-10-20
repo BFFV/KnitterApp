@@ -5,7 +5,11 @@ const router = new KoaRouter();
 // Loads a particular comment
 async function loadComment(ctx, next) {
   ctx.state.comment = await ctx.orm.comment.findByPk(ctx.params.id);
-  return next();
+  if (ctx.state.comment) {
+    return next();
+  }
+  ctx.redirect('/');
+  return 'Invalid Comment!';
 }
 
 // Protects routes from unauthorized access

@@ -8,12 +8,17 @@ const users = require('./routes/users');
 const session = require('./routes/session');
 const votePatterns = require('./routes/vote_patterns');
 const comments = require('./routes/comments');
+const userPatterns = require('./routes/user_patterns');
+const followers = require('./routes/followers');
+
 
 const router = new KoaRouter();
 
 router.use(async (ctx, next) => {
   Object.assign(ctx.state, {
-    currentUser: ctx.session.userId && await ctx.orm.user.findByPk(ctx.session.userId),
+    currentUser: ctx.session.token && await ctx.orm.user.findOne({
+      where: { token: ctx.session.token },
+    }),
     newSessionPath: ctx.router.url('session.new'),
     destroySessionPath: ctx.router.url('session.destroy'),
   });
@@ -28,5 +33,7 @@ router.use('/users', users.routes());
 router.use('/session', session.routes());
 router.use('/vote_patterns', votePatterns.routes());
 router.use('/comments', comments.routes());
+router.use('/user_patterns', userPatterns.routes());
+router.use('/followers', followers.routes());
 
 module.exports = router;

@@ -1,0 +1,24 @@
+<div>
+  <% if (locals.errors) { %>
+    <div class="errors">
+      <ul>
+        <% errors.forEach(error => { %>
+          <li><%= error.message %></li>
+        <% }); %>
+      </ul>
+    </div>
+  <% } %>
+  <form action="<%= favoritePath %>" method="POST">
+    <% if (favorite) { %>
+      <input type="hidden" name="_method" value="DELETE" />
+    <% } %>
+    <div id="hcontainer">
+      <input type="hidden" name="patternId" value="<%= pattern.id %>">
+    <% if (!favorite) { %>
+      <input id="boton" type="submit" name="create" value="Agregar a Favoritos" />
+    <% } else { %>
+      <input id="boton" type="submit" name="delete" value="Remover de Favoritos" />
+    <% } %>
+    </div>
+  </form>
+</div>

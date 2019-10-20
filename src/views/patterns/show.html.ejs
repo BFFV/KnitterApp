@@ -1,81 +1,88 @@
-
-
-<div class="contenedor-body-show">
-  <div class="material-show-head">
-    <div class="material-show-element">
+<div class="body-show-pattern">
+  <div class="tittle-edit-delete">
+    <div class="tittle-element">
       <h1><%- pattern.name %></h1>
     </div>
     <% if ((currentUser) && ((currentUser.id === pattern.authorId) || (currentUser.role === 'admin'))) { %>
-      <div class="material-show-element">
+      <div class="tittle-element">
         <form action="<%- editPatternPath %>">
-          <input class="material-add-button" type="submit" value="E" />
+          <input class="" type="submit" value="E" />
         </form>
       </div>
-      <div class="material-show-element">
+      <div class="tittle-element">
         <form action="<%- deletePatternPath %>" onclick="return confirm('Estás seguro?');"
           method="POST">
           <input type="hidden" name="_method" value="delete" />
-          <input class="material-add-button" type="submit" value="-" />
+          <input class="" type="submit" value="-" />
+        </form>
+      </div>
+      <div>
+        <form action="<%- patternsPath %>">
+            <input type="submit" value="Volver" />
         </form>
       </div>
     <% } %>
   </div>
-  <div class="show-pattern-body">
-    <div class="content-body-header">
-      <div class="picture-show">
-        <h4> </h4>
-      </div>
-      <div class="center-header">
-        <div class="center-header-content">
-          <div>
-            <p class="parag">Diseñado por: <%- author.username %></p>
-          </div>
-          <div>
-            <p class="parag">Categoría: <%- category.name %></p>
-          </div>
-          <div>
-            <p class="parag">Tensión: <%- pattern.tension %></p>
-          </div>
-          <div>
-            <p class="parag">Puntaje: <%- pattern.score %>/5</p>
-          </div>
-          <div >
-            <p class="parag">Materiales:</p>
-          </div>
-          <div>
-            <% materials.forEach(material => { %>
-              <p class="parag-list">- <%- material.name %><br>
-            <% }); %>
-          </div>
-          <div>
-            <% if (currentUser) { %>
-              <%- include('../vote_patterns/_form') %>
-            <% } %>
-          </div>
-        </div>
-      </div>
-      <div class="youtube-video">
-        <iframe class="youtube" allowFullScreen="allowFullScreen" src="https://www.youtube.com/embed/<%= pattern.video.slice(32) %>?ecver=1&amp;iv_load_policy=1
-            &amp;rel=0&amp;yt:stretch=16:9&amp;autohide=1&amp;color=red"
-        width="80%" height="160%" allowtransparency="true" frameborder="0">
+  <div class="pattern-elements">
+    <div class="pattern-photo">
+      <img src="<%- pattern.image %>">
+    </div>
+    <div class="pattern-video">
+        <iframe class="youtube-video" allowFullScreen="allowFullScreen" src="https://www.youtube.com/embed/<%= pattern.video.slice(32) %>?ecver=1&amp;iv_load_policy=1
+          &amp;rel=0&amp;yt:stretch=16:9&amp;autohide=1&amp;color=red"
+           width="80%" height="160%" allowtransparency="true" frameborder="0">
         </iframe>
-      </div>
     </div>
   </div>
-  <div class="middle-show">
+  <div class="pattern-elements-2">
+    <div class="pattern-data">
+      <div>
+        <p class="parag">Diseñado por: <a class= "parag" href="<%- authorPath %>"><%- author.username %></a></p>
+      </div>
+      <div>
+        <p class="parag">Tensión: <%- pattern.tension %></p>
+      </div>
+      <div>
+        <p class="parag">Puntaje: <%- pattern.score %>/5</p>
+      </div>
+      <div>
+        <p class="parag">Popularidad: <%- pattern.popularity %></p>
+      </div>
+      <% if (currentUser) { %>
+        <div>
+          <%- include('../vote_patterns/_form') %>
+          <%- include('_formAdd') %>
+          <%- include('_formFavorite') %>
+        </div>
+      <% } %>
+    </div>
+    <div class="pattern-materials">
+      <div>
+        <h2>Materiales:</h2>
+      </div>
+      <div>
+        <% materials.forEach(material => { %>
+          <p>- <%- material.name %><br>
+        <% }); %>
+      </div>
+    </div>
     <div class="instruction-content">
       <h2>Instrucciones:</h2>
       <p><%- pattern.instructions %></p>
     </div>
-    <div class="comment-form">
-      <h2><%= patternComments.length %> Comentarios</h2>
-      <% if (currentUser) { %>
-        <%- include('../comments/_form') %>
-      <% } %>
-    </div>
   </div>
-  <div  class="bottom-show">
-    <div class="comments-all">
+  <div class="pattern-comment">
+    <div class="comment-pattern">
+        <h2>Comentar</h2>
+        <% if (currentUser) { %>
+          <%- include('../comments/_form') %>
+        <% } %>
+    </div>
+    <div class="pattern-comments">
+      <div class="comment-tittle">
+        <h2>Comentarios</h2>
+      </div>
+
       <% patternComments.forEach(comment => { %>
         <div class="comment">
           <div class="comment-item">
@@ -99,14 +106,5 @@
       <% }); %>
     </div>
   </div>
-  <div>
-    <form action="<%- patternsPath %>">
-        <input type="submit" value="Volver" />
-    </form>
-  </div>
 </div>
-
-
-
-
 

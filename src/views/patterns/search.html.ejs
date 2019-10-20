@@ -10,17 +10,30 @@
           <div class="search-subelement">
             <label class="parag-list" for="category">Categoría:</label>
             <select class="box-select" name="category">
-              <option value="all">Todas</option>
+              <% if (selCategory === 'all') { %>
+                <option value="all" selected>Todas</option>
+              <% } else { %>
+                <option value="all">Todas</option>
+              <% } %>
               <% categories.forEach(category => { %>
-                <option value="<%- category.id %>"><%- category.name %></option>
+                <% if (selCategory === category.id) { %>
+                  <option value="<%- category.id %>" selected><%- category.name %></option>
+                <% } else { %>
+                  <option value="<%- category.id %>"><%- category.name %></option>
+                <% } %>
               <% }); %>
             </select>
           </div>
           <div class="search-subelement">
             <label class="parag-list" for="sorting">Ordenar por:</label>
             <select class="box-select" name="sorting">
-              <option value="recent">Más Reciente</option>
-              <option value="popular">Más Popular</option>
+              <% options.forEach(option => { %>
+                <% if (selSorting === option[0]) { %>
+                  <option value="<%- option[0] %>" selected><%- option[1] %></option>
+                <% } else { %>
+                  <option value="<%- option[0] %>"><%- option[1] %></option>
+                <% } %>
+              <% }); %>
             </select>
           </div>
         </div>
