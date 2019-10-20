@@ -23,7 +23,11 @@
         <label class="parag-list" for="image">Imagen:</label>
       </div>
       <div class="panel-content">
-        <input class="input-list" type="file" name="image" value="<%= pattern.image %>" required/>
+        <% if (!pattern.isNewRecord) { %>
+          <input class="input-list" type="file" name="image" value="<%= pattern.image %>" />
+        <% } else { %>
+          <input class="input-list" type="file" name="image" value="<%= pattern.image %>" required/>
+        <% } %>
       </div>
       <div class="panel-content">
         <label class="parag-list" for="tension">Tensión:</label>
