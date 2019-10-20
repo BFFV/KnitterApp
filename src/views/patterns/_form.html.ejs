@@ -54,33 +54,19 @@
           </select>
         </div>
       <% } %>
-      <% if (!pattern.isNewRecord) { %>
-        <div class="panel-content">
-          <p class="parag-list">Materiales Actuales:</p>
-        </div>
-        <div class="material-checkbox-content">
-          <% materials.forEach(material => { %>
-            <div class="material-checkbox">
-              <p class="parag-list"> <%- material.name %> </p>
-            </div>
-          <% }); %>
-        </div>
-
-        <div class="panel-content">
-          <label class="parag-list" for="materials">Nuevos Materiales:</label><br>
-        </div>
-
-      <% } else { %>
-        <label class="parag-list" for="materials">Materiales:</label><br>
-      <% } %>
+      <label class="parag-list" for="materials">Materiales:</label><br>
       <div class="material-checkbox-content">
         <% materialsList.forEach(material => { %>
           <div class="checkbox-container">
             <div class="material-checkbox">
-              <p class="parag-list"> <%- material.name %> </p>
+              <p class="parag-list"> <%- material[0].name %> </p>
             </div>
             <div class="material-checkbox">
-              <input class="checkbox" type="checkbox" name="materials" value="<%- material.id %>">
+              <% if (material[1]) { %>
+                <input class="checkbox" type="checkbox" name="materials" value="<%- material[0].id %>" checked>
+              <% } else { %>
+                <input class="checkbox" type="checkbox" name="materials" value="<%- material[0].id %>">
+              <% } %>
             </div>
           </div>
         <% }); %>
