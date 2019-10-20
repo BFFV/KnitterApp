@@ -8,7 +8,7 @@
       </ul>
     </div>
   <% } %>
-  <form action="<%= submitPatternPath %>" method="post">
+  <form action="<%= submitPatternPath %>" enctype="multipart/form-data" method="post">
     <% if (!pattern.isNewRecord) { %>
       <input type="hidden" name="_method" value="patch" />
     <% } %>
@@ -23,7 +23,7 @@
         <label class="parag-list" for="image">Imagen:</label>
       </div>
       <div class="panel-content">
-        <input type="text" name="image" size="40" value="<%= pattern.image %>" required/>
+        <input class="input-list" type="file" name="image" value="<%= pattern.image %>" required/>
       </div>
       <div class="panel-content">
         <label class="parag-list" for="tension">Tensión:</label>
