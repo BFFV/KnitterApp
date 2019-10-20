@@ -2,6 +2,8 @@ const KoaRouter = require('koa-router');
 
 const router = new KoaRouter();
 
+// const sendForgotPasswordEmail = require('../mailers/forgot-password');
+
 // Starts the session & upgrades the user's role when certain conditions are met
 async function login(ctx, next) {
   const status = await next();
@@ -38,15 +40,18 @@ async function login(ctx, next) {
 router.get('session.new', '/new', (ctx) => ctx.render('session/new', {
   createSessionPath: ctx.router.url('session.create'),
   newUserPath: ctx.router.url('users.new'),
+  forgotPasswordPath: ctx.router.url('session.forgot'),
   rootPath: '/',
   notice: ctx.flashMessage.notice,
-}));
+}
+));
 
 router.put('session.create', '/', login, async (ctx) => {
   const { email, password } = ctx.request.body;
   let error = 'Email o contraseña incorrectos!';
   try {
     const user = await ctx.orm.user.findOne({ where: { email } });
+    
     const isPasswordCorrect = user && await user.checkPassword(password);
     if (isPasswordCorrect) {
       ctx.state.user = user;
@@ -59,6 +64,45 @@ router.put('session.create', '/', login, async (ctx) => {
   return ctx.render('session/new', {
     email,
     createSessionPath: ctx.router.url('session.create'),
+    forgotPasswordPath: ctx.router.url('session.forgot'),
+    newUserPath: ctx.router.url('users.new'),
+    rootPath: '/',
+    error,
+  });
+});
+
+router.get('session.forgot', '/forgot', (ctx) => ctx.render('session/forgot', {
+  newUserPath: ctx.router.url('users.new'),
+  sendMailPath: ctx.router.url('session.recover'),
+  rootPath: '/',
+  notice: ctx.flashMessage.notice,
+}));
+
+router.put('session.recover', '/', async (ctx) => {
+  const { email } = ctx.request.body;
+  let error = 'Email incorrecto!';
+  try{
+    const user = await ctx.orm.user.findOne({ where: { email } });
+    if (user) {
+      // await sendForgotPasswordEmail(ctx, { email });
+      return ctx.redirect('/')
+    }
+    else {
+      return ctx.render('session/new', {
+        createSessionPath: ctx.router.url('session.create'),
+        forgotPasswordPath: ctx.router.url('session.forgot'),
+        newUserPath: ctx.router.url('users.new'),
+        rootPath: '/',
+        error,
+      });
+    }
+  }
+   catch (e) {
+    error = 'Parámetros NO válidos!';
+  }
+  return ctx.render('session/new', {
+    createSessionPath: ctx.router.url('session.create'),
+    forgotPasswordPath: ctx.router.url('session.forgot'),
     newUserPath: ctx.router.url('users.new'),
     rootPath: '/',
     error,
