@@ -3,102 +3,91 @@
     <div class="tittle-profile-element">
       <h1><%- user.username %></h1>
     </div>
-    <% if ((currentUser.id === user.id) || (currentUser.role === 'admin')) { %>
+    <% if ((currentUser) && (currentUser.id === user.id)) { %>
       <div class="tittle-profile-element">
-        <form>
-          <input id="boton" type="submit" value="Editar Perfil" />
+        <form action="<%- editUserPath %>">
+          <input type="hidden" name="_method" value="edit" />
+          <button class="edit-profile" type="submit"> <i class="fas fa-user-edit fa-2x"></i> </button>
         </form>
       </div>
       <div  class="tittle-profile-element">
         <form action="<%- deleteUserPath %>" onclick="return confirm('Estás seguro?');"
           method="POST">
           <input type="hidden" name="_method" value="delete" />
-          <input id="boton" type="submit" value="Eliminar Cuenta" />
+          <button class="delete-profile" type="submit"><i class="fas fa-trash-alt fa-2x"></i></button>
         </form>
       </div>
     <% } %>
   </div>
   <div class="profile-data">
-    <div class="profile-picture">
-      <img src="<%- user.photo %>">
+    <div >
+      <img class="profile-picture" src="<%- user.photo %>">
     </div>
     <div class="profile-things">
-        <p class="profile-element" id="first">Correo: <%- user.email %></p>
-        <p class="profile-element">Edad: <%- user.age %></p>
-        <p class="profile-element">Seguidores: <%- user.popularity %></p>
+        <p class="profile-data-font" id="first">Correo: <%- user.email %></p>
+        <p class="profile-data-font" >Edad: <%- user.age %></p>
+        <p class="profile-data-font" >Seguidores: <%- user.popularity %></p>
         <% if ((currentUser) && (currentUser.id !== user.id)) { %>
-          <div>
+          <div class="follow-form">
             <%- include('_formFollow') %>
           </div>
         <% } %>
     </div>
   </div>
-  <div class="own-pattern">
-    <h2>Patrones Creados</h2>
-    <% if (!createdPatterns.length) { %>
-      <div>
-        <p>No haz creado patrones!<p>
+  <% if (createdPatterns.length) { %>
+    <div class="own-pattern">
+      <h2>Patrones Creados</h2>
+      <div class="patterns-content">
+        <% createdPatterns.forEach((cp) => { %>
+        <div class="pattern-index">
+          <div class="pattern-index-element-photo">
+            <img class="photo" src="<%- cp.image %>">
+          </div>
+          <div class="pattern-index-element" id="pattern-name">
+            <a class="pattern-name" href="<%- patternPath(cp) %>"><%- cp.name %></a>
+          </div>
+        </div>
+        <% }); %>
       </div>
     <% } %>
-    <div class="patterns-content">
-      <% createdPatterns.forEach((cp) => { %>
-      <div class="pattern-index">
-        <div class="pattern-index-element-photo">
-          <a class="photo">Foto</a>
+    <% if (usedPatterns.length) { %>
+      <div class="used-pattern">
+        <div>
+          <h2>Patrones realizados</h2>
         </div>
-        <div class="pattern-index-element">
-          <a  href="<%- patternPath(cp) %>"><%- cp.name %></a>
-        </div>
-      </div>
-      <% }); %>
-    </div>
-    <div class="used-pattern">
-      <div>
-        <h2>Patrones realizados</h2>
-      </div>
-      <div>
-        <% if (!usedPatterns.length) { %>
-          <div>
-            <p>No tienes patrones realizados!<p>
-          </div>
-        <% } %>
         <div class="patterns-content">
           <% usedPatterns.forEach((up) => { %>
           <div class="pattern-index">
             <div class="pattern-index-element-photo">
-              <a class="photo">Foto</a>
+                <img class="photo" src="<%- up.image %>">
             </div>
-            <div class="pattern-index-element">
-              <a  href="<%- patternPath(up) %>"><%- up.name %></a>
+            <div class="pattern-index-element" id="pattern-name">
+              <a class="pattern-name" href="<%- patternPath(up) %>"><%- up.name %> </a>
             </div>
           </div>
           <% }); %>
         </div>
       </div>
-    </div>
+    <% } %>
+    <% if ((currentUser) && (favoritePatterns.length && currentUser.id === user.id)) { %>
     <div class="favorites-patterns">
       <div>
         <h2>Mis Patrones Favoritos</h2>
       </div>
-
-      <% if (!favoritePatterns.length) { %>
-        <div >
-          <p>No tienes patrones favoritos!<p>
-        </div>
-      <% } %>
       <div class="patterns-content">
         <% favoritePatterns.forEach((fp) => { %>
         <div class="pattern-index">
           <div class="pattern-index-element-photo">
-            <a class="photo">Foto</a>
+              <img class="photo" src="<%- fp.image %>">
           </div>
-          <div class="pattern-index-element">
-            <a  href="<%- patternPath(fp) %>"><%- fp.name %></a>
+          <div class="pattern-index-element" id="pattern-name">
+            <a class="pattern-name" href="<%- patternPath(fp) %>"><%- fp.name %></a>
           </div>
         </div>
         <% }); %>
       </div>
     </div>
+    <% } %>
   </div>
 </div>
 
