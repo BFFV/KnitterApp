@@ -1,4 +1,35 @@
 
+
+/* Built */
+
+.edit-material-content {
+  display: flex;
+  flex-direction: column;
+  margin: 0px 30px;
+  margin-bottom: 60px;
+}
+
+.panel {
+  display:flex;
+  flex-direction: column;
+  max-width: 800px;
+}
+
+/* Details */
+
+.material-edit {
+  color: #ffd646;
+}
+
+.material-new {
+  color: lightgreen;
+}
+
+
+
+/* Interaction */
+/*
+
 .material-checkbox-content{
   display: flex;
   flex-direction: column;
@@ -43,3 +74,4 @@
 
 
 
+*/
