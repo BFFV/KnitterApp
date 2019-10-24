@@ -16,21 +16,18 @@
       <% materialsList.forEach((material) => { %>
         <div class="material-container">
           <div class="material-text">
-              <a class="material-name" id="material-text"><%- material.name %></a>
+            <a><%- material.name %></a>
           </div>
           <div>
             <form action="<%- editMaterialPath(material) %>">
               <button class="edit-material" type="submit"> <i class="fas fa-pen"></i> </button>
-              <!-- <input class="boton-material" id="boton-material" type="submit" value="Editar" /> -->
             </form>
           </div>
           <div>
             <form action="<%- deleteMaterialPath(material) %>" onclick="return confirm('Estás seguro?');"
               method="POST">
               <input type="hidden" name="_method" value="delete" />
-              <button class="delete-material" type="submit"> <i class="fas fa-trash-alt "></i> </button>
-
-              <!-- <input class="boton-material" id="boton-material" type="submit" value="Eliminar" /> -->
+              <button class="delete-material" type="submit"> <i class="fas fa-trash-alt "></i></button>
             </form>
           </div>
         </div>
