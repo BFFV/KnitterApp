@@ -6,7 +6,7 @@
     <% patterns.forEach((pattern) => { %>
       <div class="pattern-index">
         <div class="pattern-index-element-photo">
-          <a class="photo">Foto</a>
+            <img class="photo" src="<%- pattern.image %>">
         </div>
         <div class="pattern-index-element">
           <a class="parag-list" href="<%- patternPath(pattern) %>"><%- pattern.name %></a>

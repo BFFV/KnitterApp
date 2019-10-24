@@ -1,54 +1,38 @@
-<div class="contenedor-body-show">
-  <div class="material-show-head">
-    <div class="material-show-element">
+
+<div class="material-show-content">
+  <div class="material-show-tittle">
+    <div>
       <h1>Materiales</h1>
     </div>
-    <div class="material-show-element">
+    <div>
       <form action="<%- newMaterialPath %>">
-          <input class="material-add-button" type="submit" value="+" />
+        <button class="add-material" type="submit"> <i class="fas fa-plus-circle fa-2x"></i> </button>
       </form>
     </div>
   </div>
-  <div class="material-show-list">
-    <div class="list-materials">
-      <div class="title">
-        <h2 class="label-content">Lista de Materiales</h2>
-      </div>
-      <% if (!materialsList.length) { %>
-        <div>
-          <p>No hay Materiales!</p>
+  <div class="materials-content">
+    <h2 class="label-content">Lista de Materiales</h2>
+    <div class="materials-content-all">
+      <% materialsList.forEach((material) => { %>
+        <div class="material-container">
+          <div class="material-text">
+            <a><%- material.name %></a>
+          </div>
+          <div>
+            <form action="<%- editMaterialPath(material) %>">
+              <button class="edit-material" type="submit"> <i class="fas fa-pen"></i> </button>
+            </form>
+          </div>
+          <div>
+            <form action="<%- deleteMaterialPath(material) %>" onclick="return confirm('Estás seguro?');"
+              method="POST">
+              <input type="hidden" name="_method" value="delete" />
+              <button class="delete-material" type="submit"> <i class="fas fa-trash-alt "></i></button>
+            </form>
+          </div>
         </div>
-      <% } else { %>
-      <div class="all-materials">
-        <% materialsList.forEach((material) => { %>
-          <div class="material_container">
-            <div class="material_element">
-                <a class="material-name" id="material-text"><%- material.name %></a>
-            </div>
-            <div class="material_element">
-              <a class="material-name" id="material-text"><%- material.description %></a>
-          </div>
-            <div class="material_element">
-              <form action="<%- editMaterialPath(material) %>">
-                <input class="boton-material" id="boton-material" type="submit" value="Editar" />
-              </form>
-            </div>
-            <div class="material_element">
-              <form action="<%- deleteMaterialPath(material) %>" onclick="return confirm('Estás seguro?');"
-                method="POST">
-                <input type="hidden" name="_method" value="delete" />
-                <input class="boton-material" id="boton-material" type="submit" value="Eliminar" />
-              </form>
-            </div>
-          </div>
-        <% }) %>
-        <% } %>
-      </div>
+      <% }) %>
     </div>
   </div>
-  <div class="material-show-element">
-    <form action="<%- rootPath %>">
-      <input class="boton-material" id="boton-material" type="submit" value="Volver" />
-    </form>
-  </div>
 </div>
+
