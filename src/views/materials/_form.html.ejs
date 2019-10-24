@@ -13,10 +13,10 @@
       <input type="hidden" name="_method" value="PATCH" />
     <% } %>
     <div class="panel">
-      <label class="parag-list" for="name">Nombre:</label>
-      <input class="input-list" type="text" name="name" size="40" value="<%= material.name %>" required/>
-      <label class="parag-list" for="description">Descripción:</label>
-      <textarea class="input-list" rows="8" cols="100" type="text" required name="description"><%= material.description %></textarea>
+      <label class="edit-label" for="name">Nombre:</label>
+      <input type="text" name="name" size="40" value="<%= material.name %>" required/>
+      <label class="edit-label" for="description">Descripción:</label>
+      <textarea  rows="8" cols="100" type="text" required name="description"><%= material.description %></textarea>
       <% if (material.isNewRecord) { %>
         <input class="create-button" type="submit" name="create" value="Crear" />
       <% } else { %>
@@ -25,7 +25,6 @@
       <form action="<%- materialsPath %>">
         <input class="back-button" type="submit" value="Volver" />
       </form>
-      </div>
     </div>
   </form>
 </div>
