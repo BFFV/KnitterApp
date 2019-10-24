@@ -2,6 +2,30 @@
   <div class="tittle-index">
     <h1>Lista de Patrones!</h1>
   </div>
+  <form action="/">
+    <div class="search-container">
+      <div class="search-element">
+        <div class="search-element-content">
+          <div class="search-subelement">
+            <input type="text" name="name" />
+          </div>
+          <div class="search-subelement">
+            <label class="parag-list" for="sorting">Ordenar por:</label>
+            <select class="box-select" name="sorting">
+              <% options.forEach(option => { %>
+                <% if (selSorting === option[0]) { %>
+                  <option value="<%- option[0] %>" selected><%- option[1] %></option>
+                <% } else { %>
+                  <option value="<%- option[0] %>"><%- option[1] %></option>
+                <% } %>
+              <% }); %>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <input id="boton" type="submit" value="Buscar" />
+  </form>
   <div class="patterns-content">
     <% patterns.forEach((pattern) => { %>
       <div class="pattern-index">
