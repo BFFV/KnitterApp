@@ -221,7 +221,7 @@ router.get('patterns.new', '/new', authenticate, async (ctx) => {
     pattern,
     categoriesList,
     materialsList,
-    patternsPath: ctx.router.url('patterns.list'),
+    patternPath: ctx.router.url('patterns.list'),
     submitPatternPath: ctx.router.url('patterns.create'),
   });
 });
