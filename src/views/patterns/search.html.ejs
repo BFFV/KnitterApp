@@ -1,62 +1,53 @@
-<div class="form-search">
-  <form action="<%- patternsPath %>", method="GET">
-    <div class="search-container">
-      <div class="search-element">
-        <div class="search-element-content">
-          <div class="search-subelement">
-            <label class="parag-list" for="name">Nombre:</label>
-            <input type="text" name="name" />
-          </div>
-          <div class="search-subelement">
-            <label class="parag-list" for="category">Categoría:</label>
-            <select class="box-select" name="category">
-              <% if (selCategory === 'all') { %>
-                <option value="all" selected>Todas</option>
-              <% } else { %>
-                <option value="all">Todas</option>
-              <% } %>
-              <% categories.forEach(category => { %>
-                <% if (selCategory === category.id) { %>
-                  <option value="<%- category.id %>" selected><%- category.name %></option>
-                <% } else { %>
-                  <option value="<%- category.id %>"><%- category.name %></option>
-                <% } %>
-              <% }); %>
-            </select>
-          </div>
-          <div class="search-subelement">
-            <label class="parag-list" for="sorting">Ordenar por:</label>
-            <select class="box-select" name="sorting">
-              <% options.forEach(option => { %>
-                <% if (selSorting === option[0]) { %>
-                  <option value="<%- option[0] %>" selected><%- option[1] %></option>
-                <% } else { %>
-                  <option value="<%- option[0] %>"><%- option[1] %></option>
-                <% } %>
-              <% }); %>
-            </select>
-          </div>
-        </div>
 
-      </div>
-      <div class="search-element">
-        <div class="material-search">
-          <label class="parag-list" id="materials-title" for="materials">Materiales:</label>
-        </div>
-        <div class="material-checkbox-search" id="checkbox-pattern">
-          <% materials.forEach(material => { %>
-            <div class="material-check-box-content">
-              <div class="material-checkbox">
-                <p class="parag-list" id="materials-text"> <%- material.name %> </p>
-              </div>
-              <div class="material-checkbox">
-                <input class="checkbox" type="checkbox" name="materials" value="<%- material.id %>">
-              </div>
-            </div>
-          <% }); %>
-        </div>
-      </div>
+
+<div class="search-content">
+  <form action="<%- patternsPath %>", method="GET">
+    <div class="search-name">
+      <label class="pattern-font-form" for="name">Nombre:</label>
+      <input type="text" name="name" />
     </div>
-    <input id="boton" type="submit" value="Buscar" />
+    <div class="search-select">
+      <label class="pattern-font-form" for="category">Categoría:</label>
+      <select name="category">
+        <% if (selCategory === 'all') { %>
+          <option value="all" selected>Todas</option>
+        <% } else { %>
+          <option value="all">Todas</option>
+        <% } %>
+        <% categories.forEach(category => { %>
+          <% if (selCategory === category.id) { %>
+            <option value="<%- category.id %>" selected><%- category.name %></option>
+          <% } else { %>
+            <option value="<%- category.id %>"><%- category.name %></option>
+          <% } %>
+        <% }); %>
+      </select>
+    </div>
+    <div class="search-sorting">
+      <label class="pattern-font-form" for="sorting">Ordenar por:</label>
+      <select name="sorting">
+        <% options.forEach(option => { %>
+          <% if (selSorting === option[0]) { %>
+            <option value="<%- option[0] %>" selected><%- option[1] %></option>
+          <% } else { %>
+            <option value="<%- option[0] %>"><%- option[1] %></option>
+          <% } %>
+        <% }); %>
+      </select>
+    </div>
+    <div class="search-materials">
+      <h3 for="materials">Materiales:</h3>
+      <% materials.forEach(material => { %>
+        <div class="material-search-content">
+          <div class="material-search-name">
+            <p class="material-search-name-para"> <%- material.name %> </p>
+          </div>
+          <input type="checkbox" name="materials" value="<%- material.id %>">
+        </div>
+      <% }); %>
+    </div>
+    <div class="button-search-container">
+      <button class="search-button-form" type="submit"><i class="fas fa-search fa-1x"></i> Buscar </button>
+    </div>
   </form>
 </div>
