@@ -1,4 +1,4 @@
-<div class="content-body">
+<div class="home-body">
   <div class="tittle-index">
     <h1>Lista de Patrones!</h1>
   </div>
@@ -7,11 +7,12 @@
       <div class="search-element">
         <div class="search-element-content">
           <div class="search-subelement">
-            <input type="text" name="name" />
+            <p class="pattern-font" id="label-select">Busca por nombre: </p>
+            <input class="input-search"  type="text" name="name" />
           </div>
           <div class="search-subelement">
-            <label class="parag-list" for="sorting">Ordenar por:</label>
-            <select class="box-select" name="sorting">
+            <label class="pattern-font" for="sorting">Ordenar por:</label>
+            <select class="select-search" name="sorting">
               <% options.forEach(option => { %>
                 <% if (selSorting === option[0]) { %>
                   <option value="<%- option[0] %>" selected><%- option[1] %></option>
@@ -23,25 +24,23 @@
           </div>
         </div>
       </div>
+      <div>
+        <button class="search-button-form" id="search-home" type="submit"><i class="fas fa-search fa-1x"></i> Buscar </button>
+      </div>
     </div>
-    <input id="boton" type="submit" value="Buscar" />
+
   </form>
-  <div class="patterns-content">
+  <div class="pattern-content-home">
+    <% if (!patterns.length) { %>
+      <h3>No hay patrones!</h3>
+    <% } else { %>
     <% patterns.forEach((pattern) => { %>
-      <div class="pattern-index">
-        <div class="pattern-index-element-photo">
-            <img class="photo" src="<%- pattern.image %>">
-        </div>
-        <div class="pattern-index-element">
-          <a class="parag-list" href="<%- patternPath(pattern) %>"><%- pattern.name %></a>
-        </div>
-        <div class="pattern-index-element">
-            <a class="parag-list">Puntaje: <%- pattern.score %>/5</a>
-        </div>
-        <div class="pattern-index-element">
-            <a class="parag-list">Popularidad: <%- pattern.popularity %></a>
-        </div>
-       </div>
-      <% }); %>
-    </div>
+      <div class="pattern-search-container">
+        <img class="photo" src="<%- pattern.image %>">
+        <a class="pattern-font-tittle" href="<%- patternPath(pattern) %>"><%- pattern.name %></a>
+        <a class="pattern-font">Puntaje: <%- pattern.score %>/5</a>
+        <a class="pattern-font">Popularidad: <%- pattern.popularity %></a>
+      </div>
+    <% })}; %>
+  </div>
 </div>

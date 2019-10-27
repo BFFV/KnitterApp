@@ -12,7 +12,7 @@
     <% if (!comment.isNewRecord) { %>
       <input type="hidden" name="_method" value="PATCH" />
     <% } %>
-    <div class="panel">
+    <div class  ="panel">
       <% if (comment.isNewRecord) { %>
         <textarea rows="8" cols="47" type="text" required name="content"></textarea>
         <input type="hidden" id="patternId" name="patternId" value="<%= pattern.id %>">
