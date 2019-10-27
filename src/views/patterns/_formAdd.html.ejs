@@ -15,9 +15,9 @@
     <div id="hcontainer">
       <input type="hidden" name="patternId" value="<%= pattern.id %>">
     <% if (!userPattern) { %>
-      <input id="boton" type="submit" name="create" value="Marcar Como Realizado" />
+      <input class="realized-button" type="submit" name="create" value="Marcar como realizado" />
     <% } else { %>
-      <input id="boton" type="submit" name="delete" value="Desmarcar" />
+      <input class="realized-button" type="submit" name="delete" value="No lo he realizado" />
     <% } %>
     </div>
   </form>

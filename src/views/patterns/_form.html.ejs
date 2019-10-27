@@ -43,8 +43,8 @@
               <input class="checkbox-material" type="checkbox" name="materials" value="<%- material[0].id %>" checked>
             <% } else { %>
               <input class="checkbox-material" type="checkbox" name="materials" value="<%- material[0].id %>">
+            <% } %>
           </div>
-          <% } %>
         <% }); %>
         <% if (pattern.isNewRecord) { %>
           <input class="create-button" type="submit" name="create" value="Crear" />

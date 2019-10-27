@@ -172,6 +172,37 @@
   margin-top: 10px;
 }
 
+
+.pattern-index-element-photo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.photo {
+  width: 200px;
+  height: 160px;
+  background-color: cyan;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+.patterns-content {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.pattern-index {
+  width: 200px;
+  margin: 10px;
+  margin-bottom:20px;
+  display: flex;
+  flex-direction: column;
+}
+
+
 /* Interaction */
 
 @media screen and (max-width: 875px){
