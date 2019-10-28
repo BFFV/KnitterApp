@@ -1,4 +1,5 @@
 const KoaRouter = require('koa-router');
+const cloudinary = require('../config/cloudinary');
 
 const router = new KoaRouter();
 
@@ -66,6 +67,27 @@ async function checkPassword(ctx, next) {
   return 'Passwords are not equal!';
 }
 
+// Uploads an image to the cloud storage
+async function uploadImage(ctx, next) {
+  await next();
+  const { user } = ctx.state;
+  if (user.id) {
+    const image = ctx.request.files.photo;
+    if (image.name) {
+      if (user.photoId !== 'default') {
+        await cloudinary.deletes(user.photoId);
+      }
+      const upload = await cloudinary.uploads(image.path);
+      await user.update({ photo: upload.secure_url, photoId: upload.public_id });
+    } else if (user.photo === 'default') {
+      await user.update({
+        photo:
+         'https://res.cloudinary.com/webhitos/image/upload/v1571539053/hibale5troxdurtj9dlw.jpg',
+      });
+    }
+  }
+}
+
 // Protects routes from unauthorized access
 async function authenticate(ctx, next) {
   const current = ctx.state.currentUser;
@@ -112,13 +134,18 @@ router.get('users.edit', '/:id/edit', loadUser, authenticate, async (ctx) => {
   });
 });
 
-router.post('users.create', '/', checkPassword, async (ctx) => {
+router.post('users.create', '/', checkPassword, uploadImage, async (ctx) => {
   const params = ctx.request.body;
   params.role = 'common';
   params.token = params.username;
+
   // to change for random bytes
   params.resetToken = params.username;
+
+  params.photo = 'default';
+
   const user = ctx.orm.user.build(params);
+  ctx.state.user = user;
   try {
     await user.save({ fields: ['username', 'password', 'email', 'age', 'photo', 'role', 'token'] });
     ctx.redirect(ctx.router.url('session.new'));
@@ -138,14 +165,15 @@ router.post('users.create', '/', checkPassword, async (ctx) => {
   }
 });
 
-router.patch('users.update', '/:id', loadUser, authenticate, checkPassword, async (ctx) => {
+router.patch('users.update', '/:id', loadUser, authenticate, checkPassword, uploadImage, async (ctx) => {
   const { user } = ctx.state;
+  const params = ctx.request.body;
   try {
     const {
-      username, password, email, age, photo,
-    } = ctx.request.body;
+      username, password, email, age,
+    } = params;
     await user.update({
-      username, password, email, age, photo,
+      username, password, email, age,
     });
     ctx.redirect(ctx.router.url('users.show', { id: user.id }));
   } catch (validationError) {

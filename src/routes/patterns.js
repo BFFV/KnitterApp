@@ -1,4 +1,5 @@
 const KoaRouter = require('koa-router');
+const cloudinary = require('../config/cloudinary');
 
 const router = new KoaRouter();
 
@@ -32,7 +33,10 @@ async function setMaterials(materials, pattern) {
 async function newPatternInfo(ctx) {
   const info = {};
   info.categoriesList = await ctx.orm.category.findAll();
-  info.materialsList = await ctx.orm.material.findAll();
+  info.categoriesList.sort((a, b) => a.name - b.name).reverse();
+  const allMaterials = await ctx.orm.material.findAll();
+  allMaterials.sort((a, b) => a.name - b.name).reverse();
+  info.materialsList = allMaterials.map((m) => [m, false]);
   return info;
 }
 
@@ -160,6 +164,22 @@ async function searchPatterns(ctx, next) {
   return next();
 }
 
+// Uploads an image to the cloud storage
+async function uploadImage(ctx, next) {
+  await next();
+  const { pattern } = ctx.state;
+  if (pattern.id) {
+    const { image } = ctx.request.files;
+    if (image.name) {
+      if (pattern.imageId !== 'default') {
+        await cloudinary.deletes(pattern.imageId);
+      }
+      const upload = await cloudinary.uploads(image.path);
+      await pattern.update({ image: upload.secure_url, imageId: upload.public_id });
+    }
+  }
+}
+
 // Protects routes from unauthorized access
 async function authenticate(ctx, next) {
   const current = ctx.state.currentUser;
@@ -197,11 +217,9 @@ router.get('patterns.list', '/', searchPatterns, async (ctx) => {
 router.get('patterns.new', '/new', authenticate, async (ctx) => {
   const pattern = ctx.orm.pattern.build();
   const { categoriesList, materialsList } = await newPatternInfo(ctx);
-  const materials = [];
   await ctx.render('patterns/new', {
     pattern,
     categoriesList,
-    materials,
     materialsList,
     patternsPath: ctx.router.url('patterns.list'),
     submitPatternPath: ctx.router.url('patterns.create'),
@@ -213,23 +231,34 @@ router.get('patterns.edit', '/:id/edit', loadPattern, authenticate, async (ctx) 
     ctx.redirect(ctx.router.url('patterns.list'));
   }
   const { pattern } = ctx.state;
-  const materialsList = await ctx.orm.material.findAll();
+  const allMaterials = await ctx.orm.material.findAll();
+  allMaterials.sort().reverse();
   const materials = await pattern.getMaterials();
+  const materialsId = materials.map((m) => m.id);
+  const materialsList = [];
+  allMaterials.forEach((m) => {
+    let checked = false;
+    if (materialsId.includes(m.id)) {
+      checked = true;
+    }
+    materialsList.push([m, checked]);
+  });
   await ctx.render('patterns/edit', {
     pattern,
-    materials,
     materialsList,
     patternPath: ctx.router.url('patterns.show', { id: pattern.id }),
     submitPatternPath: ctx.router.url('patterns.update', { id: pattern.id }),
   });
 });
 
-router.post('patterns.create', '/', authenticate, async (ctx) => {
+router.post('patterns.create', '/', authenticate, uploadImage, async (ctx) => {
   ctx.params = ctx.request.body;
+  ctx.params.image = ctx.request.files.image.name;
   if (ctx.state.currentUser) {
     ctx.params.authorId = ctx.state.currentUser.id;
   }
   const pattern = ctx.orm.pattern.build(ctx.params);
+  ctx.state.pattern = pattern;
   let { materials } = ctx.params;
   try {
     await pattern.save(
@@ -251,7 +280,6 @@ router.post('patterns.create', '/', authenticate, async (ctx) => {
     await ctx.render('patterns/new', {
       pattern,
       categoriesList,
-      materials,
       materialsList,
       errors,
       patternsPath: ctx.router.url('patterns.list'),
@@ -260,16 +288,26 @@ router.post('patterns.create', '/', authenticate, async (ctx) => {
   }
 });
 
-router.patch('patterns.update', '/:id', loadPattern, authenticate, async (ctx) => {
+router.patch('patterns.update', '/:id', loadPattern, authenticate, uploadImage, async (ctx) => {
   const { pattern } = ctx.state;
-  const materialsList = await ctx.orm.material.findAll();
+  const allMaterials = await ctx.orm.material.findAll();
+  allMaterials.sort().reverse();
   const patternMaterials = await pattern.getMaterials();
+  const materialsId = patternMaterials.map((m) => m.id);
+  const materialsList = [];
+  allMaterials.forEach((m) => {
+    let checked = false;
+    if (materialsId.includes(m.id)) {
+      checked = true;
+    }
+    materialsList.push([m, checked]);
+  });
   try {
     const {
-      name, instructions, image, video, tension, materials,
+      name, instructions, video, tension, materials,
     } = ctx.request.body;
     await pattern.update({
-      name, instructions, image, video, tension,
+      name, instructions, video, tension,
     });
     await setMaterials(materials, pattern);
     ctx.redirect(ctx.router.url('patterns.show', { id: pattern.id }));
@@ -280,7 +318,6 @@ router.patch('patterns.update', '/:id', loadPattern, authenticate, async (ctx) =
     }
     await ctx.render('patterns/edit', {
       pattern,
-      materials: patternMaterials,
       materialsList,
       errors,
       patternPath: ctx.router.url('patterns.show', { id: pattern.id }),

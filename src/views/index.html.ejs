@@ -1,3 +1,47 @@
-<div class = "contenedor-body">
-    <h1>Lo mejor para ti...</h1>
+<div class="content-body">
+  <div class="tittle-index">
+    <h1>Lista de Patrones!</h1>
+  </div>
+  <form action="/">
+    <div class="search-container">
+      <div class="search-element">
+        <div class="search-element-content">
+          <div class="search-subelement">
+            <input type="text" name="name" />
+          </div>
+          <div class="search-subelement">
+            <label class="parag-list" for="sorting">Ordenar por:</label>
+            <select class="box-select" name="sorting">
+              <% options.forEach(option => { %>
+                <% if (selSorting === option[0]) { %>
+                  <option value="<%- option[0] %>" selected><%- option[1] %></option>
+                <% } else { %>
+                  <option value="<%- option[0] %>"><%- option[1] %></option>
+                <% } %>
+              <% }); %>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <input id="boton" type="submit" value="Buscar" />
+  </form>
+  <div class="patterns-content">
+    <% patterns.forEach((pattern) => { %>
+      <div class="pattern-index">
+        <div class="pattern-index-element-photo">
+            <img class="photo" src="<%- pattern.image %>">
+        </div>
+        <div class="pattern-index-element">
+          <a class="parag-list" href="<%- patternPath(pattern) %>"><%- pattern.name %></a>
+        </div>
+        <div class="pattern-index-element">
+            <a class="parag-list">Puntaje: <%- pattern.score %>/5</a>
+        </div>
+        <div class="pattern-index-element">
+            <a class="parag-list">Popularidad: <%- pattern.popularity %></a>
+        </div>
+       </div>
+      <% }); %>
+    </div>
 </div>

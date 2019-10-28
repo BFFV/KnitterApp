@@ -1,0 +1,138 @@
+
+/* Built */
+
+.profile-content{
+  display: flex;
+  flex-direction: column;
+ }
+
+.tittle-profile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0px 30px;
+}
+
+.profile-data {
+  display:flex;
+  flex-direction: row;
+  margin: 0px 30px;
+}
+
+.profile-picture {
+  border-style: solid;
+  border-color: #26bfbf;
+  border-radius: 50%;
+  width: 300px;
+  height: 300px;
+  margin-right: 50px;
+}
+
+.profile-things {
+  display: flex;
+  flex-direction: column;
+}
+
+.own-pattern {
+  display: flex;
+  flex-direction: column;
+  margin: 30px 30px;
+}
+
+.used-pattern {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Details */
+
+.tittle-name{
+  width: 800px;
+  word-break: break-word;
+}
+
+.profile-data-font {
+  text-decoration: none;
+  font-family: Arial;
+  font-size: 20px;
+  color: gray;
+  margin: 5px;
+}
+
+.edit-profile {
+  background-color: #ffd646;
+  border-style: none;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-left: 20px;
+
+}
+
+.delete-profile {
+  background-color: #fb6070;
+  border-style: none;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-left: 20px;
+
+}
+
+.edit-profile > i {
+  color: white;
+}
+
+.delete-profile > i {
+  color: white;
+}
+
+.follow-form {
+  margin-top: 20px;
+}
+
+.pattern-name {
+  text-decoration: none;
+  font-family: Arial;
+  font-style: italic;
+  font-size: 20px;
+  color: gray;
+}
+
+#pattern-name {
+  word-wrap: break-word;
+}
+
+
+
+/* Interaction */
+
+
+@media screen and (max-width: 875px){
+  .profile-data {
+    display:flex;
+    flex-direction: column;
+    margin: 30px 30px;
+    justify-content: center;
+    align-items:center ;
+  }
+
+  .profile-picture {
+    border-style: solid;
+    border-color: #26bfbf;
+    border-radius: 50%;
+    width: 300px;
+    height: 300px;
+    align-self: center;
+    margin: 0px;
+  }
+
+  .profile-things {
+    margin-top: 50px;
+    align-self: flex-start;
+  }
+
+
+}
+
+
