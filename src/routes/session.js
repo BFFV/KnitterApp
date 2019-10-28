@@ -1,4 +1,5 @@
 const KoaRouter = require('koa-router');
+const crypto = require('crypto')
 
 const router = new KoaRouter();
 
@@ -80,11 +81,14 @@ router.get('session.forgot', '/forgot', (ctx) => ctx.render('session/forgot', {
 
 router.put('session.recover', '/', async (ctx) => {
   const { email } = ctx.request.body;
-  let error = 'Email incorrecto!';
+
+  let error = 'No existe cuenta con ese correo!';
   try{
     const user = await ctx.orm.user.findOne({ where: { email } });
     if (user) {
-      // await sendForgotPasswordEmail(ctx, { email });
+      // user.resetToken = user.resetToken;
+      user.resetPasswordExpires = Date.now() + 3600000;
+      await sendForgotPasswordEmail(ctx, { email });
       return ctx.redirect('/')
     }
     else {
