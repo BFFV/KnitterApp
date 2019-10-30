@@ -28,7 +28,7 @@ async function authenticate(ctx, next) {
 
 router.get('categories.list', '/', authenticate, async (ctx) => {
   const categoriesList = await ctx.orm.category.findAll();
-  categoriesList.sort((a, b) => a.updatedAt - b.updatedAt).reverse();
+  categoriesList.sort((a, b) => a.name.localeCompare(b.name));
   await ctx.render('categories/index', {
     categoriesList,
     newCategoryPath: ctx.router.url('categories.new'),

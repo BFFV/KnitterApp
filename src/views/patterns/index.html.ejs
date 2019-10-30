@@ -1,14 +1,15 @@
-
 <div class="pattern-show-content">
   <div class="pattern-show-tittle">
     <div>
       <h1>Patrones</h1>
     </div>
-    <div>
-      <form action="<%- newPatternPath %>">
-        <button class="add-pattern" type="submit"> <i class="fas fa-plus-circle fa-2x"></i> </button>
-      </form>
-    </div>
+    <% if (currentUser) { %>
+      <div>
+        <form action="<%- newPatternPath %>">
+          <button class="add-pattern" type="submit"> <i class="fas fa-plus-circle fa-2x"></i> </button>
+        </form>
+      </div>
+    <% } %>
   </div>
   <div class="pattern-body">
     <div class="pattern-search">
@@ -20,7 +21,7 @@
       </div>
     </div>
     <div class="patterns-list">
-      <h2>Lista de Patrones</h2>
+      <h2>Patrones Encontrados</h2>
       <div class="pattern-content">
         <% if (!patternsList.length) { %>
           <h3>No hay patrones!</h3>
@@ -51,4 +52,3 @@
     </div>
   </div>
 </div>
-

@@ -1,7 +1,5 @@
 
-
 /* Built */
-
 
 .pattern-show-content {
   margin: 30px;
@@ -100,7 +98,6 @@
 
 /* Details */
 
-
 .edit-pattern {
   background-color: #ffd646;
   border-style: none;
@@ -120,7 +117,6 @@
   color: white;
 }
 
-
 .material-search-name-para{
   width: 150px;
   font-family: Arial;
@@ -129,7 +125,7 @@
 }
 
 .add-pattern {
-  background-color: lightgreen;
+  background-color: rgb(81, 231, 81);
   border-style: none;
   width: 60px;
   height: 60px;
@@ -172,7 +168,6 @@
   margin-top: 10px;
 }
 
-
 .pattern-index-element-photo {
   display: flex;
   justify-content: center;
@@ -202,7 +197,6 @@
   flex-direction: column;
 }
 
-
 /* Interaction */
 
 @media screen and (max-width: 875px){
@@ -215,5 +209,3 @@
     margin: 0px;
   }
 }
-
-

@@ -72,8 +72,8 @@
   </div>
   <div class="pattern-comment">
     <div class="comment-pattern">
-        <h2>Comentar</h2>
         <% if (currentUser) { %>
+          <h2>Comentar</h2>
           <%- include('../comments/_form') %>
         <% } %>
     </div>
@@ -84,7 +84,7 @@
       <% patternComments.forEach(comment => { %>
         <div class="comment">
           <div class="comment-item">
-            <p class="pattern-font-tittle" > <%- comment[1].username %> </p>
+            <p class="pattern-font" ><a class="pattern-font-tittle" href="<%- userPath(comment[1]) %>"><%- comment[1].username %></a></p>
             <p class="pattern-font" ><%- comment[0].content %></p>
             <p class="pattern-font"> <%- comment[2] %> </p>
           </div>

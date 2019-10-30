@@ -198,6 +198,8 @@ router.get('patterns.list', '/', searchPatterns, async (ctx) => {
   const {
     patternsList, materials, categories,
   } = ctx.state;
+  categories.sort((a, b) => a.name.localeCompare(b.name));
+  materials.sort((a, b) => a.name.localeCompare(b.name));
   await ctx.render('patterns/index', {
     materials,
     categories,
@@ -217,6 +219,8 @@ router.get('patterns.list', '/', searchPatterns, async (ctx) => {
 router.get('patterns.new', '/new', authenticate, async (ctx) => {
   const pattern = ctx.orm.pattern.build();
   const { categoriesList, materialsList } = await newPatternInfo(ctx);
+  categoriesList.sort((a, b) => a.name.localeCompare(b.name));
+  materialsList.sort((a, b) => a[0].name.localeCompare(b[0].name));
   await ctx.render('patterns/new', {
     pattern,
     categoriesList,
@@ -243,6 +247,7 @@ router.get('patterns.edit', '/:id/edit', loadPattern, authenticate, async (ctx) 
     }
     materialsList.push([m, checked]);
   });
+  materialsList.sort((a, b) => a[0].name.localeCompare(b[0].name));
   await ctx.render('patterns/edit', {
     pattern,
     materialsList,
@@ -341,6 +346,7 @@ router.get('patterns.show', '/:id', loadPattern, checkState, async (ctx) => {
   const author = await pattern.getUser();
   const category = await pattern.getCategory();
   const materials = await pattern.getMaterials();
+  materials.sort((a, b) => a.name.localeCompare(b.name));
   const commentsList = await pattern.getComments();
   commentsList.sort((a, b) => a.updatedAt - b.updatedAt).reverse();
   const commentUsers = commentsList.map((c) => c.getUser());
@@ -363,6 +369,7 @@ router.get('patterns.show', '/:id', loadPattern, checkState, async (ctx) => {
     editPatternPath: ctx.router.url('patterns.edit', { id: pattern.id }),
     deletePatternPath: ctx.router.url('patterns.delete', { id: pattern.id }),
     authorPath: ctx.router.url('users.show', { id: author.id }),
+    userPath: (user) => ctx.router.url('users.show', { id: user.id }),
     votePatternPath: votePath,
     submitCommentPath: ctx.router.url('comments.create'),
     editCommentPath: (c) => ctx.router.url('comments.edit', { id: c.id }),
