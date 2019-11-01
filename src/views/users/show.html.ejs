@@ -36,7 +36,7 @@
   </div>
   <% if (createdPatterns.length) { %>
     <div class="own-pattern">
-      <h2>Patrones Creados</h2>
+      <h2>Patrones creados</h2>
       <div class="patterns-content">
         <% createdPatterns.forEach((cp) => { %>
         <div class="pattern-index">
@@ -72,7 +72,7 @@
     <% if ((currentUser) && (favoritePatterns.length && currentUser.id === user.id)) { %>
     <div class="favorites-patterns">
       <div>
-        <h2>Mis Patrones Favoritos</h2>
+        <h2>Mis patrones favoritos</h2>
       </div>
       <div class="patterns-content">
         <% favoritePatterns.forEach((fp) => { %>
@@ -90,4 +90,3 @@
     <% } %>
   </div>
 </div>
-

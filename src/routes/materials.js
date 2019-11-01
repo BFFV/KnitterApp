@@ -28,7 +28,7 @@ async function authenticate(ctx, next) {
 
 router.get('materials.list', '/', authenticate, async (ctx) => {
   const materialsList = await ctx.orm.material.findAll();
-  materialsList.sort((a, b) => a.updatedAt - b.updatedAt).reverse();
+  materialsList.sort((a, b) => a.name.localeCompare(b.name));
   await ctx.render('materials/index', {
     materialsList,
     newMaterialPath: ctx.router.url('materials.new'),
