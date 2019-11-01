@@ -1,3 +1,43 @@
+<div class="category-show-content">
+  <div class="category-show-tittle">
+    <div>
+      <h1>Categorías</h1>
+    </div>
+    <div>
+      <form action="<%- newCategoryPath %>">
+        <button class="add-category" type="submit"> <i class="fas fa-plus-circle fa-2x"></i> </button>
+      </form>
+    </div>
+  </div>
+  <div class="category-content">
+    <h2 class="label-content">Lista de Categorías</h2>
+    <div class="category-content-all">
+      <% categoriesList.forEach((category) => { %>
+        <div class="category-container">
+          <div class="category-text">
+            <a><%- category.name %></a>
+          </div>
+          <div>
+            <form action="<%- editCategoryPath(category) %>">
+              <button class="edit-category" type="submit"> <i class="fas fa-pen"></i> </button>
+            </form>
+          </div>
+          <div>
+            <form action="<%- deleteCategoryPath(category) %>" onclick="return confirm('Estás seguro?');"
+              method="POST">
+              <input type="hidden" name="_method" value="delete" />
+              <button class="delete-category" type="submit"> <i class="fas fa-trash-alt "></i> </button>
+            </form>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</div>
+
+<!--
+
+
 <div class="contenedor-body-show">
   <div class="material-show-head">
     <div class="material-show-element">
@@ -53,3 +93,4 @@
   </div>
 </div>
 
+ -->

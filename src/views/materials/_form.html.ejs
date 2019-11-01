@@ -1,4 +1,4 @@
-<div class="form">
+<div class="edit-material-form">
   <% if (locals.errors) { %>
     <div class="errors">
       <ul>
@@ -13,25 +13,18 @@
       <input type="hidden" name="_method" value="PATCH" />
     <% } %>
     <div class="panel">
-      <div class="panel-content">
-        <label class="parag-list" for="name">Nombre:</label>
-      </div>
-      <div class="panel-content">
-        <input class="input-list" type="text" name="name" size="40" value="<%= material.name %>" required/>
-      </div>
-      <div class="panel-content">
-        <label class="parag-list" for="description">Descripción:</label>
-      </div>
-      <div class="panel-content">
-        <textarea class="input-list" rows="8" cols="100" type="text" required name="description"><%= material.description %></textarea>
-      </div>
-      <div class="button_space">
-        <% if (material.isNewRecord) { %>
-          <input id="boton" type="submit" name="create" value="Crear" />
-        <% } else { %>
-          <input id="boton" type="submit" name="update" value="Actualizar" />
-        <% } %>
-      </div>
+      <label class="edit-label" for="name">Nombre:</label>
+      <input type="text" name="name" size="40" value="<%= material.name %>" required/>
+      <label class="edit-label" for="description">Descripción:</label>
+      <textarea  rows="8" cols="100" type="text" required name="description"><%= material.description %></textarea>
+      <% if (material.isNewRecord) { %>
+        <input class="create-button" type="submit" name="create" value="Crear" />
+      <% } else { %>
+        <input class="update-button" type="submit" name="update" value="Actualizar" />
+      <% } %>
     </div>
+  </form>
+  <form action="<%- materialsPath %>">
+    <input class="back-button" type="submit" value="Volver" />
   </form>
 </div>

@@ -13,85 +13,48 @@
       <input type="hidden" name="_method" value="patch" />
     <% } %>
     <div class="panel">
-      <div class="panel-content">
-        <label class="parag-list" for="name">Nombre:</label>
-      </div>
-      <div class="panel-content">
+        <label  class="edit-label" for="name">Nombre:</label>
         <input type="text" name="name" size="40" value="<%= pattern.name %>" required/>
-      </div>
-      <div class="panel-content">
-        <label class="parag-list" for="image">Imagen:</label>
-      </div>
-      <div class="panel-content">
-        <input class="input-list" type="file" name="image" value="<%= pattern.image %>" required/>
-      </div>
-      <div class="panel-content">
-        <label class="parag-list" for="tension">Tensión:</label>
-      </div>
-      <div class="panel-content">
+        <label  class="edit-label" for="image">Imagen:</label>
+        <% if (!pattern.isNewRecord) { %>
+          <input  class="edit-label" type="file" name="image" value="<%= pattern.image %>" />
+        <% } else { %>
+          <input  class="edit-label" type="file" name="image" value="<%= pattern.image %>" required/>
+        <% } %>
+        <label  class="edit-label" for="tension">Tensión:</label>
         <input type="text" name="tension" size="40" value="<%= pattern.tension %>" required/>
-      </div>
-      <div class="panel-content">
-        <label class="parag-list" for="video">Link a Video (opcional):</label>
-      </div>
-      <div class="panel-content">
+        <label  class="edit-label" for="video">Link a Video (opcional):</label>
         <input type="text" name="video" size="40" value="<%= pattern.video %>" />
-      </div>
-      <div class="panel-content">
-        <label class="parag-list" for="instructions">Instrucciones:</label>
-      </div>
-      <div class="panel-content">
+        <label  class="edit-label" for="instructions">Instrucciones:</label>
         <textarea rows="8" cols="80" type="text" required name="instructions"><%= pattern.instructions %></textarea>
-      </div>
-
-      <% if (pattern.isNewRecord) { %>
-        <div class="panel-content" id="category-pattern">
-          <label class="parag-list" for="categoryId">Categoría:</label>
+        <% if (pattern.isNewRecord) { %>
+          <label  class="edit-label" for="categoryId">Categoría:</label>
           <select class="category-select" name="categoryId" required>
             <% categoriesList.forEach(category => { %>
               <option value="<%- category.id %>"><%- category.name %></option>
             <% }); %>
           </select>
-        </div>
-      <% } %>
-      <% if (!pattern.isNewRecord) { %>
-        <div class="panel-content">
-          <p class="parag-list">Materiales Actuales:</p>
-        </div>
-        <div class="material-checkbox-content">
-          <% materials.forEach(material => { %>
-            <div class="material-checkbox">
-              <p class="parag-list"> <%- material.name %> </p>
-            </div>
-          <% }); %>
-        </div>
-
-        <div class="panel-content">
-          <label class="parag-list" for="materials">Nuevos Materiales:</label><br>
-        </div>
-
-      <% } else { %>
-        <label class="parag-list" for="materials">Materiales:</label><br>
-      <% } %>
-      <div class="material-checkbox-content">
+        <% } %>
+      <h3 for="materials">Materiales:</h3>
         <% materialsList.forEach(material => { %>
-          <div class="checkbox-container">
-            <div class="material-checkbox">
-              <p class="parag-list"> <%- material.name %> </p>
-            </div>
-            <div class="material-checkbox">
-              <input class="checkbox" type="checkbox" name="materials" value="<%- material.id %>">
-            </div>
+          <div class="materials-list-new-pattern">
+            <p class="material-list-new-para"> <%- material[0].name %> </p>
+            <% if (material[1]) { %>
+              <input class="checkbox-material" type="checkbox" name="materials" value="<%- material[0].id %>" checked>
+            <% } else { %>
+              <input class="checkbox-material" type="checkbox" name="materials" value="<%- material[0].id %>">
+            <% } %>
           </div>
         <% }); %>
-      </div>
-      <div class="panel-content">
         <% if (pattern.isNewRecord) { %>
-          <input class="button-pattern" id="boton" type="submit" name="create" value="Crear" />
+          <input class="create-button" type="submit" name="create" value="Crear" />
         <% } else { %>
-          <input class="button-pattern" id="boton" type="submit" name="update" value="Actualizar" />
+          <input class="update-button" type="submit" name="update" value="Actualizar" />
         <% } %>
       </div>
     </div>
+  </form>
+  <form action="<%- patternPath %>">
+    <input class="back-button" id="boton-material" type="submit" value="Volver" />
   </form>
 </div>

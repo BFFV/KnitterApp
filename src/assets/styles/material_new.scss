@@ -1,0 +1,27 @@
+
+/* Built */
+
+.edit-material-content {
+  display: flex;
+  flex-direction: column;
+  margin: 0px 30px;
+  margin-bottom: 60px;
+}
+
+.panel {
+  display:flex;
+  flex-direction: column;
+  max-width: 800px;
+}
+
+/* Details */
+
+.material-edit {
+  color: #ffd646;
+}
+
+.material-new {
+  color: rgb(81, 231, 81);
+}
+
+/* Interaction */

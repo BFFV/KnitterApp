@@ -33,7 +33,10 @@ async function setMaterials(materials, pattern) {
 async function newPatternInfo(ctx) {
   const info = {};
   info.categoriesList = await ctx.orm.category.findAll();
-  info.materialsList = await ctx.orm.material.findAll();
+  info.categoriesList.sort((a, b) => a.name - b.name).reverse();
+  const allMaterials = await ctx.orm.material.findAll();
+  allMaterials.sort((a, b) => a.name - b.name).reverse();
+  info.materialsList = allMaterials.map((m) => [m, false]);
   return info;
 }
 
@@ -195,6 +198,8 @@ router.get('patterns.list', '/', searchPatterns, async (ctx) => {
   const {
     patternsList, materials, categories,
   } = ctx.state;
+  categories.sort((a, b) => a.name.localeCompare(b.name));
+  materials.sort((a, b) => a.name.localeCompare(b.name));
   await ctx.render('patterns/index', {
     materials,
     categories,
@@ -214,13 +219,13 @@ router.get('patterns.list', '/', searchPatterns, async (ctx) => {
 router.get('patterns.new', '/new', authenticate, async (ctx) => {
   const pattern = ctx.orm.pattern.build();
   const { categoriesList, materialsList } = await newPatternInfo(ctx);
-  const materials = [];
+  categoriesList.sort((a, b) => a.name.localeCompare(b.name));
+  materialsList.sort((a, b) => a[0].name.localeCompare(b[0].name));
   await ctx.render('patterns/new', {
     pattern,
     categoriesList,
-    materials,
     materialsList,
-    patternsPath: ctx.router.url('patterns.list'),
+    patternPath: ctx.router.url('patterns.list'),
     submitPatternPath: ctx.router.url('patterns.create'),
   });
 });
@@ -230,11 +235,21 @@ router.get('patterns.edit', '/:id/edit', loadPattern, authenticate, async (ctx) 
     ctx.redirect(ctx.router.url('patterns.list'));
   }
   const { pattern } = ctx.state;
-  const materialsList = await ctx.orm.material.findAll();
+  const allMaterials = await ctx.orm.material.findAll();
+  allMaterials.sort().reverse();
   const materials = await pattern.getMaterials();
+  const materialsId = materials.map((m) => m.id);
+  const materialsList = [];
+  allMaterials.forEach((m) => {
+    let checked = false;
+    if (materialsId.includes(m.id)) {
+      checked = true;
+    }
+    materialsList.push([m, checked]);
+  });
+  materialsList.sort((a, b) => a[0].name.localeCompare(b[0].name));
   await ctx.render('patterns/edit', {
     pattern,
-    materials,
     materialsList,
     patternPath: ctx.router.url('patterns.show', { id: pattern.id }),
     submitPatternPath: ctx.router.url('patterns.update', { id: pattern.id }),
@@ -270,7 +285,6 @@ router.post('patterns.create', '/', authenticate, uploadImage, async (ctx) => {
     await ctx.render('patterns/new', {
       pattern,
       categoriesList,
-      materials,
       materialsList,
       errors,
       patternsPath: ctx.router.url('patterns.list'),
@@ -281,8 +295,18 @@ router.post('patterns.create', '/', authenticate, uploadImage, async (ctx) => {
 
 router.patch('patterns.update', '/:id', loadPattern, authenticate, uploadImage, async (ctx) => {
   const { pattern } = ctx.state;
-  const materialsList = await ctx.orm.material.findAll();
+  const allMaterials = await ctx.orm.material.findAll();
+  allMaterials.sort().reverse();
   const patternMaterials = await pattern.getMaterials();
+  const materialsId = patternMaterials.map((m) => m.id);
+  const materialsList = [];
+  allMaterials.forEach((m) => {
+    let checked = false;
+    if (materialsId.includes(m.id)) {
+      checked = true;
+    }
+    materialsList.push([m, checked]);
+  });
   try {
     const {
       name, instructions, video, tension, materials,
@@ -299,7 +323,6 @@ router.patch('patterns.update', '/:id', loadPattern, authenticate, uploadImage, 
     }
     await ctx.render('patterns/edit', {
       pattern,
-      materials: patternMaterials,
       materialsList,
       errors,
       patternPath: ctx.router.url('patterns.show', { id: pattern.id }),
@@ -323,6 +346,7 @@ router.get('patterns.show', '/:id', loadPattern, checkState, async (ctx) => {
   const author = await pattern.getUser();
   const category = await pattern.getCategory();
   const materials = await pattern.getMaterials();
+  materials.sort((a, b) => a.name.localeCompare(b.name));
   const commentsList = await pattern.getComments();
   commentsList.sort((a, b) => a.updatedAt - b.updatedAt).reverse();
   const commentUsers = commentsList.map((c) => c.getUser());
@@ -345,6 +369,7 @@ router.get('patterns.show', '/:id', loadPattern, checkState, async (ctx) => {
     editPatternPath: ctx.router.url('patterns.edit', { id: pattern.id }),
     deletePatternPath: ctx.router.url('patterns.delete', { id: pattern.id }),
     authorPath: ctx.router.url('users.show', { id: author.id }),
+    userPath: (user) => ctx.router.url('users.show', { id: user.id }),
     votePatternPath: votePath,
     submitCommentPath: ctx.router.url('comments.create'),
     editCommentPath: (c) => ctx.router.url('comments.edit', { id: c.id }),

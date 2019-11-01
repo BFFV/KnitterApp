@@ -1,4 +1,96 @@
 
+/* Built */
+
+.user-list-content {
+  margin: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.all-users{
+  display:flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.user-container{
+  word-break: break-word;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  margin-right: 40px;
+  margin-bottom: 40px;
+  background-color: #f7f7f7;
+  border-radius: 15px;
+  align-items: center;
+}
+
+.user-data{
+
+  display: flex;
+  flex-direction: column;
+  height: 150px;
+  width: 80%;
+  align-self: center;
+  margin: 10px;
+  margin-top: 15px;
+}
+
+/* Details */
+
+.see-profile{
+  width:150px;
+  align-self: center;
+  display: flex;
+  flex-direction:row;
+  align-items:center;
+  justify-content: center;
+  background-color: #26bfbf;
+  border-style: none;
+  border-radius: 15px;
+  color: white;
+  margin: 15px 0px;
+  font-family: "Dancing Script";
+  font-size: 20px;
+  color: white;
+  height: 35px;;
+}
+
+.delete-user{
+  width:150px;
+  align-self: center;
+  display: flex;
+  flex-direction:row;
+  align-items:center;
+  justify-content: center;
+  background-color: #fb6070;
+  border-style: none;
+  border-radius: 15px;
+  font-family: "Dancing Script";
+  font-size: 20px;
+  color: white;
+  margin-bottom: 15px;
+}
+
+.delete-word {
+  padding-left: 15px;
+  font-family: "Dancing Script";
+  font-size: 20px;
+  color: white;
+  margin: 5px;
+}
+
+.user-font {
+  font-family: Arial;
+  font-style: italic;
+  color: darkslategray;
+}
+
+/* Interaction */
+
+/*
+
 .all-users{
   display: flex;
   flex-direction: row;
@@ -11,13 +103,13 @@
 .user_container{
   display: block;
   width: 320px;
-  margin-bottom: 5%;
   flex-direction: column;
   justify-content: flex-start;
   border-style: solid;
   border-radius: 15px;
   border-color: #26bfbf;
   margin-right: 5%;
+  word-wrap: break-word;
 }
 
 .user_show{
@@ -37,3 +129,5 @@
   font-style: italic;
   color: gray
 }
+
+*/

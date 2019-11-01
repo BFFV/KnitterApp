@@ -6,75 +6,74 @@
     <% if ((currentUser) && ((currentUser.id === pattern.authorId) || (currentUser.role === 'admin'))) { %>
       <div class="tittle-element">
         <form action="<%- editPatternPath %>">
-          <input class="" type="submit" value="E" />
+          <button class="edit-profile" type="submit"> <i class="fas fa-pen fa-2x"></i> </button>
         </form>
       </div>
       <div class="tittle-element">
-        <form action="<%- deletePatternPath %>" onclick="return confirm('Estás seguro?');"
-          method="POST">
-          <input type="hidden" name="_method" value="delete" />
-          <input class="" type="submit" value="-" />
-        </form>
+          <form action="<%- deletePatternPath%>" onclick="return confirm('Estás seguro?');"
+              method="POST">
+            <input type="hidden" name="_method" value="delete" />
+            <button class="delete-profile" type="submit"> <i class="fas fa-trash-alt fa-2x"></i> </button>
+          </form>
       </div>
-      <div>
+      <div class="back-pattern-button">
         <form action="<%- patternsPath %>">
-            <input type="submit" value="Volver" />
+            <button class="back-pattern" type="submit"> <i class="fas fa-backward"></i> Volver </button>
         </form>
       </div>
     <% } %>
   </div>
   <div class="pattern-elements">
-    <div class="pattern-photo">
-      <img src="<%- pattern.image %>">
-    </div>
+    <img class="pattern-photo" src="<%- pattern.image %>">
     <div class="pattern-video">
+      <% if (pattern.video) { %>
         <iframe class="youtube-video" allowFullScreen="allowFullScreen" src="https://www.youtube.com/embed/<%= pattern.video.slice(32) %>?ecver=1&amp;iv_load_policy=1
           &amp;rel=0&amp;yt:stretch=16:9&amp;autohide=1&amp;color=red"
            width="80%" height="160%" allowtransparency="true" frameborder="0">
         </iframe>
+      <% } else { %>
+        <div class="pattern-data">
+          <p class="parag">No hay video disponible!</p>
+        </div>
+      <% } %>
     </div>
   </div>
   <div class="pattern-elements-2">
     <div class="pattern-data">
-      <div>
-        <p class="parag">Diseñado por: <a class= "parag" href="<%- authorPath %>"><%- author.username %></a></p>
-      </div>
-      <div>
-        <p class="parag">Tensión: <%- pattern.tension %></p>
-      </div>
-      <div>
-        <p class="parag">Puntaje: <%- pattern.score %>/5</p>
-      </div>
-      <div>
-        <p class="parag">Popularidad: <%- pattern.popularity %></p>
-      </div>
+      <h2>Datos:</h2>
+      <p class="pattern-font" >Diseñado por: <a class="pattern-font-tittle" href="<%- authorPath %>"><%- author.username %></a></p>
+      <p class="pattern-font">Tensión: <%- pattern.tension %></p>
+      <p class="pattern-font">Puntaje: <%- pattern.score %>/5</p>
+      <p class="pattern-font">Popularidad: <%- pattern.popularity %></p>
       <% if (currentUser) { %>
-        <div>
+        <div class="forms-pattern">
           <%- include('../vote_patterns/_form') %>
           <%- include('_formAdd') %>
           <%- include('_formFavorite') %>
         </div>
       <% } %>
     </div>
+    <% if (!materials.lenght) { %>
     <div class="pattern-materials">
       <div>
         <h2>Materiales:</h2>
       </div>
       <div>
         <% materials.forEach(material => { %>
-          <p>- <%- material.name %><br>
+          <p class="pattern-font">- <%- material.name %><br>
         <% }); %>
       </div>
     </div>
+    <% } %>
     <div class="instruction-content">
       <h2>Instrucciones:</h2>
-      <p><%- pattern.instructions %></p>
+      <p class="pattern-font"><%- pattern.instructions %></p>
     </div>
   </div>
   <div class="pattern-comment">
     <div class="comment-pattern">
-        <h2>Comentar</h2>
         <% if (currentUser) { %>
+          <h2>Comentar</h2>
           <%- include('../comments/_form') %>
         <% } %>
     </div>
@@ -82,25 +81,22 @@
       <div class="comment-tittle">
         <h2>Comentarios</h2>
       </div>
-
       <% patternComments.forEach(comment => { %>
         <div class="comment">
           <div class="comment-item">
-            <p class="comment-text"><%- comment[0].content %></p>
-            <p class="parag"> <%- comment[2] %> por <%- comment[1].username %> </p>
+            <p class="pattern-font" ><a class="pattern-font-tittle" href="<%- userPath(comment[1]) %>"><%- comment[1].username %></a></p>
+            <p class="pattern-font" ><%- comment[0].content %></p>
+            <p class="pattern-font"> <%- comment[2] %> </p>
           </div>
           <% if ((currentUser) && ((currentUser.id === comment[1].id) || (currentUser.role === 'admin'))) { %>
-          <div class="comment-item">
             <form action="<%- editCommentPath(comment[0]) %>">
-              <input type="submit" value="Editar" />
+              <button class="edit-material" type="submit"> <i class="fas fa-pen"></i> </button>
             </form>
-          </div>
-          <div class="comment-item">
-            <form action="<%- deleteCommentPath(comment[0]) %>" onclick="return confirm('Estás seguro?');" method="POST">
+            <form action="<%- deleteCommentPath(comment[0]) %>" onclick="return confirm('Estás seguro?');"
+                method="POST">
               <input type="hidden" name="_method" value="delete" />
-              <input type="submit" value="Eliminar" />
+              <button class="delete-material" type="submit"> <i class="fas fa-trash-alt"></i> </button>
             </form>
-          </div>
           <% } %>
         </div>
       <% }); %>

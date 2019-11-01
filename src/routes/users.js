@@ -106,7 +106,7 @@ async function authenticate(ctx, next) {
 
 router.get('users.list', '/', authenticate, async (ctx) => {
   const usersList = await ctx.orm.user.findAll();
-  usersList.sort((a, b) => a.updatedAt - b.updatedAt).reverse();
+  usersList.sort((a, b) => a.username.localeCompare(b.username));
   await ctx.render('users/index', {
     usersList,
     userPath: (user) => ctx.router.url('users.show', { id: user.id }),

@@ -1,0 +1,126 @@
+
+/* Built */
+
+.edit-profile-content {
+  display: flex;
+  flex-direction: column;
+  margin: 0px 30px;
+  margin-bottom: 60px;
+}
+
+.panel {
+  display:flex;
+  flex-direction: column;
+  max-width: 800px;
+}
+
+/* Details */
+
+.update-button{
+  margin: 20px 0px;
+  background-color: #ffd646;
+  width: 120px;
+  align-self: center;
+  height: 40px;
+  font-family: "Dancing Script";
+  font-size: 20px;
+  border-style: none;
+  color: white;
+  border-radius: 15px;
+}
+
+.create-button{
+  margin: 20px 0px;
+  background-color: rgb(81, 231, 81);
+  width: 120px;
+  align-self: center;
+  height: 40px;
+  font-family: "Dancing Script";
+  font-size: 20px;
+  border-style: none;
+  color: white;
+  border-radius: 15px;
+}
+
+.profile-edit {
+  color: #ffd646;
+  justify-self: center;
+}
+
+.profile-new {
+  color: rgb(81, 231, 81);
+}
+
+.edit-label {
+  padding: 10px 0px ;
+  font-family: Arial;
+  font-style: italic;
+  color: gray;
+}
+
+.edit-photo {
+  font-family: Arial;
+  font-style: italic;
+  color: gray;
+}
+
+.back-button {
+  background-color: #26bfbf;
+  width: 120px;
+  height: 40px;
+  align-self: center;
+  font-family: "Dancing Script";
+  font-size: 20px;
+  border-style: none;
+  color: white;
+  border-radius: 15px;
+}
+
+.new-button {
+  background-color: rgb(81, 231, 81);
+  width: 100%;
+  height: 40px;
+  align-self: center;
+  font-family: "Dancing Script";
+  font-size: 20px;
+  border-style: none;
+  color: white;
+  border-radius: 15px;
+}
+
+/* Interaction */
+
+/*
+
+.button_space{
+  padding-top: 15px;
+}
+
+.hide{
+  display: none;
+}
+
+.panel{
+  display: flex;
+  justify-items: flex-start;
+  flex-direction: column;
+}
+
+.panel-content{
+  display: flex;
+}
+
+.content-sub-form{
+  justify-items: center;
+}
+
+.form{
+  width:400px;
+}
+
+@media (min-width: 720px) {
+  .form{
+    width:100%;
+  }
+}
+ */

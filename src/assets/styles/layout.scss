@@ -4,6 +4,12 @@ html, body {
   padding: 0;
 }
 
+body {
+  background-image: url("https://res.cloudinary.com/webhitos/image/upload/v1571855535/c1fscnph9mkigk1inils.svg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
 ul {
   list-style-type: none;
   margin: 0;
@@ -75,9 +81,7 @@ input .button-out:hover {
   -webkit-transition: max-height 0.4s ease-in;
   -moz-transition: max-height 0.4s ease-in;
   transition: max-height 0,4s ease-in;
-
 }
-
 
 .nav-element {
   text-decoration: none;
@@ -94,7 +98,6 @@ input .button-out:hover {
   display: none;
   border-bottom: solid;
   border-bottom-color: white;
-
 }
 
 #toogle{
@@ -108,7 +111,6 @@ input .button-out:hover {
   margin: 13px;
   border-radius: 15px;
   justify-content: center;
-
 }
 
 span {
@@ -129,7 +131,6 @@ span {
 .resize{
   display: none;
 }
-
 
 @media screen and (max-width: 875px){
 
@@ -177,8 +178,8 @@ span {
     display: inline-block;
     text-align: center;
     padding: 14px 0px;
-
   }
+
   #toogle:checked + nav {
     display: inline;
     justify-content: center;
@@ -188,7 +189,6 @@ span {
     display: flex;
     flex-direction: column;
     align-items: center;
-
   }
 
   #toogle:checked + nav ul li{
@@ -205,6 +205,4 @@ span {
   #toogle:checked + nav ul li a{
    width: 100%;
   }
-
 }
-

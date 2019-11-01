@@ -1,4 +1,4 @@
-<div class="contenedor-body">
+<div class="user-list-content">
   <div>
     <h1>Usuarios</h1>
   </div>
@@ -9,34 +9,26 @@
   </div>
   <div class="all-users">
     <% usersList.forEach((user) => { %>
-      <div class="user_container">
-        <a class="user_show" id="texto_de_pagina">
-          Nombre: <%= user.username %>
-        </a>
-        <a class="user_show" id="texto_de_pagina">
-          E-mail: <%= user.email %>
-        </a>
-        <a class="user_show" id="texto_de_pagina">
-          Años: <%- user.age %>
-        </a>
-        <a class="user_show" id="texto_de_pagina">
-          Rol: <%- user.role %>
-        </a>
-        <div class="user_show">
+      <div class="user-container">
+        <div class="user-data">
+            <a class="user-font"> Nombre: <%= user.username %> </a>
+            <a class="user-font"> E-mail: <%= user.email %> </a>
+            <a class="user-font"> Edad: <%- user.age %> </a>
+            <a class="user-font"> Rol: <%- user.role %> </a>
+        </div>
+        <div>
           <form action="<%- userPath(user) %>">
-            <input id="boton" type="submit" value="Ver Perfil" />
+            <input class="see-profile" type="submit" value="Ver Perfil" />
           </form>
         </div>
-        <div class="user_show">
+        <div>
           <form action="<%- deleteUserPath(user) %>" onclick="return confirm('Estás seguro?');"
             method="POST">
             <input type="hidden" name="_method" value="delete" />
-            <input id="boton" type="submit" value="Eliminar" />
+            <button class="delete-user" type="submit"><i class="fas fa-trash-alt fa-1.5x"></i><p class="delete-word">Eliminar</p></button>
           </form>
         </div>
       </div>
     <% })} %>
-  </div>
-  <div>
   </div>
 </div>

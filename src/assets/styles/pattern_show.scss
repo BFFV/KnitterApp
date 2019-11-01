@@ -52,6 +52,13 @@
   width: 20%;
   margin: 0px 30px;
   height: 100%;
+  word-wrap: break-word;
+}
+
+.back-pattern-button{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .instruction-content{
@@ -61,18 +68,20 @@
   width: 30%;
   padding-right: 100px;
   height: 100%;
+  word-wrap: break-word;
 }
 
 .pattern-materials {
   width: 20%;
-  margin-right: 20px;
+  margin: 0px 40px;
   height: 100%;
+  word-wrap: break-word;
 }
 
 .pattern-comment {
-  margin-top: 30px;
   display: flex;
   flex-direction: column;
+  border-radius: solid;
 }
 
 .pattern-comments {
@@ -83,9 +92,54 @@
 
 .comment {
   max-width: 630px;
+  border-style: solid;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #f7f7f7;
+  border-radius: 15px;
+}
+
+.forms-pattern{
+  margin: 0px 0px;
 }
 
 /* Details */
+
+.realized-button{
+  background-color: #26bfbf;
+  border-style: none;
+  border-radius: 15px;
+  margin: 5px 0px;
+  width: 220px;
+  height: 100%;
+  color: white;
+  font-family: "Dancing Script";
+  font-size: 20px;
+}
+
+.back-pattern {
+  background-color: #26bfbf;
+  border-style: none;
+  width: 140px;
+  height: 60px;
+  border-radius: 15px;
+  margin-left: 20px;
+  color: white;
+  font-family: "Dancing Script";
+  font-size: 30px;
+}
+
+#parag{
+  padding-right: 20px;
+}
+
+.vote-button{
+  margin: 10px 0px;
+  width: 100px;
+  margin-left: 10px;
+}
 
 .comment-pattern {
   margin: 0px 30px;
@@ -110,13 +164,13 @@
 
 .comment-item{
   align-items: center;
-  justify-items: center;
   padding-right: 20px;
+  width: 450px;
+  margin-left: 20px;
+  word-wrap: break-word;
 }
 
-
 /* Interaction */
-
 
 @media screen and (max-width: 875px){
 
@@ -157,7 +211,7 @@
 
   .pattern-materials {
     width: 100%;
-    margin: 20px 30px;
+    margin: 20px 40px;
 
   }
 
@@ -167,5 +221,12 @@
     white-space: pre-line;
     padding: 0px;
   }
-}
 
+  .comment{
+    width:100%;
+  }
+
+  .comment-item{
+    width:60%;
+  }
+}

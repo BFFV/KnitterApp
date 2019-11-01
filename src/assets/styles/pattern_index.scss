@@ -1,111 +1,211 @@
 
-h2 {
-  text-decoration: none;
-  font-family: "Dancing Script";
-  font-size: 40px;
-  color:  #26bfbf;
-  font-weight: 700 ;
-  align-self: auto;
-  margin: 0px;
-  padding-bottom: 20px;
-}
+/* Built */
 
-.pattern-seach{
-  display: flex;
-  flex-direction: row;
-  padding-bottom:40px;
-}
-
-.search-container{
-  display: flex;
-  flex-direction: row;
-  padding-bottom: 20px;
-  height: 200px;
-
-}
-
-.search-element{
+.pattern-show-content {
+  margin: 30px;
   display: flex;
   flex-direction: column;
-  width: 50%;
-  justify-items: left;
-  align-items: left;
-  padding-right: 10%;
-
 }
 
-.search-element-content{
-  display: flex;
-  flex-direction: column;
-  width: 80%;
-  height: 100%;
-}
-
-.search-subelement{
-  display: flex;
-  flex-direction: row;
-  height: 30%;
-  padding-bottom:20px;
-  align-items: center;
-}
-
-.box-select{
-  height: 20px;
-  width: 50%;
-}
-
-.material-checkbox-search{
-  display: flex;
-  flex-direction: column;
-  overflow-y: scroll;
-}
-
-.material-checkbox-search#checkbox-pattern{
-  height: 200px;;
-}
-
-.material-check-box-content{
-  display: flex;
-  flex-direction: row;
-  justify-items: flex-start;
-  align-items: center;
-}
-
-#materials-text{
-  padding: 0px;
-  margin: 0px;
-}
-
-#content-sub-body{
-  margin-top:20px;
-}
-
-.all-pattern{
+.pattern-show-tittle{
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  flex-wrap: wrap;
-  height: 400px;
-  overflow-y: scroll;
-  margin-top: 20px;
-
+  align-items: center;
 }
 
+.pattern-body{
+  display: flex;
+  flex-direction: row;
+}
 
+.pattern-search{
+  border-color: red;
+  width: 300px;
+}
 
-.pattern{
+.search-content{
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 200px;
-  margin-bottom: 5%;
-  border-style: solid;
-  border-radius: 15px;
-  border-color: #26bfbf;
-  margin-right: 5%;
 }
 
-.pattern-element{
-  padding-bottom: 20px;
+.search-name{
+  display: flex;
+  flex-direction: row;
+}
 
+.search-select{
+  display: flex;
+  flex-direction: row;
+  padding-top: 20px;
+}
+
+.patterns-list{
+  display: flex;
+  flex-direction: column;
+  margin-left: 30px;
+}
+
+.pattern-content{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.search-sorting{
+  display: flex;
+  flex-direction: row;
+  padding-top: 20px;
+}
+
+.material-search-content{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.material-search-name{
+  width: 250px;
+  word-wrap: break-word;
+}
+
+.button-search-container{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.pattern-search-container{
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  width: 200px;
+  background-color: #f7f7f7;
+  margin-right: 30px;
+  margin-top: 20px;
+  border-radius: 15px;
+}
+
+.edit-and-delete-pattern{
+  display: flex;
+  flex-direction: row;
+  align-items:center;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+/* Details */
+
+.edit-pattern {
+  background-color: #ffd646;
+  border-style: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: white;
+  margin-right: 15px;
+}
+
+.delete-pattern {
+  background-color: #fb6070;
+  border-style: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: white;
+}
+
+.material-search-name-para{
+  width: 150px;
+  font-family: Arial;
+  font-style: italic;
+  color: darkslategray;
+}
+
+.add-pattern {
+  background-color: rgb(81, 231, 81);
+  border-style: none;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-left: 20px;
+  color: white;
+}
+
+.pattern-font-form {
+  font-family: Arial;
+  font-style: italic;
+  color: darkslategray;
+  width: 100px;
+}
+
+.pattern-font {
+  text-decoration: none;
+  font-family: Arial;
+  font-style: italic;
+  color: darkslategray;
+}
+
+.pattern-font-tittle {
+  text-decoration: none;
+  font-family: Arial;
+  font-style: italic;
+  color: #26bfbf;
+  margin-bottom: 20px;
+}
+
+.search-button-form{
+  background-color: #26bfbf;
+  border-style: none;
+  padding: 5px 50px;
+  font-family: "Dancing Script";
+  font-size: 20px;
+  color: white;
+  align-self: center;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.pattern-index-element-photo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.photo {
+  width: 200px;
+  height: 160px;
+  background-color: cyan;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+.patterns-content {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.pattern-index {
+  width: 200px;
+  margin: 10px;
+  margin-bottom:20px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Interaction */
+
+@media screen and (max-width: 875px){
+
+  .pattern-body{
+    flex-wrap: wrap;
+  }
+
+  .patterns-list{
+    margin: 0px;
+  }
 }
