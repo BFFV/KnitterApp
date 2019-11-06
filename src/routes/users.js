@@ -138,7 +138,12 @@ router.post('users.create', '/', checkPassword, uploadImage, async (ctx) => {
   const params = ctx.request.body;
   params.role = 'common';
   params.token = params.username;
+
+  // to change for random bytes
+  params.resetToken = params.username;
+
   params.photo = 'default';
+
   const user = ctx.orm.user.build(params);
   ctx.state.user = user;
   try {

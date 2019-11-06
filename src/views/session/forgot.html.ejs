@@ -7,10 +7,6 @@
           <% } %>
       </div>
       <div >
-        <h1 class="title">Knitter
-        </h1>
-      </div>
-      <div >
         <% if (locals.error) { %>
           <div class="body-item" id="error">
             <a class="user-parag-list" ><%= error %></a>
@@ -18,9 +14,12 @@
         <% } %>
       </div>
       <div class="login-sub-content">
-        <form action="<%= createSessionPath %>" method="POST">
+        <form action="<%= sendMailPath %>" method="POST">
           <div class="body-item">
-            <input type="hidden" name="_method" value="PUT" />
+            <div class="content-sub-form">
+              <h1 class="panel-content">Recuperar tu cuenta</h1>
+            </div>
+            <p class="label-content">Ingresa tu correo para recuperar tu cuenta</p>
           </div>
           <div class="body-item">
             <label for="email"><p class="label-content">Correo:</p></label>
@@ -29,26 +28,22 @@
             <input class="input" type="email" name="email" value="<%= locals.email %>" required/>
           </div >
           <div class="body-item">
-            <label for="password"><p class="label-content">Contraseña:</p></label>
-          </div>
-          <div class="body-item">
-            <input class="input" type="password" name="password" required/>
-          </div>
-          <div class="body-item">
               <div class="end-user-login">
-                  <input id="boton" type="submit" name="sign-in" value="Ingresar" />
+                  <input id="boton" type="submit" name="recover" value="Enviar" />
               </div>
           </div>
         </form>
         <div class="end-user-login">
-            <form action="<%- forgotPasswordPath %>">
-                <input id="boton" type="submit" value="Olvide mi Contraseña" />
-            </form>
             <form action="<%- newUserPath %>">
-                <input  class="new-button" type="submit" value="Crear Usuario" />
+                <input id="boton" type="submit" value="Crear Usuario" />
             </form>
         </div>
       </div>
     </div>
+  </div>
+  <div>
+    <form action="<%- rootPath %>">
+      <input class="boton-material" id="boton-material" type="submit" value="Volver" />
+    </form>
   </div>
 </div>
