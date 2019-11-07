@@ -120,7 +120,7 @@ router.get('users.new', '/new', async (ctx) => {
   const user = ctx.orm.user.build();
   await ctx.render('users/new', {
     user,
-    rootPath: '/',
+    sessionPath: ctx.router.url('session.new'),
     submitUserPath: ctx.router.url('users.create'),
   });
 });
@@ -138,12 +138,7 @@ router.post('users.create', '/', checkPassword, uploadImage, async (ctx) => {
   const params = ctx.request.body;
   params.role = 'common';
   params.token = params.username;
-
-  // to change for random bytes
-  params.resetToken = params.username;
-
   params.photo = 'default';
-
   const user = ctx.orm.user.build(params);
   ctx.state.user = user;
   try {
@@ -159,7 +154,7 @@ router.post('users.create', '/', checkPassword, uploadImage, async (ctx) => {
     await ctx.render('users/new', {
       user,
       errors,
-      rootPath: '/',
+      sessionPath: ctx.router.url('session.new'),
       submitUserPath: ctx.router.url('users.create'),
     });
   }

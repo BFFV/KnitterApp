@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 module.exports = {
   provider: {
     // your provider name directly or from ENV var

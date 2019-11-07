@@ -2,9 +2,9 @@
   <div class="user-session-login-content">
     <div class="border-css">
       <div>
-          <% if (locals.notice) { %>
-            <div className="notice"><%= notice %></div>
-          <% } %>
+        <% if (locals.notice) { %>
+          <div className="notice"><%= notice %></div>
+        <% } %>
       </div>
       <div >
         <% if (locals.error) { %>
@@ -17,33 +17,27 @@
         <form action="<%= sendMailPath %>" method="POST">
           <div class="body-item">
             <div class="content-sub-form">
-              <h1 class="panel-content">Recuperar tu cuenta</h1>
+              <h1 class="panel-content">Recupera tu Cuenta!</h1>
             </div>
-            <p class="label-content">Ingresa tu correo para recuperar tu cuenta</p>
           </div>
           <div class="body-item">
-            <label for="email"><p class="label-content">Correo:</p></label>
+            <label for="email"><p class="label-content">Ingresa tu correo para recuperar tu cuenta: </p></label>
           </div>
           <div class="body-item">
             <input class="input" type="email" name="email" value="<%= locals.email %>" required/>
           </div >
           <div class="body-item">
-              <div class="end-user-login">
-                  <input id="boton" type="submit" name="recover" value="Enviar" />
-              </div>
+            <div class="end-user-login">
+              <input id="boton" type="submit" name="recover" value="Enviar" />
+            </div>
           </div>
         </form>
-        <div class="end-user-login">
-            <form action="<%- newUserPath %>">
-                <input id="boton" type="submit" value="Crear Usuario" />
-            </form>
-        </div>
       </div>
     </div>
   </div>
-  <div>
-    <form action="<%- rootPath %>">
-      <input class="boton-material" id="boton-material" type="submit" value="Volver" />
+  <div class="end-user-login">
+    <form action="<%- sessionPath %>">
+      <input class="back-button" type="submit" value="Volver" />
     </form>
   </div>
 </div>

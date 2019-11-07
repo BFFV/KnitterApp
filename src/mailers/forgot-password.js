@@ -1,3 +1,4 @@
-module.exports = function sendForgotPasswordEmail(ctx, { email }) {
-  return ctx.sendMail('forgot-password', { to: email, subject: '[Knitter] Password Recovery' }, { email });
+module.exports = function sendForgotPasswordEmail(ctx, { user }) {
+  const { request } = ctx;
+  return ctx.sendMail('forgot-password', { to: user.email, subject: '[Knitter] Password Recovery' }, { user, request });
 };

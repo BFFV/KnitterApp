@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = {
   up: (queryInterface, Sequelize) => queryInterface.addColumn(
     'users',
@@ -11,7 +9,7 @@ module.exports = {
       onDelete: 'cascade',
     },
   )
-  .then(() => queryInterface.addColumn(
+    .then(() => queryInterface.addColumn(
       'users',
       'resetTokenExpires',
       {
@@ -22,12 +20,11 @@ module.exports = {
       },
     )),
 
-
   down: (queryInterface) => queryInterface.removeColumn(
     'users',
     'resetToken',
   )
-  .then(() => queryInterface.removeColumn(
+    .then(() => queryInterface.removeColumn(
       'users',
       'resetTokenExpires',
     )),
