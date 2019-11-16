@@ -1,23 +1,18 @@
 <div class = "contenedor-body">
   <div class="user-session-login-content">
     <div class="border-css">
-      <div>
-        <% if (locals.notice) { %>
-          <div className="notice"><%= notice %></div>
-        <% } %>
-      </div>
-      <div >
-        <% if (locals.error) { %>
-          <div class="body-item" id="error">
-            <a class="user-parag-list" ><%= error %></a>
-          </div>
-        <% } %>
-      </div>
       <div class="login-sub-content">
         <form action="<%= sendMailPath %>" method="POST">
           <div class="body-item">
             <div class="content-sub-form">
               <h1 class="panel-content">Recupera tu Cuenta!</h1>
+            </div>
+            <div >
+              <% if (locals.error) { %>
+                <div class="body-item" id="error">
+                  <a class="user-parag-list" ><%= error %></a>
+                </div>
+              <% } %>
             </div>
           </div>
           <div class="body-item">
