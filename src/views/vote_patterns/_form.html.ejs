@@ -17,8 +17,10 @@
       </div>
     <% } %>
     <div>
-      <label class="pattern-font" id="parag" for="rating">Calidad:</label>
-      <select  name="rating" required>
+      <select name="rating" required>
+        <% if (!votePattern) { %>
+          <option value=""> Selecciona un Puntaje </option>
+        <% } %>
         <% options.forEach(option => { %>
           <% if ((votePattern) && (votePattern.rating === option)) { %>
             <option value="<%- option %>" selected><%- option %></option>
