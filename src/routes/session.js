@@ -5,6 +5,7 @@ const router = new KoaRouter();
 
 const sendForgotPasswordEmail = require('../mailers/forgot-password');
 const sendResetPasswordEmail = require('../mailers/reset-password');
+const sendResetFailedEmail = require('../mailers/reset-failed');
 
 // Starts the session & upgrades the user's role when certain conditions are met
 async function login(ctx, next) {
@@ -97,7 +98,7 @@ router.post('session.forgot', '/forgot', async (ctx) => {
 });
 
 router.get('session.reset', '/reset/:token', async (ctx) => {
-  const user = await ctx.orm.user.findOne(
+  let user = await ctx.orm.user.findOne(
     {
       where: {
         resetToken: ctx.params.token,
@@ -106,6 +107,10 @@ router.get('session.reset', '/reset/:token', async (ctx) => {
     },
   );
   if (!user) {
+    user = await ctx.orm.user.findOne({ where: { resetToken: ctx.params.token } });
+    if (user) {
+      await sendResetFailedEmail(ctx, { user });
+    }
     return ctx.redirect(ctx.router.url('session.new'));
   }
   return ctx.render('session/reset', {
@@ -115,7 +120,7 @@ router.get('session.reset', '/reset/:token', async (ctx) => {
 });
 
 router.post('session.reset', '/reset/:token', async (ctx) => {
-  const user = await ctx.orm.user.findOne(
+  let user = await ctx.orm.user.findOne(
     {
       where: {
         resetToken: ctx.params.token,
@@ -124,7 +129,11 @@ router.post('session.reset', '/reset/:token', async (ctx) => {
     },
   );
   if (!user) {
-    ctx.redirect(ctx.router.url('session.new'));
+    user = await ctx.orm.user.findOne({ where: { resetToken: ctx.params.token } });
+    if (user) {
+      await sendResetFailedEmail(ctx, { user });
+    }
+    return ctx.redirect(ctx.router.url('session.new'));
   }
   const { password, confirmPass } = ctx.request.body;
   if (password === confirmPass) {
