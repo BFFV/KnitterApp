@@ -3,31 +3,29 @@ const KoaRouter = require('koa-router');
 
 const router = new KoaRouter();
 
-router.get('api.courses.list', '/', async (ctx) => {
+router.get('api.patterns.comments', '/patterns/:id/comments', async (ctx) => {
 
-  /* const coursesList = await ctx.orm.course.findAll();
-  ctx.body = ctx.jsonSerializer('course', {
-    attributes: ['code', 'name', 'description'],
+  const pattern = await ctx.orm.pattern.findByPk(ctx.params.id);
+  const commentsList = await pattern.getComments();
+  ctx.body = ctx.jsonSerializer('comment', {
+    attributes: ['content', 'userId'],
     topLevelLinks: {
-      self: `${ctx.origin}${ctx.router.url('api.courses.list')}`,
+      self: `${ctx.origin}${ctx.router.url('api.patterns.comments')}`,
     },
-    dataLinks: {
-      self: (dataset, course) => `${ctx.origin}/api/courses/${course.id}`,
-    },
-  }).serialize(coursesList); */
-
+    /* dataLinks: {
+      self: (dataset, comment) => `${ctx.origin}/api/comments/${comment.id}`,
+    }, */
+  }).serialize(commentsList);
 });
 
-router.get('api.course.show', '/:id', async (ctx) => {
+module.exports = router;
 
-  /* const course = await await ctx.orm.course.findById(ctx.params.id);
+/* router.get('api.course.show', '/:id', async (ctx) => {
+
+  const course = await await ctx.orm.course.findById(ctx.params.id);
   ctx.body = ctx.jsonSerializer('course', {
     attributes: ['code', 'name', 'description'],
     topLevelLinks: {
       self: `${ctx.origin}${ctx.router.url('api.courses.list')}:id`,
     },
-  }).serialize(course); */
-
-});
-
-module.exports = router;
+  }).serialize(course); }); */

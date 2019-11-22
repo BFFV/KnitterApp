@@ -6,12 +6,13 @@ const koaFlashMessage = require('koa-flash-message').default;
 const koaStatic = require('koa-static');
 const render = require('koa-ejs');
 const session = require('koa-session');
+const jsonApiSerializer = require('jsonapi-serializer');
 const override = require('koa-override-method');
 const assets = require('./assets');
 const mailer = require('./mailers');
 const routes = require('./routes');
 const orm = require('./models');
-const jsonApiSerializer = require('jsonapi-serializer');
+
 
 // App constructor
 const app = new Koa();
