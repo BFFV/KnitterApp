@@ -1,4 +1,3 @@
-
 const KoaRouter = require('koa-router');
 const patternsApi = require('./patterns');
 
