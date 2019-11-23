@@ -9,13 +9,19 @@ export default class CommentList extends Component {
     this.state = {
       loading: false,
       items: [],
+      interval: null,
     };
     this.loadComments = this.loadComments.bind(this);
   }
 
   componentDidMount() {
     this.loadComments();
-    // setInterval(this.loadComments, 10000);
+    this.setState({ interval: setInterval(this.loadComments, 10000) });
+  }
+
+  componentWillUnmount() {
+    const { interval } = this.state;
+    clearInterval(interval);
   }
 
   async loadComments() {

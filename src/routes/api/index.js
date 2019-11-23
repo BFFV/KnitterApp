@@ -2,7 +2,7 @@ const KoaRouter = require('koa-router');
 const jwt = require('koa-jwt');
 const authApi = require('./auth');
 const patternsApi = require('./patterns');
-const usersApi = require('./users');
+const commentsApi = require('./comments');
 
 const router = new KoaRouter();
 
@@ -20,6 +20,6 @@ router.use(async (ctx, next) => {
 });
 
 // authenticated endpoints
-router.use('/users', usersApi.routes());
+router.use('/comments', commentsApi.routes());
 
 module.exports = router;

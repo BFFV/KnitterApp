@@ -30,31 +30,36 @@ function updatedTime(date1, date2) {
 }
 
 router.get('api.patterns.comments', '/:id/comments', async (ctx) => {
-  const pattern = await ctx.orm.pattern.findByPk(ctx.params.id);
-  const commentList = await pattern.getComments();
-  commentList.sort((a, b) => a.updatedAt - b.updatedAt).reverse();
-  const commentUsers = commentList.map((c) => c.getUser());
-  const userList = await Promise.all(commentUsers);
-  const date = new Date();
-  const patternComments = commentList.map((c, i) => {
-    const newObj = {};
-    newObj.content = c.content;
-    newObj.authorId = userList[i].id.toString();
-    newObj.author = userList[i].username;
-    newObj.time = updatedTime(c.updatedAt, date);
-    newObj.authorized = false;
-    const { currentUser } = ctx.state;
-    if ((currentUser) && ((currentUser.id === c.userId) || (currentUser.role === 'admin'))) {
-      newObj.authorized = true;
-    }
-    return newObj;
-  });
-  ctx.body = ctx.jsonSerializer('commentdata', {
-    attributes: ['content', 'authorId', 'author', 'time', 'authorized'],
-    topLevelLinks: {
-      self: `${ctx.origin}${ctx.router.url('api.patterns.comments', { id: ctx.params.id })}`,
-    },
-  }).serialize(patternComments);
+  try {
+    const pattern = await ctx.orm.pattern.findByPk(ctx.params.id);
+    const commentList = await pattern.getComments();
+    commentList.sort((a, b) => a.updatedAt - b.updatedAt).reverse();
+    const commentUsers = commentList.map((c) => c.getUser());
+    const userList = await Promise.all(commentUsers);
+    const date = new Date();
+    const patternComments = commentList.map((c, i) => {
+      const newObj = {};
+      newObj.content = c.content;
+      newObj.commentId = c.id.toString();
+      newObj.authorId = userList[i].id.toString();
+      newObj.author = userList[i].username;
+      newObj.time = updatedTime(c.updatedAt, date);
+      newObj.authorized = false;
+      const { currentUser } = ctx.state;
+      if ((currentUser) && ((currentUser.id === c.userId) || (currentUser.role === 'admin'))) {
+        newObj.authorized = true;
+      }
+      return newObj;
+    });
+    ctx.body = ctx.jsonSerializer('commentdata', {
+      attributes: ['content', 'commentId', 'authorId', 'author', 'time', 'authorized'],
+      topLevelLinks: {
+        self: `${ctx.origin}${ctx.router.url('api.patterns.comments', { id: ctx.params.id })}`,
+      },
+    }).serialize(patternComments);
+  } catch (validationError) {
+    ctx.throw(400, 'Parámetros Inválidos!');
+  }
 });
 
 module.exports = router;

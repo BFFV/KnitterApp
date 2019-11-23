@@ -24,6 +24,7 @@ export default function CommentList(props) {
           <li key={`${faker.random.uuid()}`}>
             <CommentContainer
               content={item.attributes.content}
+              commentId={item.attributes['comment-id']}
               authorId={item.attributes['author-id']}
               author={item.attributes.author}
               time={item.attributes.time}

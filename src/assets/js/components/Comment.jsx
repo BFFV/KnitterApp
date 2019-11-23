@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 export default function Comment(props) {
   const {
-    content, authorId, author, time, authorized,
+    content, commentId, authorId, author, time, authorized,
   } = props;
   const authorPath = `/users/${authorId}`;
   let buttons = '';
@@ -33,6 +33,7 @@ export default function Comment(props) {
 
 Comment.propTypes = {
   content: PropTypes.string.isRequired,
+  commentId: PropTypes.string.isRequired,
   authorId: PropTypes.string.isRequired,
   author: PropTypes.string.isRequired,
   time: PropTypes.string.isRequired,

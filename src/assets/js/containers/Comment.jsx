@@ -11,11 +11,12 @@ export default class Comment extends Component {
 
   render() {
     const {
-      content, authorId, author, time, authorized,
+      content, commentId, authorId, author, time, authorized,
     } = this.props;
     return (
       <CommentComponent
         content={content}
+        commentId={commentId}
         authorId={authorId}
         author={author}
         time={time}
@@ -27,6 +28,7 @@ export default class Comment extends Component {
 
 Comment.propTypes = {
   content: PropTypes.string.isRequired,
+  commentId: PropTypes.string.isRequired,
   authorId: PropTypes.string.isRequired,
   author: PropTypes.string.isRequired,
   time: PropTypes.string.isRequired,
