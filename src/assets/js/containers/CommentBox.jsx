@@ -1,51 +1,58 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { getUser, fetchComments } from '../services/CommentApi';
 import CommentBoxComponent from '../components/CommentBox';
-import { getUser } from '../services/CommentApi';
 
 export default class CommentBox extends Component {
   constructor(props) {
     super(props);
     this.state = {
       user: false,
-      refresh: false,
+      items: [],
     };
+    this.mounted = false;
 
     this.checkUser = this.checkUser.bind(this);
-    this.refreshComments = this.refreshComments.bind(this);
-    this.handleRefresh = this.handleRefresh.bind(this);
+    this.loadComments = this.loadComments.bind(this);
   }
 
   componentDidMount() {
+    this.mounted = true;
     this.checkUser();
+  }
+
+  componentWillUnmount() {
+    this.mounted = false;
   }
 
   async checkUser() {
     const user = await getUser();
-    this.setState({ user: false });
-    if (user) {
+    if (this.mounted) {
+      this.setState({ user: false });
+    }
+    if (user && this.mounted) {
       this.setState({ user: true });
     }
   }
 
-  refreshComments() {
-    this.setState({ refresh: true });
-  }
-
-  handleRefresh() {
-    this.setState({ refresh: false });
+  async loadComments() {
+    const { serverData } = this.props;
+    const { patternId } = serverData;
+    const comments = await fetchComments(patternId);
+    if (this.mounted) {
+      this.setState({ items: comments });
+    }
   }
 
   render() {
-    const { user, refresh } = this.state;
+    const { user, items } = this.state;
     const { serverData } = this.props;
     return (
       <CommentBoxComponent
+        items={items}
         patternId={Number(serverData.patternId)}
         user={user}
-        refresh={refresh}
-        onRefresh={this.handleRefresh}
-        onPostComment={this.refreshComments}
+        onRefreshComments={this.loadComments}
       />
     );
   }

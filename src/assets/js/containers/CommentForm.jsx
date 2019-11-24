@@ -21,13 +21,13 @@ export default class CommentForm extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-    const { patternId, onPostComment } = this.props;
+    const { patternId, onRefreshComments } = this.props;
     const { content } = this.state;
     await postComment({ content, patternId });
     this.setState({
       content: '',
     });
-    onPostComment();
+    onRefreshComments();
   }
 
   render() {
@@ -44,5 +44,5 @@ export default class CommentForm extends Component {
 
 CommentForm.propTypes = {
   patternId: PropTypes.number.isRequired,
-  onPostComment: PropTypes.func.isRequired,
+  onRefreshComments: PropTypes.func.isRequired,
 };

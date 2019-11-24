@@ -5,27 +5,26 @@ import CommentListContainer from '../containers/CommentList';
 
 export default function CommentBox(props) {
   const {
-    patternId, user, refresh, onRefresh, onPostComment,
+    items, patternId, user, onRefreshComments,
   } = props;
   if (user) {
     return (
       <div className="pattern-comment">
-        <CommentFormContainer patternId={patternId} onPostComment={onPostComment} />
-        <CommentListContainer patternId={patternId} refresh={refresh} onRefresh={onRefresh} />
+        <CommentFormContainer patternId={patternId} onRefreshComments={onRefreshComments} />
+        <CommentListContainer items={items} onRefreshComments={onRefreshComments} />
       </div>
     );
   }
   return (
     <div className="pattern-comment">
-      <CommentListContainer patternId={patternId} refresh={refresh} onRefresh={onRefresh} />
+      <CommentListContainer items={items} onRefreshComments={onRefreshComments} />
     </div>
   );
 }
 
 CommentBox.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.object).isRequired,
   patternId: PropTypes.number.isRequired,
   user: PropTypes.bool.isRequired,
-  refresh: PropTypes.bool.isRequired,
-  onRefresh: PropTypes.func.isRequired,
-  onPostComment: PropTypes.func.isRequired,
+  onRefreshComments: PropTypes.func.isRequired,
 };
