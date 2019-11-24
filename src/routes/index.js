@@ -35,6 +35,8 @@ router.get('/', searchPatterns, async (ctx) => {
     options: [['recent', 'Más Reciente'], ['popular', 'Más Popular'], ['rating', 'Mejor Valorado']],
     appVersion: pkg.version,
     patternPath: (pattern) => ctx.router.url('patterns.show', { id: pattern.id }),
+    editPatternPath: (pattern) => ctx.router.url('patterns.edit', { id: pattern.id }),
+    deletePatternPath: (pattern) => ctx.router.url('patterns.delete', { id: pattern.id }),
   });
 });
 
