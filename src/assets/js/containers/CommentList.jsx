@@ -16,7 +16,7 @@ export default class CommentList extends Component {
 
   componentDidMount() {
     this.loadComments();
-    this.setState({ interval: setInterval(this.loadComments, 10000) });
+    this.setState({ interval: setInterval(this.loadComments, 5000) });
   }
 
   componentWillUnmount() {
