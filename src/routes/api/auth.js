@@ -18,6 +18,16 @@ router.get('app.auth', '/', async (ctx) => {
   }
 });
 
+router.get('app.user', '/user', async (ctx) => {
+  if (ctx.state.currentUser) {
+    ctx.body = ctx.jsonSerializer('user', {
+      attributes: ['username', 'email', 'age', 'role', 'popularity'],
+    }).serialize(ctx.state.currentUser);
+  } else {
+    ctx.body = ctx.jsonSerializer('user', { visit: true });
+  }
+});
+
 router.post('auth', '/', async (ctx) => {
   const { email, password } = ctx.request.body;
   const user = await ctx.orm.user.findOne({ where: { email } });
