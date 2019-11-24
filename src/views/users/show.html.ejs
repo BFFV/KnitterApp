@@ -39,14 +39,10 @@
       <h2>Patrones creados</h2>
       <div class="patterns-content">
         <% createdPatterns.forEach((cp) => { %>
-        <div class="pattern-index">
-          <div class="pattern-index-element-photo">
+          <div class="pattern-search-container">
             <img class="photo" src="<%- cp.image %>">
+            <a class="pattern-font-tittle" href="<%- patternPath(cp) %>"><%- cp.name %></a>
           </div>
-          <div class="pattern-index-element" id="pattern-name">
-            <a class="pattern-name" href="<%- patternPath(cp) %>"><%- cp.name %></a>
-          </div>
-        </div>
         <% }); %>
       </div>
     <% } %>
@@ -57,14 +53,10 @@
         </div>
         <div class="patterns-content">
           <% usedPatterns.forEach((up) => { %>
-          <div class="pattern-index">
-            <div class="pattern-index-element-photo">
-                <img class="photo" src="<%- up.image %>">
+            <div class="pattern-search-container">
+              <img class="photo" src="<%- up.image %>">
+              <a class="pattern-font-tittle" href="<%- patternPath(up) %>"><%- up.name %></a>
             </div>
-            <div class="pattern-index-element" id="pattern-name">
-              <a class="pattern-name" href="<%- patternPath(up) %>"><%- up.name %> </a>
-            </div>
-          </div>
           <% }); %>
         </div>
       </div>
@@ -76,14 +68,10 @@
       </div>
       <div class="patterns-content">
         <% favoritePatterns.forEach((fp) => { %>
-        <div class="pattern-index">
-          <div class="pattern-index-element-photo">
-              <img class="photo" src="<%- fp.image %>">
+          <div class="pattern-search-container">
+            <img class="photo" src="<%- fp.image %>">
+            <a class="pattern-font-tittle" href="<%- patternPath(fp) %>"><%- fp.name %></a>
           </div>
-          <div class="pattern-index-element" id="pattern-name">
-            <a class="pattern-name" href="<%- patternPath(fp) %>"><%- fp.name %></a>
-          </div>
-        </div>
         <% }); %>
       </div>
     </div>

@@ -1,33 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Comment from './components/Comment';
-/*
-import CommentList from './components/CommentList';
-import CommentForm from './components/CommentForm';
-import CommentBox from './components/CommentBox';
-*/
+import CommentBox from './containers/CommentBox';
 
-const reactCommentContainer = document.getElementByClass('comment');
-/*
-const reactCommentListContainer = document.getElementByClass('pattern-comments');
-const reactCommentFormContainer = document.getElementByClass('comment-pattern');
-const reactCommentBoxContainer = document.getElementByClass('pattern-comment');
-*/
-
-if (reactCommentContainer) {
-  ReactDOM.render(<Comment />, reactCommentContainer);
-}
-
-/*
-if (reactCommentListContainer) {
-  ReactDOM.render(<CommentList />, reactCommentListContainer);
-}
-
-if (reactCommentFormContainer) {
-  ReactDOM.render(<CommentForm />, reactCommentFormContainer);
-}
+const reactCommentBoxContainer = document.getElementById('comment-box');
 
 if (reactCommentBoxContainer) {
-  ReactDOM.render(<CommentBox />, reactCommentBoxContainer);
+  ReactDOM.render(<CommentBox serverData={reactCommentBoxContainer.dataset} />,
+    reactCommentBoxContainer);
 }
-*/

@@ -38,7 +38,7 @@
       <h3 for="materials">Materiales:</h3>
         <% materialsList.forEach(material => { %>
           <div class="materials-list-new-pattern">
-            <p class="material-list-new-para"> <%- material[0].name %> </p>
+            <p class="material-list-new-para" id="pattern-font"> <%- material[0].name %> </p>
             <% if (material[1]) { %>
               <input class="checkbox-material" type="checkbox" name="materials" value="<%- material[0].id %>" checked>
             <% } else { %>

@@ -10,7 +10,7 @@ const votePatterns = require('./routes/vote_patterns');
 const comments = require('./routes/comments');
 const userPatterns = require('./routes/user_patterns');
 const followers = require('./routes/followers');
-
+const api = require('./routes/api');
 
 const router = new KoaRouter();
 
@@ -25,6 +25,7 @@ router.use(async (ctx, next) => {
   return next();
 });
 
+router.use('/api', api.routes());
 router.use('/', index.routes());
 router.use('/patterns', patterns.routes());
 router.use('/categories', categories.routes());

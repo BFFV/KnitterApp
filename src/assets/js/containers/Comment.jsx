@@ -1,43 +1,79 @@
 import React, { Component } from 'react';
-// import postsService from '../services/posts';
+import PropTypes from 'prop-types';
+import { editComment, deleteComment } from '../services/CommentApi';
 import CommentComponent from '../components/Comment';
 
 export default class Comment extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
-      title: '',
-      body: '',
+      editable: '',
+      state: 'show',
     };
 
-    this.fetchNewPost = this.fetchNewPost.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleUpdate = this.handleUpdate.bind(this);
+    this.handleContentChange = this.handleContentChange.bind(this);
   }
 
-  componentDidMount() {
-    this.fetchNewPost();
+  handleEdit() {
+    const { content } = this.props;
+    this.setState({ state: 'edit', editable: content });
   }
 
-  async fetchNewPost() {
-    this.setState({ loading: true });
-    // const newPost = await postsService.getRandomPost();
-    // this.setState({ title: newPost.title, body: newPost.body, loading: false });
+  handleContentChange(event) {
+    const editable = event.target.value;
+    this.setState({ editable });
+  }
+
+  async handleUpdate(event) {
+    event.preventDefault();
+    const { commentId, onRefreshComments } = this.props;
+    const { editable } = this.state;
+    await editComment({ commentId, content: editable });
+    this.setState({ state: 'show' });
+    onRefreshComments();
+  }
+
+  async handleDelete() {
+    const { commentId, onRefreshComments } = this.props;
+    await deleteComment(commentId);
+    onRefreshComments();
   }
 
   render() {
     const {
-      loading, title, body, fetchNewPost,
-    } = this.state;
-    if (loading) {
-      return <p>Loading....</p>;
-    }
-
+      content, commentId, authorId, author, time, authorized, keyData,
+    } = this.props;
+    const { editable, state } = this.state;
     return (
       <CommentComponent
-        title={title}
-        body={body}
-        onNewPost={fetchNewPost}
+        keyData={keyData}
+        content={content}
+        editable={editable}
+        commentId={commentId}
+        authorId={authorId}
+        author={author}
+        time={time}
+        authorized={authorized}
+        onEdit={this.handleEdit}
+        onUpdate={this.handleUpdate}
+        onDelete={this.handleDelete}
+        onContentChange={this.handleContentChange}
+        state={state}
       />
     );
   }
 }
+
+Comment.propTypes = {
+  keyData: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
+  commentId: PropTypes.string.isRequired,
+  authorId: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired,
+  time: PropTypes.string.isRequired,
+  authorized: PropTypes.bool.isRequired,
+  onRefreshComments: PropTypes.func.isRequired,
+};

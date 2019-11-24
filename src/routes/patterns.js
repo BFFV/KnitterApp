@@ -80,34 +80,6 @@ async function checkState(ctx, next) {
   return next();
 }
 
-// Gets the time since a comment has been updated
-function updatedTime(date1, date2) {
-  let difference = date2 - date1;
-  let time;
-  const daysDifference = Math.floor(difference / 1000 / 86400);
-  difference -= daysDifference * 1000 * 86400;
-  const hoursDifference = Math.floor(difference / 1000 / 3600);
-  difference -= hoursDifference * 1000 * 3600;
-  const minutesDifference = Math.floor(difference / 1000 / 60);
-  difference -= minutesDifference * 1000 * 60;
-  if (daysDifference > 1) {
-    time = `Hace ${daysDifference} días`;
-  } else if (daysDifference === 1) {
-    time = `Hace ${daysDifference} día`;
-  } else if (hoursDifference > 1) {
-    time = `Hace ${hoursDifference} horas`;
-  } else if (hoursDifference === 1) {
-    time = `Hace ${hoursDifference} hora`;
-  } else if (minutesDifference > 1) {
-    time = `Hace ${minutesDifference} minutos`;
-  } else if (minutesDifference === 1) {
-    time = `Hace ${minutesDifference} minuto`;
-  } else {
-    time = 'Hace unos segundos';
-  }
-  return time;
-}
-
 // Searches for patterns
 async function searchPatterns(ctx, next) {
   const params = ctx.request.query;
@@ -347,33 +319,20 @@ router.get('patterns.show', '/:id', loadPattern, checkState, async (ctx) => {
   const category = await pattern.getCategory();
   const materials = await pattern.getMaterials();
   materials.sort((a, b) => a.name.localeCompare(b.name));
-  const commentsList = await pattern.getComments();
-  commentsList.sort((a, b) => a.updatedAt - b.updatedAt).reverse();
-  const commentUsers = commentsList.map((c) => c.getUser());
-  const usersList = await Promise.all(commentUsers);
-  const date = new Date();
-  const patternComments = commentsList.map((e, i) => [e, usersList[i],
-    updatedTime(e.updatedAt, date)]);
-  const comment = ctx.orm.comment.build();
   const options = [1, 2, 3, 4, 5];
   await ctx.render('patterns/show', {
     pattern,
     author,
     votePattern,
-    comment,
     options,
     category,
     materials,
-    patternComments,
     patternsPath: ctx.router.url('patterns.list'),
     editPatternPath: ctx.router.url('patterns.edit', { id: pattern.id }),
     deletePatternPath: ctx.router.url('patterns.delete', { id: pattern.id }),
     authorPath: ctx.router.url('users.show', { id: author.id }),
     userPath: (user) => ctx.router.url('users.show', { id: user.id }),
     votePatternPath: votePath,
-    submitCommentPath: ctx.router.url('comments.create'),
-    editCommentPath: (c) => ctx.router.url('comments.edit', { id: c.id }),
-    deleteCommentPath: (c) => ctx.router.url('comments.delete', { id: c.id }),
     userPattern,
     addPatternPath: addPath,
     favorite,
