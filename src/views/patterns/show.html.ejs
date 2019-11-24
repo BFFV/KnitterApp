@@ -74,37 +74,5 @@
       <p class="pattern-font"><%- pattern.instructions %></p>
     </div>
   </div>
-  <div class="pattern-comment">
-    <div class="comment-pattern">
-        <% if (currentUser) { %>
-          <h2>Comentar</h2>
-          <%- include('../comments/_form') %>
-        <% } %>
-    </div>
-    <div class="pattern-comments">
-      <div class="comment-tittle">
-        <h2>Comentarios</h2>
-      </div>
-      <% patternComments.forEach(comment => { %>
-        <div class="comment">
-          <div class="comment-item">
-            <p class="pattern-font" ><a class="pattern-font-tittle" href="<%- userPath(comment[1]) %>"><%- comment[1].username %></a></p>
-            <p class="pattern-font" ><%- comment[0].content %></p>
-            <p class="pattern-font"> <%- comment[2] %> </p>
-          </div>
-          <% if ((currentUser) && ((currentUser.id === comment[1].id) || (currentUser.role === 'admin'))) { %>
-            <form action="<%- editCommentPath(comment[0]) %>">
-              <button class="edit-material" type="submit"> <i class="fas fa-pen"></i> </button>
-            </form>
-            <form action="<%- deleteCommentPath(comment[0]) %>" onclick="return confirm('Estás seguro?');"
-                method="POST">
-              <input type="hidden" name="_method" value="delete" />
-              <button class="delete-material" type="submit"> <i class="fas fa-trash-alt"></i> </button>
-            </form>
-          <% } %>
-        </div>
-      <% }); %>
-    </div>
-  </div>
+  <div id="comment-box" data-pattern-id="<%= pattern.id %>"></div>
 </div>
-

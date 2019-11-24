@@ -1,43 +1,36 @@
 import React, { Component } from 'react';
-// import postsService from '../services/posts';
+import PropTypes from 'prop-types';
+// import { editComment, deleteComment } from '../services/CommentApi';
 import CommentComponent from '../components/Comment';
 
 export default class Comment extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      loading: false,
-      title: '',
-      body: '',
-    };
-
-    this.fetchNewPost = this.fetchNewPost.bind(this);
-  }
-
-  componentDidMount() {
-    this.fetchNewPost();
-  }
-
-  async fetchNewPost() {
-    this.setState({ loading: true });
-    // const newPost = await postsService.getRandomPost();
-    // this.setState({ title: newPost.title, body: newPost.body, loading: false });
+    this.state = {};
   }
 
   render() {
     const {
-      loading, title, body, fetchNewPost,
-    } = this.state;
-    if (loading) {
-      return <p>Loading....</p>;
-    }
-
+      content, commentId, authorId, author, time, authorized,
+    } = this.props;
     return (
       <CommentComponent
-        title={title}
-        body={body}
-        onNewPost={fetchNewPost}
+        content={content}
+        commentId={commentId}
+        authorId={authorId}
+        author={author}
+        time={time}
+        authorized={authorized}
       />
     );
   }
 }
+
+Comment.propTypes = {
+  content: PropTypes.string.isRequired,
+  commentId: PropTypes.string.isRequired,
+  authorId: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired,
+  time: PropTypes.string.isRequired,
+  authorized: PropTypes.bool.isRequired,
+};

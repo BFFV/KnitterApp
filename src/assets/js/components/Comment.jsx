@@ -2,18 +2,40 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default function Comment(props) {
-  const { onNewPost, title, body } = props;
+  const {
+    content, commentId, authorId, author, time, authorized,
+  } = props;
+  const authorPath = `/users/${authorId}`;
+  let buttons = '';
+  if (authorized) {
+    buttons = (
+      <div>
+        <button className="edit-material" type="button">
+          <i className="fas fa-pen" />
+        </button>
+        <button className="delete-material" type="button">
+          <i className="fas fa-trash-alt" />
+        </button>
+      </div>
+    );
+  }
   return (
-    <div>
-      <button type="button" onClick={onNewPost}>Load post</button>
-      <h1>{title}</h1>
-      <p>{body}</p>
+    <div className="comment">
+      <div className="comment-item">
+        <p className="pattern-font"><a className="pattern-font-tittle" href={authorPath}>{author}</a></p>
+        <p className="pattern-font">{content}</p>
+        <p className="pattern-font">{time}</p>
+      </div>
+      {buttons}
     </div>
   );
 }
 
 Comment.propTypes = {
-  title: PropTypes.string.isRequired,
-  body: PropTypes.string.isRequired,
-  onNewPost: PropTypes.func.isRequired,
+  content: PropTypes.string.isRequired,
+  commentId: PropTypes.string.isRequired,
+  authorId: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired,
+  time: PropTypes.string.isRequired,
+  authorized: PropTypes.bool.isRequired,
 };
