@@ -43,15 +43,17 @@
       <h2>Datos:</h2>
       <p class="pattern-font" >Diseñado por: <a class="pattern-font-tittle" href="<%- authorPath %>"><%- author.username %></a></p>
       <p class="pattern-font">Tensión: <%- pattern.tension %></p>
-      <p class="pattern-font">Puntaje: <%- pattern.score %>/5</p>
+      <p class="pattern-font">Personas que lo han realizado: <%- pattern.popularity %></p>
+      <div class="pattern-score">
+        <p class="pattern-font" id="score" >Puntaje: <%- pattern.score %>/5</p>
+        <% if (currentUser) { %>
+          <div class="forms-pattern">
+            <%- include('../vote_patterns/_form') %>
+          </div>
+        <% } %>
+      </div>
       <% if (currentUser) { %>
-        <div class="forms-pattern">
-          <%- include('../vote_patterns/_form') %>
-        </div>
-      <% } %>
-      <p class="pattern-font">Popularidad: <%- pattern.popularity %></p>
-      <% if (currentUser) { %>
-        <div class="forms-pattern">
+        <div class="forms-pattern" id="forms-pattern">
           <%- include('_formAdd') %>
           <%- include('_formFavorite') %>
         </div>

@@ -60,7 +60,6 @@
               <div class="resize">
                 <a class="nav-element" id="dropbtn" href="/materials">Materiales</a>
               </div>
-
               <div class="dropdown-content">
                 <a class="nav-element" href="/materials">Ver materiales</a>
                 <a class="nav-element" href="/materials/new">Crear</a>
@@ -73,17 +72,18 @@
             </li>
           <% } %>
           <% if (currentUser) { %>
-            <li style="float:right">
+
+            <li>
+              <a class="nav-element" href="/users/<%- currentUser.id %>">Perfil</a>
+            </li>
+            <li  class="profile-button">
               <form action="<%= destroySessionPath %>" method="post">
                 <input type="hidden" name="_method" value="delete" />
                 <input class="button-out" type="submit" value="Salir">
               </form>
             </li>
-            <li style="float:right">
-              <a class="nav-element" href="/users/<%- currentUser.id %>">Perfil</a>
-            </li>
           <% } else { %>
-            <li style="float:right">
+            <li class="profile-button">
               <a class="nav-element" href="<%= newSessionPath %>">Iniciar Sesión</a>
             </li>
           <% } %>

@@ -19,7 +19,7 @@
     <div>
       <select name="rating" required>
         <% if (!votePattern) { %>
-          <option value=""> Selecciona un Puntaje </option>
+          <option value=""> Puntúa! </option>
         <% } %>
         <% options.forEach(option => { %>
           <% if ((votePattern) && (votePattern.rating === option)) { %>
@@ -29,7 +29,7 @@
           <% } %>
         <% }); %>
       </select>
-      <input class="vote-button" type="submit" name="create" value="Puntuar" />
+      <button class="submit-vote" type="submit">ok! <i class="fas fa-check"></i> </button>
     </div>
   </form>
 </div>
