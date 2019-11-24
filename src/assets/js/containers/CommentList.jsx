@@ -32,6 +32,11 @@ export default class CommentList extends Component {
   }
 
   render() {
+    const { refresh, onRefresh } = this.props;
+    if (refresh) {
+      this.loadComments();
+      onRefresh();
+    }
     const {
       loading, items,
     } = this.state;
@@ -50,4 +55,6 @@ export default class CommentList extends Component {
 
 CommentList.propTypes = {
   patternId: PropTypes.number.isRequired,
+  refresh: PropTypes.bool.isRequired,
+  onRefresh: PropTypes.func.isRequired,
 };

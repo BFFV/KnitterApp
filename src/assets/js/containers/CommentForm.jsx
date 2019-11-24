@@ -21,19 +21,22 @@ export default class CommentForm extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-    const { patternId } = this.props;
+    const { patternId, onPostComment } = this.props;
     const { content } = this.state;
     await postComment({ content, patternId });
     this.setState({
       content: '',
     });
+    onPostComment();
   }
 
   render() {
+    const { content } = this.state;
     return (
       <CommentFormComponent
         onSubmitComment={this.handleSubmit}
         onContentChange={this.handleContentChange}
+        content={content}
       />
     );
   }
@@ -41,4 +44,5 @@ export default class CommentForm extends Component {
 
 CommentForm.propTypes = {
   patternId: PropTypes.number.isRequired,
+  onPostComment: PropTypes.func.isRequired,
 };

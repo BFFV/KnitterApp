@@ -8,9 +8,12 @@ export default class CommentBox extends Component {
     super(props);
     this.state = {
       user: false,
+      refresh: false,
     };
 
     this.checkUser = this.checkUser.bind(this);
+    this.refreshComments = this.refreshComments.bind(this);
+    this.handleRefresh = this.handleRefresh.bind(this);
   }
 
   componentDidMount() {
@@ -25,11 +28,25 @@ export default class CommentBox extends Component {
     }
   }
 
+  refreshComments() {
+    this.setState({ refresh: true });
+  }
+
+  handleRefresh() {
+    this.setState({ refresh: false });
+  }
+
   render() {
-    const { user } = this.state;
+    const { user, refresh } = this.state;
     const { serverData } = this.props;
     return (
-      <CommentBoxComponent patternId={Number(serverData.patternId)} user={user} />
+      <CommentBoxComponent
+        patternId={Number(serverData.patternId)}
+        user={user}
+        refresh={refresh}
+        onRefresh={this.handleRefresh}
+        onPostComment={this.refreshComments}
+      />
     );
   }
 }
