@@ -1,53 +1,42 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { fetchComments } from '../services/CommentApi';
 import CommentListComponent from '../components/CommentList';
 
 export default class CommentList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false,
-      items: [],
       interval: null,
     };
-    this.loadComments = this.loadComments.bind(this);
+    this.mounted = false;
   }
 
   componentDidMount() {
-    this.loadComments();
-    this.setState({ interval: setInterval(this.loadComments, 5000) });
+    this.mounted = true;
+    const { onRefreshComments } = this.props;
+    onRefreshComments();
+    if (this.mounted) {
+      this.setState({ interval: setInterval(onRefreshComments, 5000) });
+    }
   }
 
   componentWillUnmount() {
+    this.mounted = false;
     const { interval } = this.state;
     clearInterval(interval);
   }
 
-  async loadComments() {
-    const { patternId } = this.props;
-    this.setState({ loading: true });
-    const comments = await fetchComments(patternId);
-    this.setState({ items: comments, loading: false });
-  }
-
   render() {
     const {
-      loading, items,
-    } = this.state;
-    let msg = '';
-    if (loading) {
-      msg = 'Cargando Comentarios...';
-    }
+      items, onRefreshComments,
+    } = this.props;
     return (
-      <div>
-        <CommentListComponent items={items} />
-        <h3>{msg}</h3>
-      </div>
+      <CommentListComponent items={items} onRefreshComments={onRefreshComments} />
     );
   }
 }
 
 CommentList.propTypes = {
-  patternId: PropTypes.number.isRequired,
+  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onRefreshComments: PropTypes.func.isRequired,
 };
