@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 export default function Pattern(props) {
   const {
-    keyData, patternId, name, score, image, popularity, authorized, onEdit, onDelete, state,
+    keyData, id, name, score, image, popularity, authorized, onEdit, onDelete, state,
   } = props;
-  const patternPath = `/patterns/${patternId}`;
+  const patternPath = `/patterns/${id}`;
   let buttons = '';
   if (authorized) {
     buttons = (
@@ -33,7 +33,7 @@ export default function Pattern(props) {
 
 Pattern.propTypes = {
   keyData: PropTypes.string.isRequired,
-  patternId: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   score: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,

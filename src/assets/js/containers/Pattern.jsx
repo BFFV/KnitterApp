@@ -13,28 +13,29 @@ export default class Pattern extends Component {
   }
 
   handleEdit() {
-    const { patternId, onRefreshPatterns } = this.props;
-    await editPattern(patternId);
+    const { id, onRefreshPatterns } = this.props;
+    await editPattern(id);
     onRefreshPatterns();
   }
 
   async handleDelete() {
-    const { patternId, onRefreshPatterns } = this.props;
-    await deletePattern(patternId);
+    const { id, onRefreshPatterns } = this.props;
+    await deletePattern(id);
     onRefreshPatterns();
   }
 
   render() {
     const {
-      patternId, name, score, image, authorized, keyData,
+      id, name, score, image, popularity, authorized, keyData,
     } = this.props;
     return (
       <PatternComponent
         keyData={keyData}
-        patternId={patternId}
+        id={id}
         name={name}
         score={score}
         image={image}
+        popularity={popularity}
         authorized={authorized}
         onEdit={this.handleEdit}
         onDelete={this.handleDelete}
@@ -47,10 +48,10 @@ export default class Pattern extends Component {
 Pattern.propTypes = {
   keyData: PropTypes.string.isRequired,
   content: PropTypes.string.isRequired,
-  patternId: PropTypes.string.isRequired,
-  authorId: PropTypes.string.isRequired,
-  author: PropTypes.string.isRequired,
-  time: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  score: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
+  popularity: PropTypes.string.isRequired,
   authorized: PropTypes.bool.isRequired,
   onRefreshPatterns: PropTypes.func.isRequired,
 };

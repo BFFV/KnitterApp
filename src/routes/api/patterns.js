@@ -1,4 +1,5 @@
 const KoaRouter = require('koa-router');
+const createPatternSerializer = require('../../serializers/pattern');
 
 const router = new KoaRouter();
 
@@ -28,6 +29,12 @@ function updatedTime(date1, date2) {
   }
   return time;
 }
+
+router.get('api.patterns', '/', async (ctx) => {
+  const { params } = ctx.params;
+  const patterns = await ctx.orm.patterns.findAll({ where: { name: { [ctx.orm.Sequelize.Op.iLike]: `%${params.name}%` }}});
+  ctx.body = createPatternSerializer(ctx).serialize(patterns)
+});
 
 router.get('api.patterns.comments', '/:id/comments', async (ctx) => {
   try {
