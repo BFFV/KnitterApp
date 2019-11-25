@@ -1,5 +1,4 @@
 const KoaRouter = require('koa-router');
-const createPatternSerializer = require('../../serializers/pattern');
 
 const router = new KoaRouter();
 
@@ -31,9 +30,32 @@ function updatedTime(date1, date2) {
 }
 
 router.get('api.patterns', '/', async (ctx) => {
-  const { params } = ctx.params;
-  const patterns = await ctx.orm.patterns.findAll({ where: { name: { [ctx.orm.Sequelize.Op.iLike]: `%${params.name}%` }}});
-  ctx.body = createPatternSerializer(ctx).serialize(patterns)
+  try {
+    const { params } = ctx.params;
+    const patternsList = await ctx.orm.patterns.findAll({ where: { name: { [ctx.orm.Sequelize.Op.iLike]: `%${params.name}%` }}});
+    const patterns = patternsList.map((c, i) => {
+      const newObj = {};
+      newObj.id = c.id.toString();
+      newObj.name = c.name;
+      newObj.score = c.score.toString();
+      newObj.image = c.image;
+      newObj.popularity = c.popularity.toString();
+      newObj.authorized = false;
+      const { currentUser } = ctx.state;
+      if ((currentUser) && ((currentUser.id === c.authorId) || (currentUser.role === 'admin'))) {
+        newObj.authorized = true;
+      }
+      return newObj;
+      });
+      ctx.body = ctx.jsonSerializer('patterns', {
+        attributes: ['id', 'name', 'score', 'image', 'popularity', 'authorized'],
+        topLevelLinks: {
+          self: `${ctx.origin}${ctx.router.url('api.patterns')}`,
+        },
+      }).serialize(patterns);
+  } catch (validationError) {
+    ctx.throw(400, 'Parámetros Inválidos');
+  }
 });
 
 router.get('api.patterns.comments', '/:id/comments', async (ctx) => {
