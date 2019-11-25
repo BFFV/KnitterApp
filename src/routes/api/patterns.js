@@ -29,10 +29,10 @@ function updatedTime(date1, date2) {
   return time;
 }
 
-router.get('api.patterns', '/', async (ctx) => {
+router.get('api.patterns', '/:query', async (ctx) => {
   try {
     const { params } = ctx.params;
-    const patternsList = await ctx.orm.patterns.findAll({ where: { name: { [ctx.orm.Sequelize.Op.iLike]: `%${params.name}%` }}});
+    const patternsList = await ctx.orm.patterns.findAll({ where: { name: { [ctx.orm.Sequelize.Op.iLike]: `%${query}%` }}});
     const patterns = patternsList.map((c, i) => {
       const newObj = {};
       newObj.id = c.id.toString();
