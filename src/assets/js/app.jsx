@@ -8,3 +8,10 @@ if (reactCommentBoxContainer) {
   ReactDOM.render(<CommentBox serverData={reactCommentBoxContainer.dataset} />,
     reactCommentBoxContainer);
 }
+
+const reactSearchBarContainer = document.getElementById('search-bar');
+
+if (reactSearchBarContainer) {
+	ReactDOM.render(<SearchBar serverData={reactSearchBarContainer.dataset} />,
+	reactSearchBarContainer)
+}
