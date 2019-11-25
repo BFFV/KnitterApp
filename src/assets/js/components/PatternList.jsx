@@ -21,14 +21,13 @@ export default function PatternList(props) {
       </div>
       {items.map((item) => (
         <PatternContainer
-          keyData={`${faker.random.uuid()}`}
-          content={item.attributes.content}
-          commentId={item.attributes['comment-id']}
-          authorId={item.attributes['author-id']}
-          author={item.attributes.author}
-          time={item.attributes.time}
-          authorized={item.attributes.authorized}
-          onRefreshComments={onRefreshComments}
+          keyData={keyData}
+          id={id}
+          name={name}
+          score={score}
+          image={image}
+          popularity={popularity}
+          authorized={authorized}
         />
       ))}
     </div>

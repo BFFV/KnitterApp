@@ -39,7 +39,6 @@ export default class Pattern extends Component {
         authorized={authorized}
         onEdit={this.handleEdit}
         onDelete={this.handleDelete}
-        onContentChange={this.handleContentChange}
       />
     );
   }
@@ -53,5 +52,4 @@ Pattern.propTypes = {
   image: PropTypes.string.isRequired,
   popularity: PropTypes.string.isRequired,
   authorized: PropTypes.bool.isRequired,
-  onRefreshPatterns: PropTypes.func.isRequired,
 };

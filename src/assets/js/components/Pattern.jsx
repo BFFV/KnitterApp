@@ -40,7 +40,5 @@ Pattern.propTypes = {
   popularity: PropTypes.string.isRequired,
   authorized: PropTypes.bool.isRequired,
   onEdit: PropTypes.func.isRequired,
-  onUpdate: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
-  state: PropTypes.string.isRequired,
 };
