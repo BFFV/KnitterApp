@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default function SearchBar(props) {
-	const { onQueryText, query }
+	const { onQueryText, query } = props;
 	return (
 		<div class="search-content">
 		  <form>

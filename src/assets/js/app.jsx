@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import CommentBox from './containers/CommentBox';
+import SearchBar from './containers/SearchBar';
 
 const reactCommentBoxContainer = document.getElementById('comment-box');
 
