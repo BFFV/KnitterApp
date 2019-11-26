@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import faker from 'faker';
 import PatternContainer from '../containers/Pattern';
 
 export default function PatternList(props) {
@@ -36,5 +35,4 @@ export default function PatternList(props) {
 
 PatternList.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onRefreshPatterns: PropTypes.func.isRequired,
 };

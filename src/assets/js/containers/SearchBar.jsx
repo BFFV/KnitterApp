@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { getPatterns } from '../services/PatternApi';
-import CommentFormComponent from '../components/SearchBar';
+import SearchBarComponent from '../components/SearchBar';
 
-export default class CommentForm extends SearchBar {
+export default class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,13 +17,13 @@ export default class CommentForm extends SearchBar {
     const query = event.target.value;
     this.setState({ query });
     event.preventDefault();
-    await postComment({ query });
+    await getPatterns(query);
   }
 
   render() {
     const { query } = this.state;
     return (
-      <CommentFormComponent
+      <SearchBarComponent
         onQueryText={this.onQueryText}
         query={query}
       />
@@ -31,6 +31,6 @@ export default class CommentForm extends SearchBar {
   }
 }
 
-CommentForm.propTypes = {
-  query: PropTypes.string.isRequired,
+SearchBar.propTypes = {
+  onQueryText: PropTypes.func.isRequired,
 };
