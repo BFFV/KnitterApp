@@ -2,6 +2,7 @@ const KoaRouter = require('koa-router');
 
 const router = new KoaRouter();
 
+// Shows the time that has passed since a comment was posted
 function updatedTime(date1, date2) {
   let difference = date2 - date1;
   let time;
@@ -29,6 +30,7 @@ function updatedTime(date1, date2) {
   return time;
 }
 
+// Pattern Search
 async function searchPatterns(ctx, next) {
   const params = ctx.request.query;
   ctx.state.materials = await ctx.orm.material.findAll();
@@ -75,22 +77,30 @@ async function searchPatterns(ctx, next) {
   } else {
     ctx.state.patternsList.sort((a, b) => a.updatedAt - b.updatedAt).reverse();
   }
-  if (params.sorting) {
-    ctx.state.sorting = params.sorting;
-  }
-  if (params.category) {
-    ctx.state.category = parseInt(params.category, 10);
-  }
   return next();
 }
 
-router.get('api.patterns', '/', searchPatterns, async (ctx) => {
+router.get('api.patterns.search', '/', searchPatterns, async (ctx) => {
   try {
-    const patterns = ctx.state.patternsList;
+    const patternResults = ctx.state.patternsList;
+    const patterns = patternResults.map((p) => {
+      const newObj = {};
+      newObj.id = p.id.toString();
+      newObj.name = p.name;
+      newObj.score = p.score.toString();
+      newObj.image = p.image;
+      newObj.popularity = p.popularity.toString();
+      newObj.authorized = false;
+      const { currentUser } = ctx.state;
+      if ((currentUser) && ((currentUser.id === p.authorId) || (currentUser.role === 'admin'))) {
+        newObj.authorized = true;
+      }
+      return newObj;
+    });
     ctx.body = ctx.jsonSerializer('patterns', {
-      attributes: ['id', 'name', 'score', 'image', 'popularity'],
+      attributes: ['id', 'name', 'score', 'image', 'popularity', 'authorized'],
       topLevelLinks: {
-        self: `${ctx.origin}${ctx.router.url('api.patterns')}`,
+        self: `${ctx.origin}${ctx.router.url('api.patterns.search')}`,
       },
     }).serialize(patterns);
   } catch (validationError) {

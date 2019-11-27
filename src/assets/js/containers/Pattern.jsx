@@ -1,27 +1,30 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { editPattern, deletePattern } from '../services/PatternApi';
+import { deletePattern } from '../services/PatternApi';
 import PatternComponent from '../components/Pattern';
 
 export default class Pattern extends Component {
   constructor(props) {
     super(props);
-   
+    this.state = {};
 
     this.handleEdit = this.handleEdit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
   }
 
-  handleEdit() {
-    const { id, onRefreshPatterns } = this.props;
-    await editPattern(id);
-    onRefreshPatterns();
+  handleEdit(event) {
+    event.preventDefault();
+    const { id } = this.props;
+    window.location.href = `/patterns/${id}/edit`;
   }
 
   async handleDelete() {
-    const { id, onRefreshPatterns } = this.props;
-    await deletePattern(id);
-    onRefreshPatterns();
+    // eslint-disable-next-line no-alert
+    if (window.confirm('Estás seguro?')) {
+      const { id, onRefreshPatterns } = this.props;
+      await deletePattern(id);
+      onRefreshPatterns({ name: '' });
+    }
   }
 
   render() {
@@ -46,10 +49,11 @@ export default class Pattern extends Component {
 
 Pattern.propTypes = {
   keyData: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   score: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
   popularity: PropTypes.string.isRequired,
   authorized: PropTypes.bool.isRequired,
+  onRefreshPatterns: PropTypes.func.isRequired,
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import CommentBox from './containers/CommentBox';
-import SearchBar from './containers/Searchbar';
+import SearchBox from './containers/SearchBox';
 
 const reactCommentBoxContainer = document.getElementById('comment-box');
 
@@ -10,9 +10,9 @@ if (reactCommentBoxContainer) {
     reactCommentBoxContainer);
 }
 
-const reactSearchBarContainer = document.getElementById('search-bar');
+const reactSearchBoxContainer = document.getElementById('search-box');
 
-if (reactSearchBarContainer) {
-	ReactDOM.render(<SearchBar/>,
-	reactSearchBarContainer)
+if (reactSearchBoxContainer) {
+  ReactDOM.render(<SearchBox />,
+    reactSearchBoxContainer);
 }
