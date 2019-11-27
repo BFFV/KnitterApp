@@ -4,11 +4,15 @@ const authApi = require('./auth');
 const patternsApi = require('./patterns');
 const patternsAuthApi = require('./patternsAuth');
 const commentsApi = require('./comments');
+const materialsApi = require('./materials');
+const categoriesApi = require('./categories');
 
 const router = new KoaRouter();
 
 // unauthenticated endpoints
 router.use('/patterns', patternsApi.routes());
+router.use('/materials', materialsApi.routes());
+router.use('/categories', categoriesApi.routes());
 router.use('/auth', authApi.routes());
 
 // JWT authentication without passthrough (error if not authenticated)
