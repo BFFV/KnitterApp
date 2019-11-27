@@ -37,9 +37,12 @@ export default class Comment extends Component {
   }
 
   async handleDelete() {
-    const { commentId, onRefreshComments } = this.props;
-    await deleteComment(commentId);
-    onRefreshComments();
+    // eslint-disable-next-line no-alert
+    if (window.confirm('Estás seguro?')) {
+      const { commentId, onRefreshComments } = this.props;
+      await deleteComment(commentId);
+      onRefreshComments();
+    }
   }
 
   render() {
