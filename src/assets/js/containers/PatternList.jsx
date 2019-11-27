@@ -8,11 +8,6 @@ export default class PatternList extends Component {
     this.state = {};
   }
 
-  componentDidMount() {
-    const { onRefreshPatterns } = this.props;
-    onRefreshPatterns({ name: '' });
-  }
-
   render() {
     const {
       items, onRefreshPatterns,

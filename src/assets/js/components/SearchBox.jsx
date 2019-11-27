@@ -5,11 +5,11 @@ import PatternListContainer from '../containers/PatternList';
 
 export default function SearchBox(props) {
   const {
-    items, onRefreshPatterns,
+    items, onRefreshPatterns, defaultName,
   } = props;
   return (
     <div className="pattern-body">
-      <SearchFormContainer onRefreshPatterns={onRefreshPatterns} />
+      <SearchFormContainer onRefreshPatterns={onRefreshPatterns} defaultName={defaultName} />
       <PatternListContainer items={items} onRefreshPatterns={onRefreshPatterns} />
     </div>
   );
@@ -18,4 +18,5 @@ export default function SearchBox(props) {
 SearchBox.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   onRefreshPatterns: PropTypes.func.isRequired,
+  defaultName: PropTypes.string.isRequired,
 };

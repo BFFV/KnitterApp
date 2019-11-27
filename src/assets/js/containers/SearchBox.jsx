@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { getPatterns } from '../services/PatternApi';
 import SearchBoxComponent from '../components/SearchBox';
 
@@ -8,33 +9,30 @@ export default class SearchBox extends Component {
     this.state = {
       items: [],
     };
-    this.mounted = false;
 
     this.loadPatterns = this.loadPatterns.bind(this);
   }
 
-  componentDidMount() {
-    this.mounted = true;
-  }
-
-  componentWillUnmount() {
-    this.mounted = false;
-  }
-
   async loadPatterns(options) {
     const patterns = await getPatterns(options);
-    if (this.mounted) {
-      this.setState({ items: patterns });
-    }
+    this.setState({ items: patterns });
   }
 
   render() {
+    const { serverData } = this.props;
     const { items } = this.state;
     return (
       <SearchBoxComponent
         items={items}
         onRefreshPatterns={this.loadPatterns}
+        defaultName={serverData.defaultName}
       />
     );
   }
 }
+
+SearchBox.propTypes = {
+  serverData: PropTypes.shape({
+    defaultName: PropTypes.string.isRequired,
+  }).isRequired,
+};

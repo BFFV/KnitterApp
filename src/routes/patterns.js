@@ -111,16 +111,14 @@ async function authenticate(ctx, next) {
 }
 
 router.get('patterns.list', '/', async (ctx) => {
-  /*
-  const {
-    materials, categories,
-  } = ctx.state;
-  categories.sort((a, b) => a.name.localeCompare(b.name));
-  materials.sort((a, b) => a.name.localeCompare(b.name));
-  */
+  let defaultName = '';
+  const { name } = ctx.request.query;
+  if (name) {
+    defaultName = name;
+  }
   await ctx.render('patterns/index', {
     newPatternPath: ctx.router.url('patterns.new'),
-    options: [['recent', 'Más Reciente'], ['popular', 'Más Popular'], ['rating', 'Mejor Valorado']],
+    defaultName,
   });
 });
 

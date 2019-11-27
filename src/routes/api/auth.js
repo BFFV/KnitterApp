@@ -36,6 +36,7 @@ router.post('auth', '/', async (ctx) => {
       jwtgenerator.sign(
         { userId: user.id },
         process.env.JWT_SECRET,
+        { expiresIn: 3600 },
         (err, tokenResult) => (err ? reject(err) : resolve(tokenResult)),
       );
     });

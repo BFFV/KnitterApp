@@ -13,6 +13,6 @@ if (reactCommentBoxContainer) {
 const reactSearchBoxContainer = document.getElementById('search-box');
 
 if (reactSearchBoxContainer) {
-  ReactDOM.render(<SearchBox />,
+  ReactDOM.render(<SearchBox serverData={reactSearchBoxContainer.dataset} />,
     reactSearchBoxContainer);
 }
