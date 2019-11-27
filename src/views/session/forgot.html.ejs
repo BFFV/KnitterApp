@@ -1,0 +1,33 @@
+<div class = "contenedor-body">
+  <div class="user-session-login-content">
+    <div class="border-css">
+      <div class="login-sub-content">
+        <form action="<%= sendMailPath %>" method="POST">
+          <div class="body-item">
+            <div class="content-sub-form">
+              <h1 class="panel-content">Recupera tu Cuenta!</h1>
+            </div>
+            <div >
+              <% if (locals.error) { %>
+                <div class="body-item" id="error">
+                  <a class="user-parag-list" ><%= error %></a>
+                </div>
+              <% } %>
+            </div>
+          </div>
+          <div class="body-item">
+            <label for="email"><p class="label-content">Ingresa tu correo para recuperar tu cuenta: </p></label>
+          </div>
+          <div class="body-item">
+            <input class="input" type="email" name="email" value="<%= locals.email %>" required/>
+          </div >
+          <div class="body-item">
+            <div class="end-user-login">
+              <input id="boton" type="submit" name="recover" value="Enviar" />
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

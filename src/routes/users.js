@@ -120,7 +120,7 @@ router.get('users.new', '/new', async (ctx) => {
   const user = ctx.orm.user.build();
   await ctx.render('users/new', {
     user,
-    rootPath: '/',
+    sessionPath: ctx.router.url('session.new'),
     submitUserPath: ctx.router.url('users.create'),
   });
 });
@@ -154,7 +154,7 @@ router.post('users.create', '/', checkPassword, uploadImage, async (ctx) => {
     await ctx.render('users/new', {
       user,
       errors,
-      rootPath: '/',
+      sessionPath: ctx.router.url('session.new'),
       submitUserPath: ctx.router.url('users.create'),
     });
   }

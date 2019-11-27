@@ -76,6 +76,8 @@ module.exports = (sequelize, DataTypes) => {
     role: DataTypes.STRING,
     popularity: DataTypes.INTEGER,
     token: DataTypes.STRING,
+    resetToken: DataTypes.STRING,
+    resetTokenExpires: DataTypes.DATE,
   }, {});
 
   user.associate = function associate(models) {

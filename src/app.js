@@ -6,11 +6,13 @@ const koaFlashMessage = require('koa-flash-message').default;
 const koaStatic = require('koa-static');
 const render = require('koa-ejs');
 const session = require('koa-session');
+const jsonApiSerializer = require('jsonapi-serializer');
 const override = require('koa-override-method');
 const assets = require('./assets');
 const mailer = require('./mailers');
 const routes = require('./routes');
 const orm = require('./models');
+
 
 // App constructor
 const app = new Koa();
@@ -26,6 +28,12 @@ app.keys = [
 
 // expose ORM through context's prototype
 app.context.orm = orm;
+
+// json serializer
+
+app.context.jsonSerializer = function jsonSerializer(type, options) {
+  return new jsonApiSerializer.Serializer(type, options);
+};
 
 /**
  * Middlewares

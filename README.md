@@ -17,3 +17,7 @@ Link App: https://web-hitos-knitter.herokuapp.com
 ## Entrega 4
 
 - Se terminaron las funcionalidades restantes de la plataforma, aparte de configurar nuevas dependencias (cloud storage para fotos, mailer) y seguir mejorando el front-end. También se mejoraron diversos detalles de las entregas pasadas, de manera de hacer a la plataforma más atractiva.
+
+## Entrega 5
+
+- Se cambiaron los apartados de búsqueda y comentarios por componentes React, funcionando de manera asíncrona en la ventana. Además se desarrolló una buena parte de la API, la que es consumida por nuestra misma página para poder entregarle información a los componentes de React. Finalmente se revisaron los últimos detalles de CSS pendientes.

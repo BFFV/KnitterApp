@@ -35,15 +35,20 @@
             <input class="input" type="password" name="password" required/>
           </div>
           <div class="body-item">
-              <div class="end-user-login">
-                  <input id="boton" type="submit" name="sign-in" value="Ingresar" />
-              </div>
+            <div class="end-user-login">
+              <input id="boton" type="submit" name="sign-in" value="Ingresar" />
+            </div>
           </div>
         </form>
         <div class="end-user-login">
-            <form action="<%- newUserPath %>">
-                <input  class="new-button" type="submit" value="Crear Usuario" />
-            </form>
+          <form action="<%- forgotPasswordPath %>">
+            <input id="boton" type="submit" value="Olvidé mi Contraseña" />
+          </form>
+        </div>
+        <div class="end-user-login">
+          <form action="<%- newUserPath %>">
+            <input  class="new-button" type="submit" value="Crear Usuario" />
+          </form>
         </div>
       </div>
     </div>

@@ -22,6 +22,12 @@
 
 }
 
+.pattern-score{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .pattern-elements-2 {
   display: flex;
   flex-direction: row;
@@ -42,10 +48,11 @@
 }
 
 .pattern-video {
-  width: 70%;
-  height: 80%;
+  width: 45%;
+  height: 100%;
   padding-right: 30px ;
-  margin-left: 500px;
+  margin-left: 600px;
+
 }
 
 .pattern-data {
@@ -107,6 +114,11 @@
 
 /* Details */
 
+.pattern-font#score {
+  padding-right: 15px;
+  margin: 0px;
+}
+
 .realized-button{
   background-color: #26bfbf;
   border-style: none;
@@ -117,6 +129,10 @@
   color: white;
   font-family: "Dancing Script";
   font-size: 20px;
+}
+
+.forms-pattern#forms-pattern{
+  margin-top: 10px;
 }
 
 .back-pattern {
@@ -170,6 +186,21 @@
   word-wrap: break-word;
 }
 
+.submit-vote{
+  background-color: #26bfbf;
+  border-style: none;
+  border-radius: 5px;
+  width: 50px;
+  height: 20px;
+  margin-left: 15px;
+  font-family: Arial;
+  font-style: italic;
+  color: white;
+
+
+
+}
+
 /* Interaction */
 
 @media screen and (max-width: 875px){
@@ -193,6 +224,8 @@
     margin: 0px;
     margin-top: 470px;
     padding: 0px;
+    width: 80%;
+    height: 100%;
   }
 
   .youtube-video {

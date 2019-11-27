@@ -17,8 +17,10 @@
       </div>
     <% } %>
     <div>
-      <label class="pattern-font" id="parag" for="rating">Calidad:</label>
-      <select  name="rating" required>
+      <select name="rating" required>
+        <% if (!votePattern) { %>
+          <option value=""> Puntúa! </option>
+        <% } %>
         <% options.forEach(option => { %>
           <% if ((votePattern) && (votePattern.rating === option)) { %>
             <option value="<%- option %>" selected><%- option %></option>
@@ -27,7 +29,7 @@
           <% } %>
         <% }); %>
       </select>
-      <input class="vote-button" type="submit" name="create" value="Puntuar" />
+      <button class="submit-vote" type="submit">ok! <i class="fas fa-check"></i> </button>
     </div>
   </form>
 </div>

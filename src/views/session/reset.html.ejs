@@ -1,0 +1,39 @@
+<div class = "contenedor-body">
+    <div class="user-session-login-content">
+      <div class="border-css">
+        <div class="login-sub-content">
+          <form action="<%= resetPasswordPath %>" method="POST">
+            <div class="body-item">
+              <div class="content-sub-form">
+                <h1 class="panel-content">Restablecer Contraseña</h1>
+              </div>
+              <div >
+                <% if (locals.error) { %>
+                  <div class="body-item" id="error">
+                    <a class="user-parag-list" ><%= error %></a>
+                  </div>
+                <% } %>
+              </div>
+            </div>
+            <div class="body-item">
+              <label for="password"><p class="label-content">Ingresa tu nueva contraseña: </p></label>
+            </div>
+            <div class="body-item">
+              <input class="input" type="password" name="password" value="<%= locals.password %>" required/>
+            </div >
+            <div class="body-item">
+              <label for="confirmPass"><p class="label-content">Confirma tu nueva contraseña: </p></label>
+            </div>
+            <div class="body-item">
+              <input class="input" type="password" name="confirmPass" value="<%= locals.confirmPass %>" required/>
+            </div >
+            <div class="body-item">
+              <div class="end-user-login">
+                <input id="boton" type="submit" name="reset" value="Actualizar" />
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

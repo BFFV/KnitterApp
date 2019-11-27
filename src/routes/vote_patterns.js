@@ -75,7 +75,6 @@ router.patch('vote_patterns.update', '/:id', loadVotePattern, authenticate, upda
     const { rating } = ctx.request.body;
     await votePattern.update({ rating });
   } catch (validationError) {
-    console.log(validationError);
     ctx.redirect(ctx.router.url('patterns.show', { id: votePattern.patternId }));
   }
   return votePattern.patternId;

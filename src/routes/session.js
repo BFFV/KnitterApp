@@ -1,6 +1,11 @@
 const KoaRouter = require('koa-router');
+const crypto = require('crypto');
 
 const router = new KoaRouter();
+
+const sendForgotPasswordEmail = require('../mailers/forgot-password');
+const sendResetPasswordEmail = require('../mailers/reset-password');
+const sendResetFailedEmail = require('../mailers/reset-failed');
 
 // Starts the session & upgrades the user's role when certain conditions are met
 async function login(ctx, next) {
@@ -38,7 +43,7 @@ async function login(ctx, next) {
 router.get('session.new', '/new', (ctx) => ctx.render('session/new', {
   createSessionPath: ctx.router.url('session.create'),
   newUserPath: ctx.router.url('users.new'),
-  rootPath: '/',
+  forgotPasswordPath: ctx.router.url('session.forgot'),
   notice: ctx.flashMessage.notice,
 }));
 
@@ -59,9 +64,103 @@ router.put('session.create', '/', login, async (ctx) => {
   return ctx.render('session/new', {
     email,
     createSessionPath: ctx.router.url('session.create'),
+    forgotPasswordPath: ctx.router.url('session.forgot'),
     newUserPath: ctx.router.url('users.new'),
-    rootPath: '/',
     error,
+  });
+});
+
+router.get('session.forgot', '/forgot', (ctx) => ctx.render('session/forgot', {
+  sendMailPath: ctx.router.url('session.forgot'),
+  sessionPath: ctx.router.url('session.new'),
+}));
+
+router.post('session.forgot', '/forgot', async (ctx) => {
+  const { email } = ctx.request.body;
+  let error = 'No existe ninguna cuenta con ese correo!';
+  try {
+    const user = await ctx.orm.user.findOne({ where: { email } });
+    if (user) {
+      const resetToken = crypto.randomBytes(32).toString('hex');
+      const resetTokenExpires = Date.now() + 3600000;
+      await user.update({ resetToken, resetTokenExpires });
+      await sendForgotPasswordEmail(ctx, { user });
+      error = `Se ha enviado un email a ${email} con las instrucciones para recuperar la cuenta!`;
+    }
+  } catch (e) {
+    error = 'Parámetros NO válidos!';
+  }
+  return ctx.render('session/forgot', {
+    sendMailPath: ctx.router.url('session.forgot'),
+    sessionPath: ctx.router.url('session.new'),
+    error,
+  });
+});
+
+router.get('session.reset', '/reset/:token', async (ctx) => {
+  let user = await ctx.orm.user.findOne(
+    {
+      where: {
+        resetToken: ctx.params.token,
+        resetTokenExpires: { [ctx.orm.Sequelize.Op.gt]: Date.now() },
+      },
+    },
+  );
+  if (!user) {
+    user = await ctx.orm.user.findOne({ where: { resetToken: ctx.params.token } });
+    if (user) {
+      await sendResetFailedEmail(ctx, { user });
+    }
+    return ctx.redirect(ctx.router.url('session.new'));
+  }
+  return ctx.render('session/reset', {
+    resetPasswordPath: ctx.router.url('session.reset', { token: ctx.params.token }),
+    sessionPath: ctx.router.url('session.new'),
+  });
+});
+
+router.post('session.reset', '/reset/:token', async (ctx) => {
+  let user = await ctx.orm.user.findOne(
+    {
+      where: {
+        resetToken: ctx.params.token,
+        resetTokenExpires: { [ctx.orm.Sequelize.Op.gt]: Date.now() },
+      },
+    },
+  );
+  if (!user) {
+    user = await ctx.orm.user.findOne({ where: { resetToken: ctx.params.token } });
+    if (user) {
+      await sendResetFailedEmail(ctx, { user });
+    }
+    return ctx.redirect(ctx.router.url('session.new'));
+  }
+  const { password, confirmPass } = ctx.request.body;
+  if (password === confirmPass) {
+    try {
+      await user.update({ password });
+    } catch (validationError) {
+      const { errors } = validationError;
+      let error = 'Parámetros NO válidos!';
+      if (errors) {
+        error = errors[0].message;
+      }
+      return ctx.render('session/reset', {
+        resetPasswordPath: ctx.router.url('session.reset', { token: ctx.params.token }),
+        sessionPath: ctx.router.url('session.new'),
+        error,
+      });
+    }
+    const resetToken = undefined;
+    const resetTokenExpires = undefined;
+    await user.update({ resetToken, resetTokenExpires });
+    await sendResetPasswordEmail(ctx, { user });
+    return ctx.redirect(ctx.router.url('session.new'));
+  }
+  return ctx.render('session/reset', {
+    resetPasswordPath: ctx.router.url('session.reset', { token: ctx.params.token }),
+    sessionPath: ctx.router.url('session.new'),
+    error: 'Las contraseñas deben coincidir!',
   });
 });
 

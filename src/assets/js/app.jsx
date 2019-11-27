@@ -1,9 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/App';
+import CommentBox from './containers/CommentBox';
+import SearchBox from './containers/SearchBox';
 
-const reactAppContainer = document.getElementById('react-app');
+const reactCommentBoxContainer = document.getElementById('comment-box');
 
-if (reactAppContainer) {
-  ReactDOM.render(<App />, reactAppContainer);
+if (reactCommentBoxContainer) {
+  ReactDOM.render(<CommentBox serverData={reactCommentBoxContainer.dataset} />,
+    reactCommentBoxContainer);
+}
+
+const reactSearchBoxContainer = document.getElementById('search-box');
+
+if (reactSearchBoxContainer) {
+  ReactDOM.render(<SearchBox serverData={reactSearchBoxContainer.dataset} />,
+    reactSearchBoxContainer);
 }
