@@ -15,36 +15,35 @@
       </div>
     </div>
   </form>
-  <% if(currentUser) { %>
-
+  <% if (currentUser) { %>
     <% if (favorites.length) { %>
-    <div class="tittle-index">
+      <div class="tittle-index">
    			<h1>Tus Patrones Favoritos</h1>
   		</div>
   		<div class="pattern-content-home">
-    <% favorites.forEach((pattern) => { %>
-      <div class="pattern-search-container">
-        <img class="photo" src="<%- pattern.image %>">
-        <a class="pattern-font-tittle" href="<%- patternPath(pattern) %>"><%- pattern.name %></a>
-        <a class="pattern-font">Puntaje: <%- pattern.score %>/5</a>
-        <a class="pattern-font">Popularidad: <%- pattern.popularity %></a>
-        <% if (currentUser) { %>
-          <% if ((currentUser.id === pattern.authorId) || (currentUser.role === 'admin')) { %>
-            <div class="edit-and-delete-pattern">
-              <form action="<%- editPatternPath(pattern) %>">
-                <button class="edit-pattern" type="submit"> <i class="fas fa-pen"></i> </button>
-              </form>
-              <form action="<%- deletePatternPath(pattern) %>" onclick="return confirm('Estás seguro?');"
-                method="POST">
-                <input type="hidden" name="_method" value="delete" />
-                <button class="delete-pattern" type="submit"> <i class="fas fa-trash-alt "></i></button>
-              </form>
-            </div>
-          <% } %>
-        <% } %>
+        <% favorites.forEach((pattern) => { %>
+          <div class="pattern-search-container">
+            <img class="photo" src="<%- pattern.image %>">
+            <a class="pattern-font-tittle" href="<%- patternPath(pattern) %>"><%- pattern.name %></a>
+            <a class="pattern-font">Puntaje: <%- pattern.score %>/5</a>
+            <a class="pattern-font">Popularidad: <%- pattern.popularity %></a>
+            <% if (currentUser) { %>
+              <% if ((currentUser.id === pattern.authorId) || (currentUser.role === 'admin')) { %>
+                <div class="edit-and-delete-pattern">
+                  <form action="<%- editPatternPath(pattern) %>">
+                    <button class="edit-pattern" type="submit"> <i class="fas fa-pen"></i> </button>
+                  </form>
+                  <form action="<%- deletePatternPath(pattern) %>" onclick="return confirm('Estás seguro?');"
+                    method="POST">
+                    <input type="hidden" name="_method" value="delete" />
+                    <button class="delete-pattern" type="submit"> <i class="fas fa-trash-alt "></i></button>
+                  </form>
+                </div>
+              <% } %>
+            <% } %>
+          </div>
+        <% })}; %>
       </div>
-    <% })}; %>
-  </div>
   <% } %>
   <div class="tittle-index">
     <h1>Patrones Más Recientes</h1>
@@ -136,6 +135,4 @@
       </div>
     <% })}; %>
   </div>
-  
-  
 </div>
