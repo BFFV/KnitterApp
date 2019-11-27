@@ -35,3 +35,19 @@ export async function deletePattern(patternId) {
     headers: { Accept: 'application/json', Authorization: `Bearer ${token}` },
   }).then((res) => res.json());
 }
+
+// Gets the materials needed for Pattern Search
+export async function getMaterials() {
+  const path = '/api/materials/';
+  const materialsList = await fetch(path, { headers: { Accept: 'application/json' } })
+    .then((res) => res.json());
+  return materialsList.data;
+}
+
+// Gets the categories needed for Pattern Search
+export async function getCategories() {
+  const path = '/api/categories/';
+  const categoriesList = await fetch(path, { headers: { Accept: 'application/json' } })
+    .then((res) => res.json());
+  return categoriesList.data;
+}
