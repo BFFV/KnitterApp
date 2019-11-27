@@ -24,7 +24,7 @@ export default function SearchForm(props) {
             <select name="category" value={category} onChange={onCategoryChange}>
               <option value="all">Todas</option>
               {categories.map((item) => (
-                <option value={item}>{item.name.toUpperCase()}</option>
+                <option value={item.name}>{item.name.toUpperCase()}</option>
               ))}
             </select>
           </div>

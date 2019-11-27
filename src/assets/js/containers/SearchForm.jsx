@@ -32,7 +32,7 @@ export default class SearchForm extends Component {
     onRefreshPatterns({ name });
   }
 
-  async onCategoryChange(event){
+  async onCategoryChange(event)       {
     const { onRefreshPatterns } = this.props;
     const category = event.target.value;
     this.setState({ category });
