@@ -21,3 +21,7 @@ Link App: https://web-hitos-knitter.herokuapp.com
 ## Entrega 5
 
 - Se cambiaron los apartados de búsqueda y comentarios por componentes React, funcionando de manera asíncrona en la ventana. Además se desarrolló una buena parte de la API, la que es consumida por nuestra misma página para poder entregarle información a los componentes de React. Finalmente se revisaron los últimos detalles de CSS pendientes.
+
+## Entrega 6
+
+- Se desarrolló el resto de la API y se completó la página web.
